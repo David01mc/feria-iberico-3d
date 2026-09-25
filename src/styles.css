@@ -1,0 +1,244 @@
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/assets/fonts/fraunces-600.woff') format('woff');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/inter-400.woff') format('woff');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/inter-600.woff') format('woff');
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --ink: #f1e9da;
+  --ink-soft: rgba(241, 233, 218, 0.72);
+  --gold: #c8a45a;
+  --forest: #1f2b24;
+  --glass: rgba(20, 22, 20, 0.55);
+  --glass-border: rgba(241, 233, 218, 0.14);
+  --radius: 999px;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #14110f;
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.app {
+  position: fixed;
+  inset: 0;
+}
+
+.scene {
+  position: absolute !important;
+  inset: 0;
+  touch-action: none;
+}
+
+/* ── Interfaz superpuesta ─────────────────────────────────────────── */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.brand {
+  align-self: flex-start;
+  padding: 14px 20px 16px;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.brand__eyebrow {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.brand__name {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 1.05;
+}
+
+.brand__sub {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.brand__sub span {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.hud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hud__hint {
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+}
+
+.quality {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+}
+
+.quality__label {
+  padding: 0 10px 0 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.quality__option {
+  appearance: none;
+  border: 0;
+  border-radius: var(--radius);
+  padding: 7px 14px;
+  font: 600 13px/1 'Inter', system-ui, sans-serif;
+  color: var(--ink);
+  background: transparent;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.quality__option:hover {
+  background: rgba(241, 233, 218, 0.1);
+}
+
+.quality__option[aria-checked='true'] {
+  background: var(--gold);
+  color: #1a1a17;
+}
+
+.quality__option:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ── Pantalla de carga ────────────────────────────────────────────── */
+
+.loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  background: radial-gradient(120% 90% at 50% 40%, #26342b 0%, var(--forest) 45%, #111713 100%);
+  transition: opacity 800ms ease;
+  z-index: 10;
+}
+
+.loader--done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader__eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.loader__name {
+  margin: 0 0 18px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(40px, 7vw, 72px);
+}
+
+.loader__bar {
+  width: min(320px, 70vw);
+  height: 2px;
+  background: rgba(241, 233, 218, 0.15);
+  overflow: hidden;
+}
+
+.loader__bar span {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+  transform-origin: left;
+  transition: transform 240ms ease;
+}
+
+.loader__pct {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 640px) {
+  .hud__hint {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader,
+  .loader__bar span,
+  .quality__option {
+    transition: none;
+  }
+}

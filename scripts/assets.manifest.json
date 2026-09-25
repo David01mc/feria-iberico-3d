@@ -1,0 +1,29 @@
+{
+  "hdris": [{ "id": "rostock_laage_airport", "res": "2k" }],
+  "polyhaven": [
+    { "id": "concrete_floor_02", "res": "2k", "use": "Suelo del pabellón" },
+    { "id": "painted_concrete", "res": "1k", "use": "Zócalo de los muros del pabellón" },
+    { "id": "oak_veneer_01", "res": "1k", "use": "Mostradores de roble (jamón)" },
+    { "id": "wood_floor_deck", "res": "1k", "use": "Tarima del stand de jamón" },
+    { "id": "rough_wood", "res": "1k", "use": "Vigas y estanterías rústicas" },
+    { "id": "dark_wood", "res": "1k", "use": "Madera oscura (tótem, barra)" },
+    { "id": "plastered_wall", "res": "1k", "use": "Paredes encaladas (quesería)" },
+    { "id": "red_brick_03", "res": "1k", "use": "Ladrillo visto (secadero de embutidos)" },
+    { "id": "interior_tiles", "res": "1k", "use": "Azulejo de mostrador" },
+    { "id": "terracotta_floor_tiles", "res": "1k", "use": "Suelo de barro cocido" },
+    { "id": "hessian_230", "res": "1k", "use": "Arpillera" },
+    { "id": "rough_linen", "res": "1k", "use": "Mantelería de lino" }
+  ],
+  "ambientcg": [{ "id": "Carpet012", "res": "1K", "use": "Moqueta ferial (relieve y rugosidad)" }],
+  "fonts": [
+    { "slug": "inter", "weight": 400 },
+    { "slug": "inter", "weight": 600 },
+    { "slug": "inter", "weight": 800 },
+    { "slug": "fraunces", "weight": 600 },
+    { "slug": "barlow-condensed", "weight": 600 },
+    { "slug": "playfair-display", "weight": 700 },
+    { "slug": "cormorant-garamond", "weight": 600 },
+    { "slug": "alfa-slab-one", "weight": 400 },
+    { "slug": "pacifico", "weight": 400 }
+  ]
+}
