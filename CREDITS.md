@@ -27,3 +27,17 @@ Generado por `npm run assets`. Todos los assets son CC0 (dominio público) o SIL
 | Fuente | [cormorant-garamond 600](https://fontsource.org/fonts/cormorant-garamond) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
 | Fuente | [alfa-slab-one 400](https://fontsource.org/fonts/alfa-slab-one) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
 | Fuente | [pacifico 400](https://fontsource.org/fonts/pacifico) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
+| Modelo 3D | [bar_chair_round_01](https://polyhaven.com/a/bar_chair_round_01) | Poly Haven | CC0 | Taburete alto de barra (degustación) |
+| Modelo 3D | [metal_stool_02](https://polyhaven.com/a/metal_stool_02) | Poly Haven | CC0 | Taburete industrial (croquetería) |
+| Modelo 3D | [standing_chalkboard_01](https://polyhaven.com/a/standing_chalkboard_01) | Poly Haven | CC0 | Pizarra de caballete |
+| Modelo 3D | [wicker_basket_01](https://polyhaven.com/a/wicker_basket_01) | Poly Haven | CC0 | Cesta de mimbre |
+| Modelo 3D | [wine_bottles_01](https://polyhaven.com/a/wine_bottles_01) | Poly Haven | CC0 | Botellas de vino |
+| Modelo 3D | [wine_barrel_01](https://polyhaven.com/a/wine_barrel_01) | Poly Haven | CC0 | Barrica de roble (mesa alta) |
+| Modelo 3D | [CheeseBox_01](https://polyhaven.com/a/CheeseBox_01) | Poly Haven | CC0 | Caja de madera para queso |
+| Modelo 3D | [wooden_crate_01](https://polyhaven.com/a/wooden_crate_01) | Poly Haven | CC0 | Caja de madera |
+| Modelo 3D | [carved_wooden_plate](https://polyhaven.com/a/carved_wooden_plate) | Poly Haven | CC0 | Tabla de madera para servir |
+| Modelo 3D | [wooden_bowl_01](https://polyhaven.com/a/wooden_bowl_01) | Poly Haven | CC0 | Cuenco de madera |
+| Modelo 3D | [potted_plant_02](https://polyhaven.com/a/potted_plant_02) | Poly Haven | CC0 | Planta en maceta |
+| Modelo 3D | [potted_plant_04](https://polyhaven.com/a/potted_plant_04) | Poly Haven | CC0 | Planta alta en maceta |
+| Modelo 3D | [modern_ceiling_lamp_01](https://polyhaven.com/a/modern_ceiling_lamp_01) | Poly Haven | CC0 | Lámpara colgante |
+| Modelo 3D | [jug_01](https://polyhaven.com/a/jug_01) | Poly Haven | CC0 | Jarra de cerámica |

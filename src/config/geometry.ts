@@ -43,6 +43,20 @@ export function sideStrip(r: Rect, side: Side, thickness: number, inset = 0.05):
   }
 }
 
+/** Franja interior pegada a un lado (p. ej. el panel de un stand modular). */
+export function innerStrip(r: Rect, side: Side, thickness: number): Rect {
+  switch (side) {
+    case 'north':
+      return rect(r.x0, r.z0, r.x1, r.z0 + thickness)
+    case 'south':
+      return rect(r.x0, r.z1 - thickness, r.x1, r.z1)
+    case 'west':
+      return rect(r.x0, r.z0, r.x0 + thickness, r.z1)
+    case 'east':
+      return rect(r.x1 - thickness, r.z0, r.x1, r.z1)
+  }
+}
+
 /** Parte un bloque en parcelas consecutivas a lo largo de un eje. */
 export function subdivide(block: Rect, axis: 'x' | 'z', sizes: number[]): Rect[] {
   const total = sizes.reduce((sum, s) => sum + s, 0)

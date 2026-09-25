@@ -1,6 +1,9 @@
 import { create } from 'zustand'
 import { QUALITY_ORDER, type QualityLevel } from '../render/quality'
 
+/** `orbita`: vista aérea libre. `paseo`: primera persona con WASD a la altura de los ojos. */
+export type CameraMode = 'orbita' | 'paseo'
+
 interface AppState {
   quality: QualityLevel
   /** Pasa a false en cuanto el usuario elige la calidad a mano. */
@@ -8,6 +11,12 @@ interface AppState {
   setQuality: (quality: QualityLevel) => void
   /** Baja un escalón de calidad si el ajuste automático sigue activo. */
   degradeQuality: () => void
+
+  cameraMode: CameraMode
+  setCameraMode: (mode: CameraMode) => void
+  /** En paseo: el ratón está capturado para mirar alrededor. */
+  pointerLocked: boolean
+  setPointerLocked: (locked: boolean) => void
 }
 
 export const useAppStore = create<AppState>()((set, get) => ({
@@ -20,4 +29,9 @@ export const useAppStore = create<AppState>()((set, get) => ({
     const next = QUALITY_ORDER[QUALITY_ORDER.indexOf(quality) + 1]
     if (next) set({ quality: next })
   },
+
+  cameraMode: 'orbita',
+  setCameraMode: (cameraMode) => set({ cameraMode, pointerLocked: false }),
+  pointerLocked: false,
+  setPointerLocked: (pointerLocked) => set({ pointerLocked }),
 }))

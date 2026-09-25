@@ -1,6 +1,13 @@
 import { Matrix4, Vector3 } from 'three'
 import { describe, expect, it } from 'vitest'
-import { beamMatrix, mergeBoxes, worldBox, worldPlane } from './geometry'
+import {
+  beamMatrix,
+  boxProjectUV,
+  mergeBoxes,
+  worldBox,
+  worldPlane,
+  worldRoundedBox,
+} from './geometry'
 
 describe('worldBox', () => {
   it('escala las UV de cada cara a metros / tile', () => {
@@ -10,6 +17,29 @@ describe('worldBox', () => {
     const vs = [8, 9, 10, 11].map((i) => uv.getY(i))
     expect(Math.max(...us)).toBeCloseTo(2)
     expect(Math.max(...vs)).toBeCloseTo(0.5)
+  })
+})
+
+describe('boxProjectUV', () => {
+  it('proyecta las UV desde la cara dominante, en metros / tile', () => {
+    // Plano horizontal de 4 × 2 m: debe proyectarse desde arriba (u = x, v = z).
+    const geometry = worldPlane(4, 2).rotateX(-Math.PI / 2)
+    const uv = boxProjectUV(geometry, 2).getAttribute('uv')
+    const us = Array.from({ length: uv.count }, (_, i) => uv.getX(i))
+    const vs = Array.from({ length: uv.count }, (_, i) => uv.getY(i))
+    expect(Math.max(...us) - Math.min(...us)).toBeCloseTo(2)
+    expect(Math.max(...vs) - Math.min(...vs)).toBeCloseTo(1)
+  })
+})
+
+describe('worldRoundedBox', () => {
+  it('crea una caja con cantos redondeados de las medidas pedidas', () => {
+    const geometry = worldRoundedBox(1.2, 0.04, 0.6, 0.01, 1)
+    geometry.computeBoundingBox()
+    const box = geometry.boundingBox!
+    expect(box.max.x - box.min.x).toBeCloseTo(1.2)
+    expect(box.max.y - box.min.y).toBeCloseTo(0.04)
+    expect(geometry.getAttribute('uv')).toBeDefined()
   })
 })
 

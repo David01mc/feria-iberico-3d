@@ -8,6 +8,7 @@ import {
   Quaternion,
   Vector3,
 } from 'three'
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 
 /*
@@ -16,6 +17,53 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
  */
 
 export type Vec3 = [number, number, number]
+
+/**
+ * Recalcula las UV por proyección en caja: cada vértice se proyecta desde el eje dominante
+ * de su normal. Sirve para cualquier malla (incluidos los modelos de Blender), en metros / tile.
+ */
+export function boxProjectUV<T extends BufferGeometry>(geometry: T, tile = 1): T {
+  if (!geometry.getAttribute('normal')) geometry.computeVertexNormals()
+  const position = geometry.getAttribute('position')
+  const normal = geometry.getAttribute('normal')
+  const uv = new Float32Array(position.count * 2)
+  for (let i = 0; i < position.count; i++) {
+    const ax = Math.abs(normal.getX(i))
+    const ay = Math.abs(normal.getY(i))
+    const az = Math.abs(normal.getZ(i))
+    const x = position.getX(i)
+    const y = position.getY(i)
+    const z = position.getZ(i)
+    let u: number
+    let v: number
+    if (ax >= ay && ax >= az) {
+      u = normal.getX(i) > 0 ? -z : z
+      v = y
+    } else if (ay >= az) {
+      u = x
+      v = normal.getY(i) > 0 ? -z : z
+    } else {
+      u = normal.getZ(i) > 0 ? x : -x
+      v = y
+    }
+    uv[i * 2] = u / tile
+    uv[i * 2 + 1] = v / tile
+  }
+  geometry.setAttribute('uv', new Float32BufferAttribute(uv, 2))
+  return geometry
+}
+
+/** Caja con cantos redondeados (atrapan la luz como un mueble real) y UV en metros / tile. */
+export function worldRoundedBox(
+  w: number,
+  h: number,
+  d: number,
+  radius: number,
+  tile = 1,
+): BufferGeometry {
+  const r = Math.min(radius, w / 2, h / 2, d / 2)
+  return boxProjectUV(new RoundedBoxGeometry(w, h, d, 3, r), tile)
+}
 
 /** Caja con UV en metros / tile en cada cara. */
 export function worldBox(w: number, h: number, d: number, tile = 1): BoxGeometry {

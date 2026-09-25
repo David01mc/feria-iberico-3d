@@ -1,14 +1,16 @@
 import { Text } from '@react-three/drei'
 import { useMemo } from 'react'
+import { BOOTH, counterPlacement } from '../../config/booths'
 import { center, depth, outward, SIDES, sideSegment, width } from '../../config/geometry'
 import type { NeighborPlot, Side } from '../../config/types'
 import { FONT } from '../../materials/assets'
 import { mergeBoxes, type BoxPart, type Vec3 } from '../../materials/geometry'
 import { PBR, usePbr } from '../../materials/pbr'
 
-const PANEL_H = 2.5
-const PANEL_T = 0.04
-const FASCIA_H = 0.3
+const PANEL_H = BOOTH.panelHeight
+const PANEL_T = BOOTH.panelThickness
+const FASCIA_H = BOOTH.fasciaHeight
+const COUNTER = BOOTH.counter
 
 const OPPOSITE: Record<Side, Side> = { north: 'south', south: 'north', east: 'west', west: 'east' }
 
@@ -84,25 +86,26 @@ function buildBooths(neighbors: NeighborPlot[]) {
     }
 
     const front = n.openSides[0]
-    if (!front) continue
+    const counter = counterPlacement(n)
+    if (!front || !counter) continue
     const [ox, oz] = outward(front)
 
     // Mostrador con banda gráfica del expositor.
-    const counter = sideSegment(plot, front, 0.65)
     panels.push({
-      size: [1.0, 1.0, 0.5],
-      position: [counter.center[0], 0.525, counter.center[1]],
+      size: [COUNTER.width, COUNTER.height, COUNTER.depth],
+      position: [counter.center[0], COUNTER.height / 2 + 0.025, counter.center[1]],
       rotationY: counter.rotationY,
     })
     accents.push({
-      size: [1.04, 0.035, 0.54],
-      position: [counter.center[0], 1.04, counter.center[1]],
+      size: [COUNTER.width + 0.04, 0.035, COUNTER.depth + 0.04],
+      position: [counter.center[0], COUNTER.height + 0.04, counter.center[1]],
       rotationY: counter.rotationY,
       color: '#2d2d2d',
     })
+    const bandOffset = COUNTER.depth / 2 + 0.006
     accents.push({
-      size: [0.9, 0.22, 0.01],
-      position: [counter.center[0] + ox * 0.256, 0.8, counter.center[1] + oz * 0.256],
+      size: [COUNTER.width - 0.1, 0.22, 0.01],
+      position: [counter.center[0] + ox * bandOffset, 0.8, counter.center[1] + oz * bandOffset],
       rotationY: counter.rotationY,
       color: n.accent,
     })

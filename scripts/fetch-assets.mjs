@@ -68,6 +68,32 @@ async function fetchAmbientcg({ id, res }) {
   return { name: id, url: `https://ambientcg.com/view?id=${id}`, license: 'CC0', source: 'ambientCG' }
 }
 
+const GLTF_TRANSFORM = join(ROOT, 'node_modules', '.bin', 'gltf-transform')
+
+/** Descarga un modelo glTF de Poly Haven (con sus texturas) y lo empaqueta en GLB optimizado. */
+async function fetchModel({ id, res }) {
+  const out = join(OUT, 'models', 'ph', `${id}.glb`)
+  if (!existsSync(out)) {
+    const files = await getJson(`https://api.polyhaven.com/files/${id}`)
+    const gltf = files.gltf?.[res]?.gltf
+    if (!gltf) throw new Error(`Modelo ${id} sin glTF en ${res}`)
+    const srcDir = join(ROOT, '.cache', 'polyhaven', id)
+    const entry = join(srcDir, `${id}.gltf`)
+    await download(gltf.url, entry)
+    for (const [relPath, file] of Object.entries(gltf.include ?? {})) {
+      await download(file.url, join(srcDir, relPath))
+    }
+    mkdirSync(dirname(out), { recursive: true })
+    // Texturas a WebP ≤ 1024 px y geometría con meshopt; --palette false conserva los materiales.
+    execFileSync(
+      GLTF_TRANSFORM,
+      ['optimize', entry, out, '--compress', 'meshopt', '--texture-compress', 'webp', '--texture-size', '1024', '--palette', 'false'],
+      { stdio: ['ignore', 'ignore', 'inherit'] },
+    )
+  }
+  return { name: id, url: `https://polyhaven.com/a/${id}`, license: 'CC0', source: 'Poly Haven' }
+}
+
 async function fetchFont({ slug, weight }) {
   const url = `https://cdn.jsdelivr.net/fontsource/fonts/${slug}@latest/latin-${weight}-normal.woff`
   await download(url, join(OUT, 'fonts', `${slug}-${weight}.woff`))
@@ -81,6 +107,7 @@ async function main() {
     ...manifest.polyhaven.map((a) => ['Textura', fetchPolyhaven, a]),
     ...manifest.ambientcg.map((a) => ['Textura', fetchAmbientcg, a]),
     ...manifest.fonts.map((a) => ['Fuente', fetchFont, a]),
+    ...manifest.models.map((a) => ['Modelo 3D', fetchModel, a]),
   ]
   for (const [kind, fn, asset] of jobs) {
     const label = asset.id ?? `${asset.slug}-${asset.weight}`
