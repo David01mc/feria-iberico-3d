@@ -1,6 +1,7 @@
 import { useGLTF } from '@react-three/drei'
 import { useLayoutEffect, useRef } from 'react'
 import {
+  BufferAttribute,
   Color,
   Euler,
   Matrix4,
@@ -49,6 +50,22 @@ function withFinish(source: MeshStandardMaterial, finish: ProductFinish): MeshPh
   })
 }
 
+/**
+ * Pasa a float las posiciones y normales cuantizadas (KHR_mesh_quantization): aplicarles la
+ * transformación del nodo sobre enteros normalizados recortaría a ±1 todo lo que mide más de 2 m.
+ */
+function dequantized(geometry: BufferGeometry): BufferGeometry {
+  for (const name of ['position', 'normal']) {
+    const attr = geometry.getAttribute(name)
+    if (!attr || attr.array instanceof Float32Array) continue
+    const out = new Float32Array(attr.count * attr.itemSize)
+    for (let i = 0; i < attr.count; i++)
+      for (let k = 0; k < attr.itemSize; k++) out[i * attr.itemSize + k] = attr.getComponent(i, k)
+    geometry.setAttribute(name, new BufferAttribute(out, attr.itemSize))
+  }
+  return geometry
+}
+
 /** Extrae la única malla del GLB de un producto (con su transformación aplicada). */
 export function useProductMesh(key: ProductKey): ProductMesh {
   const { scene } = useGLTF(productUrl(key), true, true, withKTX2)
@@ -63,7 +80,7 @@ export function useProductMesh(key: ProductKey): ProductMesh {
     const { finish } = PRODUCTS[key] as ProductEntry
     const source = mesh.material as MeshStandardMaterial
     entry = {
-      geometry: mesh.geometry.clone().applyMatrix4(mesh.matrixWorld),
+      geometry: dequantized(mesh.geometry.clone()).applyMatrix4(mesh.matrixWorld),
       material: finish ? withFinish(source, finish) : source,
     }
     meshes.set(scene, entry)
