@@ -93,7 +93,7 @@ export function WalkControls({ colliders }: { colliders: Rect[] }) {
   return (
     <PointerLockControls
       makeDefault
-      selector="#walk-lock"
+      selector="#walk-lock, canvas.scene"
       onLock={() => setPointerLocked(true)}
       onUnlock={() => setPointerLocked(false)}
     />

@@ -240,9 +240,13 @@ body {
 
 .walk {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
+  top: clamp(16px, 3vw, 32px);
+  right: clamp(16px, 3vw, 32px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: min(360px, calc(100vw - 32px));
   pointer-events: none;
 }
 
@@ -250,9 +254,9 @@ body {
   pointer-events: auto;
   appearance: none;
   border: 1px solid rgba(200, 164, 90, 0.6);
-  border-radius: var(--radius);
-  padding: 14px 26px;
-  font: 600 15px/1 'Inter', system-ui, sans-serif;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font: 600 12px/1.2 'Inter', system-ui, sans-serif;
   color: var(--ink);
   background: rgba(20, 22, 20, 0.62);
   backdrop-filter: blur(14px);
@@ -277,6 +281,10 @@ body {
 /* Retícula central mientras el ratón está capturado. */
 .walk--locked::after {
   content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -285,16 +293,14 @@ body {
 }
 
 .walk__keys {
-  position: absolute;
-  left: 50%;
-  bottom: calc(clamp(16px, 3vw, 32px) + 64px);
-  transform: translateX(-50%);
   margin: 0;
-  padding: 8px 14px;
-  white-space: nowrap;
-  font-size: 12px;
+  padding: 8px 11px;
+  max-width: 360px;
+  text-align: right;
+  font-size: 11px;
+  line-height: 1.6;
   color: var(--ink-soft);
-  border-radius: var(--radius);
+  border-radius: 12px;
   background: var(--glass);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(14px);
@@ -316,6 +322,15 @@ body {
 @media (max-width: 640px) {
   .hud__hint {
     display: none;
+  }
+
+  .walk {
+    top: 112px;
+    right: 16px;
+  }
+
+  .walk__keys {
+    max-width: 250px;
   }
 }
 
