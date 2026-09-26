@@ -238,49 +238,8 @@ body {
 
 /* ── Modo paseo ───────────────────────────────────────────────────── */
 
-.walk {
-  position: absolute;
-  top: clamp(16px, 3vw, 32px);
-  right: clamp(16px, 3vw, 32px);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-  max-width: min(360px, calc(100vw - 32px));
-  pointer-events: none;
-}
-
-.walk__start {
-  pointer-events: auto;
-  appearance: none;
-  border: 1px solid rgba(200, 164, 90, 0.6);
-  border-radius: 12px;
-  padding: 10px 14px;
-  font: 600 12px/1.2 'Inter', system-ui, sans-serif;
-  color: var(--ink);
-  background: rgba(20, 22, 20, 0.62);
-  backdrop-filter: blur(14px);
-  cursor: pointer;
-  transition: background 160ms ease, transform 160ms ease;
-}
-
-.walk__start[hidden] {
-  display: none;
-}
-
-.walk__start:hover {
-  background: rgba(31, 43, 36, 0.85);
-  transform: translateY(-1px);
-}
-
-.walk__start:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-}
-
-/* Retícula central mientras el ratón está capturado. */
-.walk--locked::after {
-  content: '';
+/* Retícula central mientras el ratón está capturado (se captura con un clic en la escena). */
+.walk-reticle {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -290,47 +249,12 @@ body {
   border-radius: 50%;
   background: rgba(241, 233, 218, 0.85);
   box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.35);
-}
-
-.walk__keys {
-  margin: 0;
-  padding: 8px 11px;
-  max-width: 360px;
-  text-align: right;
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--ink-soft);
-  border-radius: 12px;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(14px);
-}
-
-.walk__keys kbd {
-  display: inline-block;
-  min-width: 20px;
-  margin: 0 1px;
-  padding: 2px 5px;
-  font: 600 11px/1.3 'Inter', system-ui, sans-serif;
-  text-align: center;
-  color: var(--ink);
-  border: 1px solid rgba(241, 233, 218, 0.3);
-  border-bottom-width: 2px;
-  border-radius: 5px;
+  pointer-events: none;
 }
 
 @media (max-width: 640px) {
   .hud__hint {
     display: none;
-  }
-
-  .walk {
-    top: 112px;
-    right: 16px;
-  }
-
-  .walk__keys {
-    max-width: 250px;
   }
 }
 
