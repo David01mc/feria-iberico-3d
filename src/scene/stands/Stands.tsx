@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
 import type { StandConfig, StandKind } from '../../config/types'
+import { AceitunasStand } from './AceitunasStand'
 import { CroquetasStand } from './CroquetasStand'
 import { CervezasStand } from './CervezasStand'
 import { EmbutidosStand } from './EmbutidosStand'
@@ -19,6 +20,7 @@ const STAND_COMPONENTS: Record<StandKind, ComponentType<{ stand: StandConfig }>>
   cervezas: CervezasStand,
   sidras: SidrasStand,
   tapas: PielDeToroStand,
+  aceitunas: AceitunasStand,
 }
 
 export function Stands({ stands }: { stands: StandConfig[] }) {

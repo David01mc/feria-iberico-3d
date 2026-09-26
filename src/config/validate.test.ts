@@ -29,12 +29,14 @@ describe('FAIR (Salón Dehesa 2026)', () => {
       'mediano',
       'mediano',
       'mediano',
+      'mediano',
       'pequeño',
     ])
   })
 
   it('tiene un stand de cada producto', () => {
     expect(FAIR.stands.map((s) => s.kind).sort()).toEqual([
+      'aceitunas',
       'cervezas',
       'croquetas',
       'embutidos',

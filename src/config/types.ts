@@ -28,6 +28,7 @@ export type StandKind =
   | 'cervezas'
   | 'sidras'
   | 'tapas'
+  | 'aceitunas'
 
 export interface Palette {
   /** Color corporativo principal. */

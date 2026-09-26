@@ -331,6 +331,33 @@ function sidrasColliders(): Rect[] {
   ]
 }
 
+// ── La Aceitunera · puesto de mercado 6 × 3, abierto al norte y al oeste ────
+
+export const ACEITUNAS = {
+  floor: 0.065,
+  floorInset: 0.04,
+  wallInset: 0.06,
+  wallThickness: 0.12,
+  wallHeight: 3.25,
+  /** Vitrina con diez cubetas de variedades a granel. */
+  display: { center: [0, 0.66] as XZ, size: [4.72, 1.12] as XZ, bodyHeight: 0.89 },
+  /** Expositor vertical de tarros junto al pasillo lateral. */
+  rack: { center: [2.52, -0.64] as XZ, size: [0.62, 0.54] as XZ, height: 2.18 },
+  backShelf: { center: [-0.15, -1.07] as XZ, width: 4.65, depth: 0.3, levels: [1.57, 2.02] },
+} as const
+
+function aceitunasColliders(): Rect[] {
+  const a = ACEITUNAS
+  const t = a.wallThickness
+  const i = a.wallInset
+  return [
+    rect(-3 + i + t, -1.5 + i, 3 - i, -1.5 + i + t),
+    rect(-3 + i, -1.5 + i, -3 + i + t, 1.5 - i),
+    box(...a.display.center, ...a.display.size),
+    box(...a.rack.center, ...a.rack.size),
+  ]
+}
+
 // ── Piel de Toro · isla 9 × 6: caseta de feria (abre a los cuatro lados) ─────
 
 type Segment = readonly [XZ, XZ]
@@ -441,4 +468,5 @@ export const STAND_COLLIDERS: Record<StandKind, () => Rect[]> = {
   cervezas: cervezasColliders,
   sidras: sidrasColliders,
   tapas: pieldetoroColliders,
+  aceitunas: aceitunasColliders,
 }
