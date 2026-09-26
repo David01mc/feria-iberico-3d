@@ -240,6 +240,23 @@ export const CERVEZAS = {
     [-2.55, 1.1],
   ] as readonly XZ[],
   planterSize: [0.6, 0.45] as XZ,
+  /** Seis barriles en dos niveles, junto al lateral cerrado y fuera de la zona de servicio. */
+  kegStack: {
+    center: [2.28, -0.79] as XZ,
+    size: [1.06, 0.94] as XZ,
+    shelfTop: 0.6,
+    shelfThickness: 0.05,
+    lowerOffsets: [
+      [-0.24, -0.24],
+      [0.24, -0.24],
+      [-0.24, 0.24],
+      [0.24, 0.24],
+    ] as readonly XZ[],
+    upperOffsets: [
+      [-0.24, 0],
+      [0.24, 0],
+    ] as readonly XZ[],
+  },
   /** Expositor metálico de botellas junto al lado abierto. */
   rack: { center: [-2.55, -0.75] as XZ, size: [0.6, 0.45] as XZ, height: 1.9 },
 }
@@ -264,6 +281,7 @@ function cervezasColliders(): Rect[] {
     rect(-wallW / 2, w.z - w.thickness / 2, wallW / 2, w.z + w.thickness / 2),
     ...c.counters.map((x) => box(x, c.counterZ, ...c.counterSize)),
     ...c.planters.map((p) => box(...p, ...c.planterSize)),
+    box(...c.kegStack.center, ...c.kegStack.size),
     box(...c.rack.center, ...c.rack.size),
   ]
 }

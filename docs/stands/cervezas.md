@@ -57,7 +57,8 @@ Coordenadas locales: el frente mira a +z (sur). Los lados cerrados son −z y +x
     `vasoCerveza`).
 - **Torre de tres grifos** (`torreGrifos`) sobre el mostrador central, con mandos del color de
   marca.
-- **Barril de acero de 30 l** (`barrilCerveza`) junto al muro de palés.
+- **Seis barriles de acero de 30 l** (`barrilCerveza`) en dos niveles, sobre una estructura
+  metálica junto al muro de palés.
 - **Dos jardineras:** caja de madera con planta, una en cada esquina del frente.
 - **Expositor** junto al lado abierto:
   - Acero negro con tres baldas de pino.

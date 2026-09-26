@@ -12,6 +12,9 @@ import { Spotlight } from '../props/Spotlight'
 import { StandPlacement } from './StandPlacement'
 
 const C = CERVEZAS
+const KEGS = C.kegStack
+const SUPPORT_SIZE = 0.04
+const supportHeight = KEGS.shelfTop - KEGS.shelfThickness - C.floor
 
 /** Cervecera artesana: módulo de feria vestido con palés, tres grifos y cajas de pino. */
 export function CervezasStand({ stand }: { stand: StandConfig }) {
@@ -127,7 +130,40 @@ export function CervezasStand({ stand }: { stand: StandConfig }) {
         position={[C.counters[1]!, 1.025, C.counterZ - 0.05]}
         brandColor={palette.primary}
       />
-      <Prop model="barrilCerveza" position={[2.3, 0.025, -0.67]} />
+      {/* Cuatro barriles abajo y dos sobre un estante que salva sus cabezales. */}
+      {[-1, 1].flatMap((sx) =>
+        [-1, 1].map((sz) => (
+          <Block
+            key={`soporte-${sx}-${sz}`}
+            size={[SUPPORT_SIZE, supportHeight, SUPPORT_SIZE]}
+            position={[
+              KEGS.center[0] + sx * (KEGS.size[0] / 2 - SUPPORT_SIZE / 2),
+              C.floor + supportHeight / 2,
+              KEGS.center[1] + sz * (KEGS.size[1] / 2 - SUPPORT_SIZE / 2),
+            ]}
+            material="steelBlack"
+          />
+        )),
+      )}
+      <Block
+        size={[KEGS.size[0], KEGS.shelfThickness, KEGS.size[1]]}
+        position={[KEGS.center[0], KEGS.shelfTop - KEGS.shelfThickness / 2, KEGS.center[1]]}
+        material="steelBlack"
+      />
+      {KEGS.lowerOffsets.map(([dx, dz]) => (
+        <Prop
+          key={`barril-bajo-${dx}-${dz}`}
+          model="barrilCerveza"
+          position={[KEGS.center[0] + dx, C.floor, KEGS.center[1] + dz]}
+        />
+      ))}
+      {KEGS.upperOffsets.map(([dx, dz]) => (
+        <Prop
+          key={`barril-alto-${dx}-${dz}`}
+          model="barrilCerveza"
+          position={[KEGS.center[0] + dx, KEGS.shelfTop, KEGS.center[1] + dz]}
+        />
+      ))}
 
       {/* Jardineras de cajas y expositor junto al lateral abierto. */}
       {C.planters.map(([x, z], i) => (
