@@ -1,5 +1,37 @@
 {
   "_generado": "blender/build_products.py",
+  "botella_cava": {
+    "size": [
+      0.0884,
+      0.305,
+      0.0884
+    ],
+    "anchors": {}
+  },
+  "botella_cerveza": {
+    "size": [
+      0.061,
+      0.2338,
+      0.061
+    ],
+    "anchors": {}
+  },
+  "botella_sidra": {
+    "size": [
+      0.0784,
+      0.3055,
+      0.0784
+    ],
+    "anchors": {}
+  },
+  "botella_vino": {
+    "size": [
+      0.0752,
+      0.3,
+      0.0752
+    ],
+    "anchors": {}
+  },
   "cecina": {
     "size": [
       0.2682,
@@ -88,6 +120,22 @@
       0.3403,
       0.0626,
       0.0732
+    ],
+    "anchors": {}
+  },
+  "manzana": {
+    "size": [
+      0.0797,
+      0.0808,
+      0.0795
+    ],
+    "anchors": {}
+  },
+  "muro_musgo": {
+    "size": [
+      3.8209,
+      2.4231,
+      0.1248
     ],
     "anchors": {}
   },

@@ -58,7 +58,9 @@ function buildBooths(neighbors: NeighborPlot[]) {
         })
         continue
       }
-      const seg = sideSegment(plot, side, PANEL_T / 2 + 0.01)
+      // Retraemos también los perfiles: su cara exterior sobresale 1 cm del panel.
+      // En parcelas contiguas ya no ocupan el mismo plano.
+      const seg = sideSegment(plot, side, PANEL_T / 2 + 0.03)
       panels.push({
         size: [seg.length - 0.06, PANEL_H, PANEL_T],
         position: [seg.center[0], PANEL_H / 2, seg.center[1]],

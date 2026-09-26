@@ -6,11 +6,9 @@ export function WalkHint() {
 
   return (
     <div className={`walk${pointerLocked ? ' walk--locked' : ''}`}>
-      {!pointerLocked && (
-        <button id="walk-lock" type="button" className="walk__start">
-          Haz clic para mirar alrededor
-        </button>
-      )}
+      <button id="walk-lock" type="button" className="walk__start" hidden={pointerLocked}>
+        Haz clic para mirar alrededor
+      </button>
       <p className="walk__keys" aria-label="Controles del paseo">
         <kbd>W</kbd>
         <kbd>A</kbd>

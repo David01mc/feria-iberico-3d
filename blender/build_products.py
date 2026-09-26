@@ -34,6 +34,7 @@ from common import (  # noqa: E402
     dimensions,
     displace,
     export,
+    ground,
     inset_material,
     join,
     lathe,
@@ -385,16 +386,6 @@ def cutter_box(name, size, loc, mat, rotation=(0, 0, 0)):
     obj.data.transform(obj.matrix_world)
     obj.matrix_world = Matrix.Identity(4)
     return obj
-
-
-def ground(obj):
-    """Origen en el centro de la base (apoyado en el suelo)."""
-    xs = [v.co.x for v in obj.data.vertices]
-    ys = [v.co.y for v in obj.data.vertices]
-    zs = [v.co.z for v in obj.data.vertices]
-    offset = Vector(((min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2, min(zs)))
-    obj.data.transform(Matrix.Translation(-offset))
-    return offset
 
 
 def disc(name, rx, ry, thickness, face_mat, side_mat, seed, segments=28, wobble=0.06):
@@ -749,6 +740,12 @@ PRODUCTS = {
     "croqueta_abierta": (croqueta_abierta, 512),
     "cucurucho": (cucurucho, 1024),
 }
+
+# Espacio Maridaje: botellas, manzana y muro de musgo (blender/products_bebidas.py).
+from products_bebidas import BEBIDAS, DECORADO  # noqa: E402
+
+PRODUCTS.update(BEBIDAS)
+PRODUCTS.update(DECORADO)
 
 
 def main():

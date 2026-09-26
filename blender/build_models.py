@@ -47,6 +47,12 @@ PREVIEW = {
     "ledAmber": (1.0, 0.45, 0.05, 1),
     "oil": (0.55, 0.36, 0.05, 1),
     "brand": (0.5, 0.1, 0.1, 1),
+    "pine": (0.8, 0.66, 0.45, 1),
+    "leatherBlack": (0.03, 0.028, 0.026, 1),
+    "wine": (0.2, 0.01, 0.02, 1),
+    "cider": (0.6, 0.4, 0.1, 1),
+    "beer": (0.55, 0.28, 0.04, 1),
+    "foam": (0.95, 0.92, 0.85, 1),
 }
 
 
@@ -150,6 +156,11 @@ MODELS = {
     "freidora": freidora,
     "jamonero": jamonero,
 }
+
+# Espacio Maridaje: menaje, mostradores, palé y lounge (blender/models_maridaje.py).
+from models_maridaje import MARIDAJE  # noqa: E402
+
+MODELS.update(MARIDAJE)
 
 
 def main():

@@ -260,6 +260,10 @@ body {
   transition: background 160ms ease, transform 160ms ease;
 }
 
+.walk__start[hidden] {
+  display: none;
+}
+
 .walk__start:hover {
   background: rgba(31, 43, 36, 0.85);
   transform: translateY(-1px);

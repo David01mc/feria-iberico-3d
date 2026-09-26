@@ -83,6 +83,49 @@ export const MODELS = {
     source: 'polyhaven',
   },
   jarra: { label: 'Jarra de cerámica', file: 'ph/jug_01.glb', source: 'polyhaven' },
+
+  // ── Espacio Maridaje (blender/models_maridaje.py) ──
+  copaVino: { label: 'Copa de vino tinto', file: 'custom/copa_vino.glb', source: 'blender' },
+  vasoSidra: { label: 'Vaso de sidra', file: 'custom/vaso_sidra.glb', source: 'blender' },
+  vasoCerveza: { label: 'Caña de cerveza', file: 'custom/vaso_cerveza.glb', source: 'blender' },
+  torreGrifos: {
+    label: 'Torre de tiro de tres grifos',
+    file: 'custom/torre_grifos.glb',
+    source: 'blender',
+  },
+  barrilCerveza: { label: 'Barril de 30 l', file: 'custom/barril_cerveza.glb', source: 'blender' },
+  barraFacetada: {
+    label: 'Barra facetada de sidrería',
+    file: 'custom/barra_facetada.glb',
+    source: 'blender',
+    surfaces: { tapa: { center: [0, 1.1, 0.01], size: [1.9, 0.75] } },
+  },
+  mostradorCajon: {
+    label: 'Mostrador de cajón de pino',
+    file: 'custom/mostrador_cajon.glb',
+    source: 'blender',
+    surfaces: { tapa: { center: [0, 1.0, 0], size: [1.05, 0.55] } },
+  },
+  pale: { label: 'Palé europeo', file: 'custom/pale.glb', source: 'blender' },
+  sofa: { label: 'Sofá de cuero negro', file: 'custom/sofa.glb', source: 'blender' },
+  butaca: { label: 'Butaca de cuero negro', file: 'custom/butaca.glb', source: 'blender' },
+  mesaBaja: {
+    label: 'Mesa baja lacada',
+    file: 'custom/mesa_baja.glb',
+    source: 'blender',
+    surfaces: { tapa: { center: [0, 0.4, 0], size: [0.85, 0.5] } },
+  },
+  urna: {
+    label: 'Urna de metacrilato',
+    file: 'custom/urna_metacrilato.glb',
+    source: 'blender',
+    surfaces: { peana: { center: [0, 0.02, 0], size: [0.24, 0.24] } },
+  },
+  tabureteTapizado: {
+    label: 'Taburete tapizado',
+    file: 'custom/taburete_tapizado.glb',
+    source: 'blender',
+  },
 } as const satisfies Record<string, ModelEntry>
 
 export type ModelKey = keyof typeof MODELS

@@ -9,7 +9,7 @@ import os
 
 import bmesh
 import bpy
-from mathutils import Vector
+from mathutils import Matrix, Vector
 
 # ── Escena ────────────────────────────────────────────────────────────────────
 
@@ -515,7 +515,8 @@ def bake_to_textures(obj, name, size, texture_dir, ao_strength=0.6):
     if scene.world is None:
         scene.world = bpy.data.worlds.new("mundo")
     # Radio de la oclusión proporcional a la pieza: pliegues de una croqueta o de un jamón.
-    scene.world.light_settings.distance = max(obj.dimensions) * 0.12
+    # Las piezas grandes con relieve fino (muro de musgo) fijan el suyo en obj["ao_distance"].
+    scene.world.light_settings.distance = obj.get("ao_distance", max(obj.dimensions) * 0.12)
     bpy.ops.object.select_all(action="DESELECT")
     obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
@@ -591,6 +592,16 @@ def bake_to_textures(obj, name, size, texture_dir, ao_strength=0.6):
     for poly in obj.data.polygons:
         poly.material_index = 0
     return obj
+
+
+def ground(obj):
+    """Origen en el centro de la base (apoyado en el suelo)."""
+    xs = [v.co.x for v in obj.data.vertices]
+    ys = [v.co.y for v in obj.data.vertices]
+    zs = [v.co.z for v in obj.data.vertices]
+    offset = Vector(((min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2, min(zs)))
+    obj.data.transform(Matrix.Translation(-offset))
+    return offset
 
 
 def dimensions(obj):

@@ -12,7 +12,8 @@
     { "id": "interior_tiles", "res": "1k", "use": "Azulejo de mostrador" },
     { "id": "terracotta_floor_tiles", "res": "1k", "use": "Suelo de barro cocido" },
     { "id": "hessian_230", "res": "1k", "use": "Arpillera" },
-    { "id": "rough_linen", "res": "1k", "use": "Mantelería de lino" }
+    { "id": "rough_linen", "res": "1k", "use": "Mantelería de lino" },
+    { "id": "plywood", "res": "1k", "use": "Pino de palé y madera clara (cervezas y sidrería)" }
   ],
   "ambientcg": [{ "id": "Carpet012", "res": "1K", "use": "Moqueta ferial (relieve y rugosidad)" }],
   "fonts": [

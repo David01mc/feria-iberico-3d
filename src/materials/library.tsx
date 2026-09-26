@@ -19,6 +19,8 @@ export const MATERIAL_KEYS = [
   'terracotta',
   'hessian',
   'linen',
+  'pine',
+  'leatherBlack',
   'steelBrushed',
   'steelBlack',
   'chrome',
@@ -32,6 +34,10 @@ export const MATERIAL_KEYS = [
   'ledWarm',
   'ledAmber',
   'oil',
+  'wine',
+  'cider',
+  'beer',
+  'foam',
 ] as const
 
 export type MaterialKey = (typeof MATERIAL_KEYS)[number]
@@ -59,6 +65,7 @@ type TexturedKey =
   | 'terracotta'
   | 'hessian'
   | 'linen'
+  | 'pine'
 
 function physical(
   name: string,
@@ -90,6 +97,17 @@ function buildLibrary(maps: Record<TexturedKey, PbrMaps>): MaterialLibrary {
     terracotta: textured('terracotta', PBR.terracotta),
     hessian: textured('hessian', PBR.hessian),
     linen: textured('linen', PBR.linen, { color: '#e8dfcf' }),
+    // Pino de palé y chapa clara: el contrachapado, algo más cálido y sin barnizar.
+    pine: textured('pine', PBR.plywood, { color: '#f3dcb4' }),
+    // Cuero negro con el brillo suave del uso.
+    leatherBlack: physical('leatherBlack', {
+      color: '#161412',
+      roughness: 0.48,
+      clearcoat: 0.25,
+      clearcoatRoughness: 0.45,
+      sheen: 0.4,
+      sheenColor: '#3a3632',
+    }),
 
     steelBrushed: physical('steelBrushed', { color: '#c8cbce', metalness: 1, roughness: 0.3 }),
     steelBlack: physical('steelBlack', { color: '#1e1f21', metalness: 0.85, roughness: 0.42 }),
@@ -144,6 +162,23 @@ function buildLibrary(maps: Record<TexturedKey, PbrMaps>): MaterialLibrary {
       { color: '#6b4a0c', roughness: 0.05, clearcoat: 1, clearcoatRoughness: 0.02 },
       noShadow,
     ),
+    // Líquidos dentro de copas y vasos: opacos y brillantes (el vidrio encima ya es translúcido).
+    wine: physical(
+      'wine',
+      { color: '#3d0a12', roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02 },
+      noShadow,
+    ),
+    cider: physical(
+      'cider',
+      { color: '#c99a3a', roughness: 0.05, clearcoat: 1, clearcoatRoughness: 0.03 },
+      noShadow,
+    ),
+    beer: physical(
+      'beer',
+      { color: '#b8741c', roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02 },
+      noShadow,
+    ),
+    foam: physical('foam', { color: '#f3ecdc', roughness: 0.85 }, noShadow),
   }
 }
 
@@ -161,6 +196,7 @@ export function MaterialLibraryProvider({ children }: { children: ReactNode }) {
   const terracotta = usePbr(PBR.terracotta)
   const hessian = usePbr(PBR.hessian)
   const linen = usePbr(PBR.linen)
+  const pine = usePbr(PBR.plywood)
 
   const library = useMemo(
     () =>
@@ -175,8 +211,9 @@ export function MaterialLibraryProvider({ children }: { children: ReactNode }) {
         terracotta,
         hessian,
         linen,
+        pine,
       }),
-    [oak, darkWood, roughWood, deck, plaster, brick, tiles, terracotta, hessian, linen],
+    [oak, darkWood, roughWood, deck, plaster, brick, tiles, terracotta, hessian, linen, pine],
   )
 
   useEffect(() => () => Object.values(library).forEach((material) => material.dispose()), [library])

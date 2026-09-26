@@ -70,25 +70,34 @@ export function CroquetasStand({ stand }: { stand: StandConfig }) {
 
   return (
     <StandPlacement stand={stand}>
-      <Platform width={width} depth={depth} height={C.floor} surface="tiles" />
+      <Platform
+        width={width - 2 * C.floorInset}
+        depth={depth - 2 * C.floorInset}
+        height={C.floor}
+        surface="tiles"
+      />
 
       {/* Caja del kiosco: paredes mostaza, techo y frontis negros. */}
       <Block
-        size={[width, C.wallHeight, t]}
-        position={[0, C.wallHeight / 2, -depth / 2 + t / 2]}
+        size={[width - 2 * C.wallInset - 2 * t, C.wallHeight, t]}
+        position={[0, C.wallHeight / 2, -depth / 2 + C.wallInset + t / 2]}
         material={mustard}
       />
       {[-1, 1].map((s) => (
         <Block
           key={`p${s}`}
-          size={[t, C.wallHeight, depth]}
-          position={[s * (width / 2 - t / 2), C.wallHeight / 2, 0]}
+          size={[t, C.wallHeight, depth - 2 * C.wallInset]}
+          position={[s * (width / 2 - C.wallInset - t / 2), C.wallHeight / 2, 0]}
           material={mustard}
         />
       ))}
-      <Block size={[width, 0.08, depth]} position={[0, ROOF_Y + 0.04, 0]} material="lacquerBlack" />
       <Block
-        size={[width, C.header.height, C.header.depth]}
+        size={[width - 2 * C.wallInset, 0.08, depth - 2 * C.wallInset]}
+        position={[0, ROOF_Y + 0.04, 0]}
+        material="lacquerBlack"
+      />
+      <Block
+        size={[width - 2 * C.wallInset, C.header.height, C.header.depth]}
         position={[0, header.y, header.z]}
         material="lacquerBlack"
         radius={0.01}
@@ -193,7 +202,7 @@ export function CroquetasStand({ stand }: { stand: StandConfig }) {
         depth={0.04}
         color="#23201c"
         intensity={0.25}
-        position={[0.45, 1.98, -depth / 2 + t + 0.02]}
+        position={[0.45, 1.98, -depth / 2 + C.wallInset + t + 0.02]}
       >
         <Text
           font={fontUrl(company.font)}

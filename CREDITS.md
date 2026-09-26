@@ -17,6 +17,7 @@ Generado por `npm run assets`. Todos los assets son CC0 (dominio público) o SIL
 | Textura | [terracotta_floor_tiles](https://polyhaven.com/a/terracotta_floor_tiles) | Poly Haven | CC0 | Suelo de barro cocido |
 | Textura | [hessian_230](https://polyhaven.com/a/hessian_230) | Poly Haven | CC0 | Arpillera |
 | Textura | [rough_linen](https://polyhaven.com/a/rough_linen) | Poly Haven | CC0 | Mantelería de lino |
+| Textura | [plywood](https://polyhaven.com/a/plywood) | Poly Haven | CC0 | Pino de palé y madera clara (cervezas y sidrería) |
 | Textura | [Carpet012](https://ambientcg.com/view?id=Carpet012) | ambientCG | CC0 | Moqueta ferial (relieve y rugosidad) |
 | Fuente | [inter 400](https://fontsource.org/fonts/inter) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
 | Fuente | [inter 600](https://fontsource.org/fonts/inter) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
@@ -27,6 +28,10 @@ Generado por `npm run assets`. Todos los assets son CC0 (dominio público) o SIL
 | Fuente | [cormorant-garamond 600](https://fontsource.org/fonts/cormorant-garamond) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
 | Fuente | [alfa-slab-one 400](https://fontsource.org/fonts/alfa-slab-one) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
 | Fuente | [pacifico 400](https://fontsource.org/fonts/pacifico) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
+| Fuente | [cinzel 600](https://fontsource.org/fonts/cinzel) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
+| Fuente | [pinyon-script 400](https://fontsource.org/fonts/pinyon-script) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
+| Fuente | [bebas-neue 400](https://fontsource.org/fonts/bebas-neue) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
+| Fuente | [josefin-sans 700](https://fontsource.org/fonts/josefin-sans) | Fontsource / Google Fonts | SIL OFL 1.1 |  |
 | Modelo 3D | [bar_chair_round_01](https://polyhaven.com/a/bar_chair_round_01) | Poly Haven | CC0 | Taburete alto de barra (degustación) |
 | Modelo 3D | [metal_stool_02](https://polyhaven.com/a/metal_stool_02) | Poly Haven | CC0 | Taburete industrial (croquetería) |
 | Modelo 3D | [standing_chalkboard_01](https://polyhaven.com/a/standing_chalkboard_01) | Poly Haven | CC0 | Pizarra de caballete |

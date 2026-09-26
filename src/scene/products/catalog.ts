@@ -82,6 +82,35 @@ export const PRODUCTS = {
     finish: { clearcoat: 0.2, clearcoatRoughness: 0.4 },
   },
   cucurucho: { label: 'Cucurucho de croquetas', file: 'cucurucho' },
+
+  // ── Espacio Maridaje (blender/products_bebidas.py): vidrio horneado opaco con barniz ──
+  botellaVino: {
+    label: 'Tinto de la Ribera del Guadiana',
+    file: 'botella_vino',
+    finish: { clearcoat: 1, clearcoatRoughness: 0.04 },
+  },
+  botellaCava: {
+    label: 'Cava brut nature',
+    file: 'botella_cava',
+    finish: { clearcoat: 1, clearcoatRoughness: 0.04 },
+  },
+  botellaCerveza: {
+    label: 'Tercio de cerveza de bellota',
+    file: 'botella_cerveza',
+    finish: { clearcoat: 1, clearcoatRoughness: 0.05 },
+  },
+  botellaSidra: {
+    label: 'Sidra natural',
+    file: 'botella_sidra',
+    finish: { clearcoat: 0.9, clearcoatRoughness: 0.06 },
+  },
+  manzana: {
+    label: 'Manzana de sidra',
+    file: 'manzana',
+    finish: { clearcoat: 0.35, clearcoatRoughness: 0.3 },
+  },
+  /** Decorado horneado como un producto (una malla, un material): triángulo de 3,8 × 2,4 m. */
+  muroMusgo: { label: 'Muro de musgo preservado', file: 'muro_musgo' },
 } as const satisfies Record<string, ProductEntry>
 
 export type ProductKey = keyof typeof PRODUCTS

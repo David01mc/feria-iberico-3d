@@ -70,19 +70,24 @@ export function QuesosStand({ stand }: { stand: StandConfig }) {
 
   return (
     <StandPlacement stand={stand}>
-      <Platform width={width} depth={depth} height={Q.floor} surface="terracotta" />
+      <Platform
+        width={width - 2 * Q.floorInset}
+        depth={depth - 2 * Q.floorInset}
+        height={Q.floor}
+        surface="terracotta"
+      />
 
       {/* Paredes encaladas, pilares y dintel de madera. */}
       <Block
-        size={[width, Q.wallHeight, t]}
-        position={[0, Q.wallHeight / 2, -depth / 2 + t / 2]}
+        size={[width - 2 * Q.wallInset - 2 * t, Q.wallHeight, t]}
+        position={[0, Q.wallHeight / 2, -depth / 2 + Q.wallInset + t / 2]}
         material="plaster"
       />
       {[-1, 1].map((s) => (
         <Block
           key={`m${s}`}
-          size={[t, Q.wallHeight, depth]}
-          position={[s * (width / 2 - t / 2), Q.wallHeight / 2, 0]}
+          size={[t, Q.wallHeight, depth - 2 * Q.wallInset]}
+          position={[s * (width / 2 - Q.wallInset - t / 2), Q.wallHeight / 2, 0]}
           material="plaster"
         />
       ))}
@@ -95,7 +100,7 @@ export function QuesosStand({ stand }: { stand: StandConfig }) {
         />
       ))}
       <Block
-        size={[width, Q.lintel.height, Q.lintel.depth]}
+        size={[width - 2 * Q.wallInset, Q.lintel.height, Q.lintel.depth]}
         position={[0, Q.pillarHeight + Q.lintel.height / 2, Q.lintel.z]}
         material="roughWood"
       >
@@ -118,7 +123,7 @@ export function QuesosStand({ stand }: { stand: StandConfig }) {
       />
 
       {/* Rótulo pintado en la pared del fondo. */}
-      <group position={[0, 0, -depth / 2 + t + 0.003]}>
+      <group position={[0, 0, -depth / 2 + Q.wallInset + t + 0.003]}>
         <Text
           font={brandFont}
           fontSize={0.36}

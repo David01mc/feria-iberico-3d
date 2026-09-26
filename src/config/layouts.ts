@@ -65,6 +65,8 @@ function jamonColliders(): Rect[] {
 
 export const QUESOS = {
   floor: 0.06,
+  floorInset: 0.035,
+  wallInset: 0.06,
   wallHeight: 3.0,
   wallThickness: 0.14,
   pillars: [
@@ -76,8 +78,8 @@ export const QUESOS = {
   lintel: { z: 1.32, height: 0.3, depth: 0.28 },
   lampBeam: { z: 0.1, y: 2.95 },
   shelves: [
-    [-1.3, -1.12],
-    [1.3, -1.12],
+    [-1.3, -1.07],
+    [1.3, -1.07],
   ] as readonly XZ[],
   shelfSize: [1.7, 0.42] as XZ,
   shelfHeight: 2.2,
@@ -91,10 +93,11 @@ export const QUESOS = {
 function quesosColliders(): Rect[] {
   const q = QUESOS
   const t = q.wallThickness
+  const i = q.wallInset
   return [
-    rect(-3, -1.5, 3, -1.5 + t),
-    rect(-3, -1.5, -3 + t, 1.5),
-    rect(3 - t, -1.5, 3, 1.5),
+    rect(-3 + i + t, -1.5 + i, 3 - i - t, -1.5 + i + t),
+    rect(-3 + i, -1.5 + i, -3 + i + t, 1.5 - i),
+    rect(3 - i - t, -1.5 + i, 3 - i, 1.5 - i),
     ...q.pillars.map(([x, z]) => box(x, z, q.pillarSize, q.pillarSize)),
     ...q.shelves.map(([x, z]) => box(x, z, ...q.shelfSize)),
     box(...q.vitrina, ...q.vitrinaSize),
@@ -108,6 +111,8 @@ function quesosColliders(): Rect[] {
 
 export const EMBUTIDOS = {
   floor: 0.08,
+  floorInset: 0.035,
+  wallInset: 0.06,
   wallHeight: 3.0,
   wallThickness: 0.2,
   post: [-2.12, 1.87] as XZ,
@@ -115,7 +120,7 @@ export const EMBUTIDOS = {
   beamTop: 3.0,
   /** Varales de los que cuelgan los embutidos (a lo largo de x), a la altura de la vista. */
   rails: { z: [-1.25, -0.55, 0.15, 0.85], y: 2.5, from: -2.12, to: 2.05 },
-  frontCounter: { center: [0.55, 1.5] as XZ, size: [2.9, 0.65] as XZ, height: 1.0 },
+  frontCounter: { center: [0.55, 1.5] as XZ, size: [2.8, 0.65] as XZ, height: 1.0 },
   sideCounter: { center: [-1.75, 0.15] as XZ, size: [0.65, 2.0] as XZ, height: 1.0 },
   shelf: { center: [0.9, -1.58] as XZ, size: [2.2, 0.42] as XZ, height: 1.8 },
   barrel: [1.72, -0.5] as XZ,
@@ -125,9 +130,10 @@ export const EMBUTIDOS = {
 function embutidosColliders(): Rect[] {
   const e = EMBUTIDOS
   const t = e.wallThickness
+  const i = e.wallInset
   return [
-    rect(-2.25, -2, 2.25, -2 + t),
-    rect(2.25 - t, -2, 2.25, 2),
+    rect(-2.25 + i, -2 + i, 2.25 - i - t, -2 + i + t),
+    rect(2.25 - i - t, -2 + i, 2.25 - i, 2 - i),
     box(...e.post, e.postSize, e.postSize),
     box(...e.frontCounter.center, ...e.frontCounter.size),
     box(...e.sideCounter.center, ...e.sideCounter.size),
@@ -140,11 +146,13 @@ function embutidosColliders(): Rect[] {
 
 export const CROQUETAS = {
   floor: 0.06,
+  floorInset: 0.035,
+  wallInset: 0.06,
   wallHeight: 2.7,
   wallThickness: 0.1,
   header: { z: 1.35, height: 0.6, depth: 0.3 },
-  frontCounter: { center: [0, 0.95] as XZ, size: [2.8, 0.7] as XZ, height: 1.05 },
-  backCounter: { center: [0, -1.1] as XZ, size: [2.8, 0.6] as XZ, height: 0.95 },
+  frontCounter: { center: [0, 0.95] as XZ, size: [2.6, 0.7] as XZ, height: 1.05 },
+  backCounter: { center: [0, -1.02] as XZ, size: [2.6, 0.6] as XZ, height: 0.95 },
   lamps: [
     [-0.7, 0.55],
     [0.7, 0.55],
@@ -154,10 +162,11 @@ export const CROQUETAS = {
 function croquetasColliders(): Rect[] {
   const c = CROQUETAS
   const t = c.wallThickness
+  const i = c.wallInset
   return [
-    rect(-1.5, -1.5, 1.5, -1.5 + t),
-    rect(-1.5, -1.5, -1.5 + t, 1.5),
-    rect(1.5 - t, -1.5, 1.5, 1.5),
+    rect(-1.5 + i + t, -1.5 + i, 1.5 - i - t, -1.5 + i + t),
+    rect(-1.5 + i, -1.5 + i, -1.5 + i + t, 1.5 - i),
+    rect(1.5 - i - t, -1.5 + i, 1.5 - i, 1.5 - i),
     box(...c.frontCounter.center, ...c.frontCounter.size),
     box(...c.backCounter.center, ...c.backCounter.size),
   ]
@@ -168,11 +177,13 @@ function croquetasColliders(): Rect[] {
 export const VINOS = {
   /** Tarima de madera envejecida elevada. */
   floor: 0.15,
+  /** El perfil de la tarima queda dentro de las caras exteriores de los muros. */
+  floorInset: 0.04,
   /** Muro caligráfico al fondo (−z) con tres cajas de luz mirando al frente. */
   wall: { x: [-0.8, 3] as XZ, z: -3, depth: 0.5, height: 3.4 },
   windows: { x: [-0.05, 1.1, 2.25], width: 0.95, bottom: 1.0, height: 1.3 },
-  /** Bandeja blanca volada sobre el muro y el mostrador (sin salirse de la parcela). */
-  canopy: { x: [-0.8, 3] as XZ, z: [-3, 1.6] as XZ, bottom: 3.0, height: 0.7 },
+  /** Bandeja blanca separada de las caras exteriores del muro para evitar z-fighting. */
+  canopy: { x: [-0.76, 2.96] as XZ, z: [-2.45, 1.6] as XZ, bottom: 3.42, height: 0.53 },
   /** Caja negra del lounge contra el lado cerrado (−x), con techo de downlights. */
   lounge: { x: [-3, -0.8] as XZ, z: [-3, 1.4] as XZ, ceiling: 3.0, height: 3.6, wall: 0.2 },
   sofa: { center: [-2.35, -1.1] as XZ, size: [0.8, 2.0] as XZ },
@@ -204,9 +215,15 @@ function vinosColliders(): Rect[] {
 // ── Cervezas Montanera · esquina 6 × 3 (abre a +z y a −x) ───────────────────
 
 export const CERVEZAS = {
+  floor: 0.025,
+  floorInset: 0.035,
+  sideInset: 0.06,
   /** Módulo de feria: perfilería de aluminio y panel blanco en los lados cerrados (−z, +x). */
   panelHeight: 2.5,
   panelThickness: 0.04,
+  /** El fondo y su perfilería se retranquean del tabique compartido con sidras. */
+  panelInset: 0.06,
+  rearFrameZ: -1.41,
   /** Muro de 3 × 3 palés europeos de pie (1,2 × 0,8) delante del panel del fondo. */
   palletWall: { z: -1.36, cols: 3, rows: 3, pallet: [1.2, 0.8] as XZ, thickness: 0.14 },
   /** Mostradores de cajón de pino con panel granate, en línea con el frente. */
@@ -229,8 +246,18 @@ function cervezasColliders(): Rect[] {
   const w = c.palletWall
   const wallW = w.cols * w.pallet[0]
   return [
-    rect(-3, -1.5, 3, -1.5 + c.panelThickness),
-    rect(3 - c.panelThickness, -1.5, 3, 1.5),
+    rect(
+      -3 + c.sideInset,
+      -1.5 + c.panelInset,
+      3 - c.sideInset,
+      -1.5 + c.panelInset + c.panelThickness,
+    ),
+    rect(
+      3 - c.sideInset - c.panelThickness,
+      -1.5 + c.sideInset,
+      3 - c.sideInset,
+      1.5 - c.sideInset,
+    ),
     rect(-wallW / 2, w.z - w.thickness / 2, wallW / 2, w.z + w.thickness / 2),
     ...c.counters.map((x) => box(x, c.counterZ, ...c.counterSize)),
     ...c.planters.map((p) => box(...p, ...c.planterSize)),
@@ -242,37 +269,44 @@ function cervezasColliders(): Rect[] {
 
 export const SIDRAS = {
   floor: 0.03,
+  floorInset: 0.035,
+  wallInset: 0.06,
   wallHeight: 3.0,
   wallThickness: 0.12,
   /** Visera de madera sobre la mitad trasera del stand. */
-  ceiling: { z: [-1.5, 0.35] as XZ, y: 2.9, thickness: 0.12 },
-  /** Triángulo de musgo en la pared del fondo: de la esquina inferior derecha a la superior izquierda. */
-  moss: { x: [-0.9, 2.9] as XZ, y: [0.35, 2.75] as XZ, depth: 0.08 },
-  /** Balda corrida bajo el musgo, con dos taburetes. */
-  ledge: { x: [0.7, 2.8] as XZ, depth: 0.32, height: 1.05 },
+  ceiling: { z: [-1.46, 0.35] as XZ, y: 2.9, thickness: 0.12 },
+  /** Jardín vertical enmarcado en la mitad derecha del fondo. */
+  moss: { x: [0.15, 2.85] as XZ, y: [0.67, 2.62] as XZ, depth: 0.08 },
+  /** Barra de cata adelantada respecto al follaje, con espacio para dos taburetes. */
+  ledge: { x: [0.35, 2.85] as XZ, z: -0.72, depth: 0.6, height: 1.05 },
   stools: [
-    [2.25, -0.95],
-    [1.35, -0.95],
+    [2.25, 0.08],
+    [1.35, 0.08],
   ] as readonly XZ[],
   stoolSize: 0.42,
-  /** Barra facetada de madera con tapa negra. */
+  /** Barra de cata con frente de tablas oscuras. */
   bar: { center: [-1.05, 0.3] as XZ, size: [1.9, 0.75] as XZ, height: 1.1 },
-  rug: { center: [1.35, 0.55] as XZ, radius: 0.8 },
-  /** Fotomural del chigre en el lado cerrado (−x) y estantería cúbica bajo él. */
-  mural: { z: [-1.3, 0.95] as XZ, y: [1.0, 2.75] as XZ },
-  shelf: { center: [-2.66, -0.2] as XZ, size: [0.44, 1.8] as XZ, height: 0.95 },
+  /** Dos toneles a la vista detrás de la barra. */
+  barrels: [
+    [-2.25, -0.92],
+    [-1.13, -0.92],
+  ] as readonly XZ[],
+  barrelSize: 0.96,
+  plant: [2.65, 0.95] as XZ,
 }
 
 function sidrasColliders(): Rect[] {
   const s = SIDRAS
   const t = s.wallThickness
+  const i = s.wallInset
   return [
-    rect(-3, -1.5, 3, -1.5 + t),
-    rect(-3, -1.5, -3 + t, 1.5),
-    rect(s.ledge.x[0], -1.5 + t, s.ledge.x[1], -1.5 + t + s.ledge.depth),
+    rect(-3 + i + t, -1.5 + i, 3 - i, -1.5 + i + t),
+    rect(-3 + i, -1.5 + i, -3 + i + t, 1.5 - i),
+    box((s.ledge.x[0] + s.ledge.x[1]) / 2, s.ledge.z, s.ledge.x[1] - s.ledge.x[0], s.ledge.depth),
     ...s.stools.map((p) => box(...p, s.stoolSize, s.stoolSize)),
     box(...s.bar.center, ...s.bar.size),
-    box(...s.shelf.center, ...s.shelf.size),
+    ...s.barrels.map((p) => box(...p, s.barrelSize, s.barrelSize)),
+    box(...s.plant, 0.55, 0.55),
   ]
 }
 

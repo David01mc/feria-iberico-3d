@@ -119,17 +119,22 @@ export function EmbutidosStand({ stand }: { stand: StandConfig }) {
 
   return (
     <StandPlacement stand={stand}>
-      <Platform width={width} depth={depth} height={E.floor} surface="darkWood" />
+      <Platform
+        width={width - 2 * E.floorInset}
+        depth={depth - 2 * E.floorInset}
+        height={E.floor}
+        surface="darkWood"
+      />
 
       {/* Muros de ladrillo, poste de esquina y vigas. */}
       <Block
-        size={[width, E.wallHeight, t]}
-        position={[0, E.wallHeight / 2, -depth / 2 + t / 2]}
+        size={[width - 2 * E.wallInset - t, E.wallHeight, t]}
+        position={[-t / 2, E.wallHeight / 2, -depth / 2 + E.wallInset + t / 2]}
         material="brick"
       />
       <Block
-        size={[t, E.wallHeight, depth]}
-        position={[width / 2 - t / 2, E.wallHeight / 2, 0]}
+        size={[t, E.wallHeight, depth - 2 * E.wallInset]}
+        position={[width / 2 - E.wallInset - t / 2, E.wallHeight / 2, 0]}
         material="brick"
       />
       <Block

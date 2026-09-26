@@ -36,6 +36,7 @@ export const PBR = {
   hessian: { id: 'hessian_230', tile: 0.6, kind: 'arm' },
   // El albedo original es un lino azul: se tiñe de crudo en la librería.
   linen: { id: 'rough_linen', tile: 0.8, kind: 'arm', albedo: false },
+  plywood: { id: 'plywood', tile: 1.2, kind: 'arm' },
 } as const satisfies Record<string, PbrSet>
 
 export interface PbrMaps {
