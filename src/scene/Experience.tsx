@@ -26,6 +26,7 @@ export function Experience() {
   const quality = useAppStore((s) => s.quality)
   const degradeQuality = useAppStore((s) => s.degradeQuality)
   const cameraMode = useAppStore((s) => s.cameraMode)
+  const sceneReady = useAppStore((s) => s.sceneReady)
   const preset = QUALITY[quality]
   const colliders = useMemo(() => buildColliders(FAIR), [])
   const home = isShowroom ? SHOWROOM_VIEW : HOME_VIEW
@@ -62,7 +63,8 @@ export function Experience() {
         <CameraRig home={home} />
       )}
       <PostFX preset={preset} />
-      <PerformanceMonitor onDecline={degradeQuality} flipflops={3} />
+      {/* Solo tras la carga: la compilación de shaders hunde los fps un momento y no es real. */}
+      {sceneReady && <PerformanceMonitor onDecline={degradeQuality} flipflops={3} />}
     </Canvas>
   )
 }

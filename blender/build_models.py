@@ -12,13 +12,24 @@ Convenciones:
 - Las superficies donde se colocan productos se documentan en src/scene/props/catalog.ts.
 """
 
-import math
 import os
 import sys
 
-import bmesh
-import bpy
-from mathutils import Matrix, Vector
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import common  # noqa: E402
+from common import (  # noqa: E402
+    arc,
+    bevel,
+    box,
+    curved_sheet,
+    export,
+    extrude_profile,
+    flat_material,
+    reset,
+    rod,
+    wire_basket,
+)
 
 # Color base aproximado (solo para visores externos; el visor usa su librería PBR).
 # Deben ser todos distintos: gltf-transform fusiona materiales idénticos y se perdería el nombre.
@@ -39,150 +50,7 @@ PREVIEW = {
 }
 
 
-# ── Utilidades ────────────────────────────────────────────────────────────────
-
-
-def reset():
-    bpy.ops.wm.read_factory_settings(use_empty=True)
-
-
-def material(name):
-    mat = bpy.data.materials.get(name)
-    if mat is None:
-        mat = bpy.data.materials.new(name)
-        color = PREVIEW.get(name, (0.8, 0.8, 0.8, 1))
-        mat.diffuse_color = color
-        # Blender ≥ 5 crea el árbol de nodos siempre; `use_nodes` solo hace falta en versiones antiguas.
-        if getattr(mat, "node_tree", None) is None:
-            mat.use_nodes = True
-        tree = getattr(mat, "node_tree", None)
-        bsdf = tree.nodes.get("Principled BSDF") if tree else None
-        if bsdf:
-            bsdf.inputs["Base Color"].default_value = color
-    return mat
-
-
-def link(name, bm, mat):
-    mesh = bpy.data.meshes.new(name)
-    bm.to_mesh(mesh)
-    bm.free()
-    obj = bpy.data.objects.new(name, mesh)
-    bpy.context.scene.collection.objects.link(obj)
-    obj.data.materials.append(material(mat))
-    return obj
-
-
-def smooth(obj, angle=40):
-    """Sombreado suave con aristas vivas por encima de `angle` grados."""
-    mesh = obj.data
-    if hasattr(mesh, "shade_smooth"):
-        mesh.shade_smooth()
-    else:
-        for poly in mesh.polygons:
-            poly.use_smooth = True
-    if hasattr(mesh, "set_sharp_from_angle"):
-        mesh.set_sharp_from_angle(angle=math.radians(angle))
-    return obj
-
-
-def bevel(obj, width, segments=3):
-    """Chaflán redondeado: los cantos vivos atrapan la luz y quitan el aspecto de caja."""
-    mod = obj.modifiers.new("Bevel", "BEVEL")
-    mod.width = width
-    mod.segments = segments
-    mod.limit_method = "ANGLE"
-    mod.angle_limit = math.radians(30)
-    mod.harden_normals = True
-    smooth(obj, angle=180)
-    return obj
-
-
-def box(name, size, loc, mat, bevel_width=0.0):
-    bm = bmesh.new()
-    bmesh.ops.create_cube(bm, size=1.0)
-    bmesh.ops.scale(bm, vec=Vector(size), verts=bm.verts)
-    bmesh.ops.translate(bm, vec=Vector(loc), verts=bm.verts)
-    obj = link(name, bm, mat)
-    return bevel(obj, bevel_width) if bevel_width else obj
-
-
-def rod(name, a, b, radius, mat, segments=20):
-    """Cilindro entre dos puntos."""
-    a, b = Vector(a), Vector(b)
-    axis = b - a
-    bm = bmesh.new()
-    bmesh.ops.create_cone(
-        bm, cap_ends=True, cap_tris=False, segments=segments,
-        radius1=radius, radius2=radius, depth=axis.length,
-    )
-    rotation = Vector((0, 0, 1)).rotation_difference(axis.normalized()).to_matrix()
-    bmesh.ops.rotate(bm, cent=(0, 0, 0), matrix=rotation, verts=bm.verts)
-    bmesh.ops.translate(bm, vec=(a + b) / 2, verts=bm.verts)
-    return smooth(link(name, bm, mat))
-
-
-def extrude_profile(name, points_yz, x0, x1, mat):
-    """Prisma a partir de un perfil (convexo) en el plano YZ, extruido entre x0 y x1."""
-    bm = bmesh.new()
-    left = [bm.verts.new((x0, y, z)) for y, z in points_yz]
-    right = [bm.verts.new((x1, y, z)) for y, z in points_yz]
-    bm.faces.new(list(reversed(left)))
-    bm.faces.new(right)
-    n = len(points_yz)
-    for i in range(n):
-        j = (i + 1) % n
-        bm.faces.new((left[i], left[j], right[j], right[i]))
-    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
-    return link(name, bm, mat)
-
-
-def curved_sheet(name, points_yz, x0, x1, thickness, mat):
-    """Lámina curva (p. ej. cristal de vitrina) siguiendo un perfil abierto en YZ."""
-    bm = bmesh.new()
-    left = [bm.verts.new((x0, y, z)) for y, z in points_yz]
-    right = [bm.verts.new((x1, y, z)) for y, z in points_yz]
-    for i in range(len(points_yz) - 1):
-        bm.faces.new((left[i], left[i + 1], right[i + 1], right[i]))
-    obj = link(name, bm, mat)
-    mod = obj.modifiers.new("Solidify", "SOLIDIFY")
-    mod.thickness = thickness
-    mod.offset = 0
-    return smooth(obj, angle=60)
-
-
-def wire_basket(name, size, loc, wire, mat, cuts=7):
-    """Cesta de rejilla abierta por arriba (modificador Wireframe sobre una caja subdividida)."""
-    bm = bmesh.new()
-    bmesh.ops.create_cube(bm, size=1.0)
-    bmesh.ops.scale(bm, vec=Vector(size), verts=bm.verts)
-    top = [f for f in bm.faces if f.normal.z > 0.9]
-    bmesh.ops.delete(bm, geom=top, context="FACES_ONLY")
-    bmesh.ops.subdivide_edges(bm, edges=bm.edges[:], cuts=cuts, use_grid_fill=True)
-    bmesh.ops.translate(bm, vec=Vector(loc), verts=bm.verts)
-    obj = link(name, bm, mat)
-    mod = obj.modifiers.new("Wireframe", "WIREFRAME")
-    mod.thickness = wire
-    mod.use_even_offset = True
-    return obj
-
-
-def arc(center_yz, radius_y, radius_z, start_deg, end_deg, steps=24):
-    cy, cz = center_yz
-    pts = []
-    for i in range(steps + 1):
-        t = math.radians(start_deg + (end_deg - start_deg) * i / steps)
-        pts.append((cy - radius_y * math.cos(t), cz + radius_z * math.sin(t)))
-    return pts
-
-
-def export(path):
-    bpy.ops.export_scene.gltf(
-        filepath=path,
-        export_format="GLB",
-        export_apply=True,
-        export_yup=True,
-        use_selection=False,
-    )
+common.MATERIAL_RESOLVER = lambda name: flat_material(name, PREVIEW.get(name, (0.8, 0.8, 0.8, 1)))
 
 
 # ── Modelos ───────────────────────────────────────────────────────────────────

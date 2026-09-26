@@ -49,19 +49,39 @@ export const MODELS = {
     anchors: { cuna: [-0.14, 0.17, 0], mordaza: [0.21, 0.3, 0] },
   },
 
-  tabureteBarra: { label: 'Taburete de barra', file: 'ph/bar_chair_round_01.glb', source: 'polyhaven' },
-  tabureteMetal: { label: 'Taburete industrial', file: 'ph/metal_stool_02.glb', source: 'polyhaven' },
-  pizarra: { label: 'Pizarra de caballete', file: 'ph/standing_chalkboard_01.glb', source: 'polyhaven' },
+  tabureteBarra: {
+    label: 'Taburete de barra',
+    file: 'ph/bar_chair_round_01.glb',
+    source: 'polyhaven',
+  },
+  tabureteMetal: {
+    label: 'Taburete industrial',
+    file: 'ph/metal_stool_02.glb',
+    source: 'polyhaven',
+  },
+  pizarra: {
+    label: 'Pizarra de caballete',
+    file: 'ph/standing_chalkboard_01.glb',
+    source: 'polyhaven',
+  },
   cesta: { label: 'Cesta de mimbre', file: 'ph/wicker_basket_01.glb', source: 'polyhaven' },
   botellasVino: { label: 'Botellas de vino', file: 'ph/wine_bottles_01.glb', source: 'polyhaven' },
   barrica: { label: 'Barrica de roble', file: 'ph/wine_barrel_01.glb', source: 'polyhaven' },
   cajaQueso: { label: 'Caja de queso', file: 'ph/CheeseBox_01.glb', source: 'polyhaven' },
   cajaMadera: { label: 'Caja de madera', file: 'ph/wooden_crate_01.glb', source: 'polyhaven' },
-  tablaServir: { label: 'Tabla de servir', file: 'ph/carved_wooden_plate.glb', source: 'polyhaven' },
+  tablaServir: {
+    label: 'Tabla de servir',
+    file: 'ph/carved_wooden_plate.glb',
+    source: 'polyhaven',
+  },
   cuenco: { label: 'Cuenco de madera', file: 'ph/wooden_bowl_01.glb', source: 'polyhaven' },
   planta: { label: 'Planta en maceta', file: 'ph/potted_plant_02.glb', source: 'polyhaven' },
   plantaAlta: { label: 'Planta alta', file: 'ph/potted_plant_04.glb', source: 'polyhaven' },
-  lamparaColgante: { label: 'Lámpara colgante', file: 'ph/modern_ceiling_lamp_01.glb', source: 'polyhaven' },
+  lamparaColgante: {
+    label: 'Lámpara colgante',
+    file: 'ph/modern_ceiling_lamp_01.glb',
+    source: 'polyhaven',
+  },
   jarra: { label: 'Jarra de cerámica', file: 'ph/jug_01.glb', source: 'polyhaven' },
 } as const satisfies Record<string, ModelEntry>
 

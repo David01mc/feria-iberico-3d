@@ -22,7 +22,13 @@ const BINDINGS: Record<string, keyof WalkKeys> = {
   ShiftRight: 'run',
 }
 
-const released = (): WalkKeys => ({ forward: false, back: false, left: false, right: false, run: false })
+const released = (): WalkKeys => ({
+  forward: false,
+  back: false,
+  left: false,
+  right: false,
+  run: false,
+})
 
 const isTyping = (target: EventTarget | null) =>
   target instanceof HTMLElement &&

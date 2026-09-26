@@ -64,7 +64,12 @@ export function Spotlight({
         <cylinderGeometry args={[0.009, 0.009, 0.14, 8]} />
       </mesh>
       <group position={position} quaternion={quaternion}>
-        <mesh rotation-x={Math.PI / 2} position={[0, 0, -0.03]} material={library.steelBlack} castShadow>
+        <mesh
+          rotation-x={Math.PI / 2}
+          position={[0, 0, -0.03]}
+          material={library.steelBlack}
+          castShadow
+        >
           <cylinderGeometry args={[0.052, 0.058, 0.17, 24]} />
         </mesh>
         <mesh rotation-x={Math.PI / 2} position={[0, 0, -0.125]} material={library.steelBlack}>

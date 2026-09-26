@@ -12,11 +12,12 @@ import { Platform } from '../props/Platform'
 import { Prop } from '../props/Prop'
 import { Shelving } from '../props/Shelving'
 import { Spotlight } from '../props/Spotlight'
+import { ProductShowcase } from './ProductShowcase'
 
 /** Vista inicial del muestrario. */
 export const SHOWROOM_VIEW: { position: Vec3; target: Vec3 } = {
-  position: [0, 7.5, 17],
-  target: [0, 0.6, 1.5],
+  position: [0, 6.5, 20.5],
+  target: [0, 0.8, 5],
 }
 
 /** Rótulo en el suelo delante de cada pieza. */
@@ -59,7 +60,11 @@ function Row({ title, z, children }: { title: string; z: number; children: React
 }
 
 /** Mobiliario de catálogo en hilera. Los de Blender llevan un mostrador debajo si van en sobremesa. */
-const COUNTERTOP: Partial<Record<ModelKey, boolean>> = { vitrinaCaliente: true, freidora: true, jamonero: true }
+const COUNTERTOP: Partial<Record<ModelKey, boolean>> = {
+  vitrinaCaliente: true,
+  freidora: true,
+  jamonero: true,
+}
 
 function MaterialSwatches() {
   const library = useMaterials()
@@ -127,7 +132,13 @@ export function Showroom() {
         <BoxTruss from={[6.2, 0.15, 0]} to={[8.2, 0.15, 0]} />
         <Label position={[7.2, 0.003, 0.6]}>Truss 29 cm</Label>
         <LightBox width={1.6} height={0.9} position={[9.8, 1.3, 0]}>
-          <Text font={FONT.display} fontSize={0.22} color="#5a1a1f" anchorX="center" anchorY="middle">
+          <Text
+            font={FONT.display}
+            fontSize={0.22}
+            color="#5a1a1f"
+            anchorX="center"
+            anchorY="middle"
+          >
             Caja de luz
           </Text>
         </LightBox>
@@ -140,7 +151,9 @@ export function Showroom() {
           const onCounter = COUNTERTOP[key]
           return (
             <group key={key} position={[x, 0, 0]}>
-              {onCounter && <Counter width={1.1} depth={0.7} body="steelBrushed" top="steelBrushed" />}
+              {onCounter && (
+                <Counter width={1.1} depth={0.7} body="steelBrushed" top="steelBrushed" />
+              )}
               <Prop model={key} position={[0, onCounter ? 1.05 : 0, 0]} brandColor="#a3261b" />
               <Label position={[0, 0.003, 0.9]}>{MODELS[key].label}</Label>
             </group>
@@ -164,6 +177,10 @@ export function Showroom() {
 
       <Row title="Librería de materiales" z={6.4}>
         <MaterialSwatches />
+      </Row>
+
+      <Row title="Productos ibéricos (Blender · texturas horneadas)" z={10.2}>
+        <ProductShowcase />
       </Row>
     </group>
   )

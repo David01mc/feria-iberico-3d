@@ -1,0 +1,150 @@
+{
+  "_generado": "blender/build_products.py",
+  "cecina": {
+    "size": [
+      0.2682,
+      0.0718,
+      0.1775
+    ],
+    "anchors": {}
+  },
+  "chorizo_sarta": {
+    "size": [
+      0.1878,
+      0.2065,
+      0.0391
+    ],
+    "anchors": {}
+  },
+  "chorizo_vela": {
+    "size": [
+      0.0517,
+      0.3391,
+      0.043
+    ],
+    "anchors": {}
+  },
+  "croqueta": {
+    "size": [
+      0.058,
+      0.0295,
+      0.0297
+    ],
+    "anchors": {}
+  },
+  "croqueta_abierta": {
+    "size": [
+      0.0292,
+      0.0297,
+      0.0296
+    ],
+    "anchors": {}
+  },
+  "cucurucho": {
+    "size": [
+      0.104,
+      0.1842,
+      0.104
+    ],
+    "anchors": {}
+  },
+  "cuna_queso": {
+    "size": [
+      0.1078,
+      0.1,
+      0.0693
+    ],
+    "anchors": {}
+  },
+  "jamon_colgado": {
+    "size": [
+      0.1931,
+      0.9227,
+      0.2831
+    ],
+    "anchors": {}
+  },
+  "jamon_cortado": {
+    "size": [
+      0.8447,
+      0.1649,
+      0.2831
+    ],
+    "anchors": {
+      "apoyo": [
+        0.3,
+        -0.0679,
+        0
+      ],
+      "pezuna": [
+        0.74,
+        0.0095,
+        0
+      ]
+    }
+  },
+  "lomo": {
+    "size": [
+      0.3403,
+      0.0626,
+      0.0732
+    ],
+    "anchors": {}
+  },
+  "plato_jamon": {
+    "size": [
+      0.28,
+      0.0362,
+      0.28
+    ],
+    "anchors": {}
+  },
+  "queso_cortado": {
+    "size": [
+      0.2157,
+      0.1,
+      0.2157
+    ],
+    "anchors": {}
+  },
+  "queso_curado": {
+    "size": [
+      0.2157,
+      0.1,
+      0.2157
+    ],
+    "anchors": {}
+  },
+  "queso_pimenton": {
+    "size": [
+      0.2157,
+      0.1,
+      0.2157
+    ],
+    "anchors": {}
+  },
+  "salchichon": {
+    "size": [
+      0.0647,
+      0.4625,
+      0.0551
+    ],
+    "anchors": {}
+  },
+  "tabla_embutidos": {
+    "size": [
+      0.42,
+      0.0652,
+      0.22
+    ],
+    "anchors": {}
+  },
+  "torta": {
+    "size": [
+      0.1731,
+      0.0494,
+      0.1731
+    ],
+    "anchors": {}
+  }
+}

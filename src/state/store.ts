@@ -12,6 +12,10 @@ interface AppState {
   /** Baja un escalón de calidad si el ajuste automático sigue activo. */
   degradeQuality: () => void
 
+  /** Assets cargados y pantalla de carga retirada: a partir de aquí se mide el rendimiento. */
+  sceneReady: boolean
+  setSceneReady: () => void
+
   cameraMode: CameraMode
   setCameraMode: (mode: CameraMode) => void
   /** En paseo: el ratón está capturado para mirar alrededor. */
@@ -29,6 +33,9 @@ export const useAppStore = create<AppState>()((set, get) => ({
     const next = QUALITY_ORDER[QUALITY_ORDER.indexOf(quality) + 1]
     if (next) set({ quality: next })
   },
+
+  sceneReady: false,
+  setSceneReady: () => set({ sceneReady: true }),
 
   cameraMode: 'orbita',
   setCameraMode: (cameraMode) => set({ cameraMode, pointerLocked: false }),

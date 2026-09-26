@@ -43,12 +43,28 @@ export function Platform({
   const y = (height + 0.004) / 2
   return (
     <group position={position} rotation-y={rotationY}>
-      <mesh geometry={geo.deck} material={surfaceMaterial} position={[0, height / 2, 0]} receiveShadow castShadow />
+      <mesh
+        geometry={geo.deck}
+        material={surfaceMaterial}
+        position={[0, height / 2, 0]}
+        receiveShadow
+        castShadow
+      />
       {[-1, 1].map((s) => (
-        <mesh key={`x${s}`} geometry={geo.edgeX} material={edgeMaterial} position={[0, y, s * (depth / 2 - EDGE / 2)]} />
+        <mesh
+          key={`x${s}`}
+          geometry={geo.edgeX}
+          material={edgeMaterial}
+          position={[0, y, s * (depth / 2 - EDGE / 2)]}
+        />
       ))}
       {[-1, 1].map((s) => (
-        <mesh key={`z${s}`} geometry={geo.edgeZ} material={edgeMaterial} position={[s * (width / 2 - EDGE / 2), y, 0]} />
+        <mesh
+          key={`z${s}`}
+          geometry={geo.edgeZ}
+          material={edgeMaterial}
+          position={[s * (width / 2 - EDGE / 2), y, 0]}
+        />
       ))}
     </group>
   )

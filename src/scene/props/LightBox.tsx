@@ -39,7 +39,13 @@ export function LightBox({
   )
   useDisposeGeometries(geo)
   const fabric = useMemo(
-    () => new MeshStandardMaterial({ color, emissive: color, emissiveIntensity: intensity, roughness: 0.9 }),
+    () =>
+      new MeshStandardMaterial({
+        color,
+        emissive: color,
+        emissiveIntensity: intensity,
+        roughness: 0.9,
+      }),
     [color, intensity],
   )
   useEffect(() => () => fabric.dispose(), [fabric])

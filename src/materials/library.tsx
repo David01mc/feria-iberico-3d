@@ -49,9 +49,23 @@ export const tileOf = (material: Material): number => (material.userData.tile as
 export const resolveMaterial = (library: MaterialLibrary, ref: MaterialRef): Material =>
   typeof ref === 'string' ? library[ref] : ref
 
-type TexturedKey = 'oak' | 'darkWood' | 'roughWood' | 'deck' | 'plaster' | 'brick' | 'tiles' | 'terracotta' | 'hessian' | 'linen'
+type TexturedKey =
+  | 'oak'
+  | 'darkWood'
+  | 'roughWood'
+  | 'deck'
+  | 'plaster'
+  | 'brick'
+  | 'tiles'
+  | 'terracotta'
+  | 'hessian'
+  | 'linen'
 
-function physical(name: string, params: MeshPhysicalMaterialParameters, extra: Record<string, unknown> = {}) {
+function physical(
+  name: string,
+  params: MeshPhysicalMaterialParameters,
+  extra: Record<string, unknown> = {},
+) {
   const material = new MeshPhysicalMaterial(params)
   material.name = name
   Object.assign(material.userData, extra)
@@ -85,10 +99,20 @@ function buildLibrary(maps: Record<TexturedKey, PbrMaps>, cheapGlass: boolean): 
     glass: cheapGlass
       ? physical(
           'glass',
-          { color: '#e4ecea', roughness: 0.04, transparent: true, opacity: 0.16, depthWrite: false },
+          {
+            color: '#e4ecea',
+            roughness: 0.04,
+            transparent: true,
+            opacity: 0.16,
+            depthWrite: false,
+          },
           noShadow,
         )
-      : physical('glass', { color: '#ffffff', roughness: 0.02, transmission: 1, thickness: 0.008, ior: 1.52 }, noShadow),
+      : physical(
+          'glass',
+          { color: '#ffffff', roughness: 0.02, transmission: 1, thickness: 0.008, ior: 1.52 },
+          noShadow,
+        ),
     lacquerWhite: physical('lacquerWhite', {
       color: '#efece6',
       roughness: 0.35,
@@ -109,8 +133,16 @@ function buildLibrary(maps: Record<TexturedKey, PbrMaps>, cheapGlass: boolean): 
       clearcoat: 1,
       clearcoatRoughness: 0.05,
     }),
-    ledWarm: physical('ledWarm', { color: '#000000', emissive: '#ffd6a0', emissiveIntensity: 4 }, noShadow),
-    ledAmber: physical('ledAmber', { color: '#000000', emissive: '#ff7a1a', emissiveIntensity: 5 }, noShadow),
+    ledWarm: physical(
+      'ledWarm',
+      { color: '#000000', emissive: '#ffd6a0', emissiveIntensity: 4 },
+      noShadow,
+    ),
+    ledAmber: physical(
+      'ledAmber',
+      { color: '#000000', emissive: '#ff7a1a', emissiveIntensity: 5 },
+      noShadow,
+    ),
     oil: physical(
       'oil',
       { color: '#6b4a0c', roughness: 0.05, clearcoat: 1, clearcoatRoughness: 0.02 },

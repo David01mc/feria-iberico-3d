@@ -53,7 +53,8 @@ export function Prop({
         const replacement = name === 'brand' ? brand : isMaterialKey(name) ? library[name] : null
         if (replacement) {
           mesh.material = replacement
-          if (replacement.userData.tile) mesh.geometry = projected(mesh.geometry, tileOf(replacement))
+          if (replacement.userData.tile)
+            mesh.geometry = projected(mesh.geometry, tileOf(replacement))
         }
       }
       mesh.castShadow = castShadow && !(mesh.material as Material).userData.noShadow

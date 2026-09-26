@@ -50,9 +50,26 @@ export function Counter({
 
   return (
     <group position={position} rotation-y={rotationY}>
-      <mesh geometry={geo.plinth} material={library.rubber} position={[0, PLINTH_H / 2, -RECESS / 2]} receiveShadow />
-      <mesh geometry={geo.body} material={bodyMaterial} position={[0, PLINTH_H + bodyH / 2, 0]} castShadow receiveShadow />
-      <mesh geometry={geo.top} material={topMaterial} position={[0, height - TOP_T / 2, 0]} castShadow receiveShadow />
+      <mesh
+        geometry={geo.plinth}
+        material={library.rubber}
+        position={[0, PLINTH_H / 2, -RECESS / 2]}
+        receiveShadow
+      />
+      <mesh
+        geometry={geo.body}
+        material={bodyMaterial}
+        position={[0, PLINTH_H + bodyH / 2, 0]}
+        castShadow
+        receiveShadow
+      />
+      <mesh
+        geometry={geo.top}
+        material={topMaterial}
+        position={[0, height - TOP_T / 2, 0]}
+        castShadow
+        receiveShadow
+      />
       {front && <group position={[0, PLINTH_H + bodyH / 2, depth / 2 + 0.002]}>{front}</group>}
     </group>
   )

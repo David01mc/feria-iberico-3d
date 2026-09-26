@@ -1,18 +1,27 @@
 import { useProgress } from '@react-three/drei'
 import { useEffect, useState } from 'react'
 import { FAIR } from '../config/fair'
+import { useAppStore } from '../state/store'
+
+/** Margen tras la carga para que compilen los shaders antes de medir el rendimiento. */
+const WARMUP_MS = 3000
 
 /** Pantalla de carga con la marca de la feria; se funde al terminar de cargar los assets. */
 export function LoadingScreen() {
   const { active, progress, loaded, total } = useProgress()
+  const setSceneReady = useAppStore((s) => s.setSceneReady)
   const [hidden, setHidden] = useState(false)
   const done = !active && total > 0 && loaded === total
 
   useEffect(() => {
     if (!done) return
-    const timer = setTimeout(() => setHidden(true), 900)
-    return () => clearTimeout(timer)
-  }, [done])
+    const fade = setTimeout(() => setHidden(true), 900)
+    const warmup = setTimeout(setSceneReady, WARMUP_MS)
+    return () => {
+      clearTimeout(fade)
+      clearTimeout(warmup)
+    }
+  }, [done, setSceneReady])
 
   if (hidden) return null
 
