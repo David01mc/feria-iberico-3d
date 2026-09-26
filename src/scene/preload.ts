@@ -1,9 +1,10 @@
 import { useEnvironment } from '@react-three/drei'
 import { HDRI_URL } from '../materials/assets'
 import { PBR, preloadPbr } from '../materials/pbr'
-import { PRODUCTS, type ProductKey } from './products/catalog'
+import { PRODUCTS, type ProductEntry, type ProductKey } from './products/catalog'
 import { preloadProduct } from './products/ProductInstances'
-import { MODELS, type ModelKey } from './props/catalog'
+import { APP_VIEW } from '../state/view'
+import { MODELS, type ModelEntry, type ModelKey } from './props/catalog'
 import { preloadProp } from './props/Prop'
 
 /**
@@ -14,12 +15,16 @@ import { preloadProp } from './props/Prop'
  * la escena entera. Resultado: decenas de oleadas en ~17 s y una barra que llega al 100 % una y
  * otra vez. Con todo en vuelo desde el arranque, la escena monta de una sola vez.
  *
- * Se precarga el catálogo completo: la feria solo deja fuera dos modelos (~0,8 MB) y así la
- * lista no puede quedarse desfasada respecto a lo que usan los stands.
+ * Se precarga el catálogo completo salvo lo marcado `showroomOnly` (piezas que solo enseña el
+ * muestrario): así la lista no puede quedarse desfasada respecto a lo que usan los stands.
  */
 export function preloadScene() {
   useEnvironment.preload({ files: HDRI_URL })
   for (const set of Object.values(PBR)) preloadPbr(set)
-  for (const model of Object.keys(MODELS) as ModelKey[]) preloadProp(model)
-  for (const product of Object.keys(PRODUCTS) as ProductKey[]) preloadProduct(product)
+  const wanted = (entry: ModelEntry | ProductEntry) =>
+    APP_VIEW === 'muestrario' || !entry.showroomOnly
+  for (const model of Object.keys(MODELS) as ModelKey[])
+    if (wanted(MODELS[model])) preloadProp(model)
+  for (const product of Object.keys(PRODUCTS) as ProductKey[])
+    if (wanted(PRODUCTS[product])) preloadProduct(product)
 }

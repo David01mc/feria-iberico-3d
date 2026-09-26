@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { standFrame } from '../../config/geometry'
 import type { StandConfig } from '../../config/types'
+import { StaticMerge } from '../../render/optimize'
 
 /**
  * Lleva el marco local de un stand (frente hacia +z, origen en el centro de la parcela) a su
@@ -14,7 +15,7 @@ export function StandPlacement({ stand, children }: { stand: StandConfig; childr
       position={[frame.center[0], 0, frame.center[1]]}
       rotation-y={frame.rotationY}
     >
-      {children}
+      <StaticMerge>{children}</StaticMerge>
     </group>
   )
 }

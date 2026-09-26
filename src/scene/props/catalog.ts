@@ -18,6 +18,8 @@ export interface ModelEntry {
    */
   source: 'blender' | 'polyhaven' | 'macetas'
   surfaces?: Record<string, Surface>
+  /** Solo se enseña en el muestrario: la feria no lo usa y no lo precarga. */
+  showroomOnly?: boolean
   anchors?: Record<string, Vec3>
 }
 
@@ -56,6 +58,7 @@ export const MODELS = {
     source: 'polyhaven',
   },
   tabureteMetal: {
+    showroomOnly: true,
     label: 'Taburete industrial',
     file: 'ph/metal_stool_02.glb',
     source: 'polyhaven',
@@ -77,7 +80,12 @@ export const MODELS = {
   },
   cuenco: { label: 'Cuenco de madera', file: 'ph/wooden_bowl_01.glb', source: 'polyhaven' },
   planta: { label: 'Planta en maceta', file: 'ph/potted_plant_02.glb', source: 'polyhaven' },
-  plantaAlta: { label: 'Planta alta', file: 'ph/potted_plant_04.glb', source: 'polyhaven' },
+  plantaAlta: {
+    label: 'Planta alta',
+    file: 'ph/potted_plant_04.glb',
+    source: 'polyhaven',
+    showroomOnly: true,
+  },
   plantaGrande: {
     label: 'Planta grande en maceta de barro',
     file: 'ph/potted_plant_01.glb',
@@ -101,6 +109,7 @@ export const MODELS = {
   },
   barrilCerveza: { label: 'Barril de 30 l', file: 'custom/barril_cerveza.glb', source: 'blender' },
   barraFacetada: {
+    showroomOnly: true,
     label: 'Barra facetada de sidrería',
     file: 'custom/barra_facetada.glb',
     source: 'blender',
@@ -149,11 +158,13 @@ export const MODELS = {
 
   // ── Macetas (blender/macetas.py): variedad para no repetir la misma planta en toda la feria ──
   macetaCalathea: {
+    showroomOnly: true,
     label: 'Calathea en jarrón blanco',
     file: 'macetas/maceta_calathea.glb',
     source: 'macetas',
   },
   macetaAnthurium: {
+    showroomOnly: true,
     label: 'Anthurium en jarrón de loza azul',
     file: 'macetas/maceta_anthurium.glb',
     source: 'macetas',

@@ -227,15 +227,39 @@ export function useMaterials(): MaterialLibrary {
   return library
 }
 
+/**
+ * Tintes compartidos: un material por (librería, base, color) aunque lo pidan cien muebles.
+ * Así se agrupan en la fusión de geometría y no multiplican materiales ni llamadas de dibujo.
+ */
+const tinted = new WeakMap<MaterialLibrary, Map<string, { material: Material; users: number }>>()
+
+function acquireTint(library: MaterialLibrary, base: MaterialKey, color: string): Material {
+  let byKey = tinted.get(library)
+  if (!byKey) tinted.set(library, (byKey = new Map()))
+  const key = `${base}:${color}`
+  let entry = byKey.get(key)
+  if (!entry) {
+    const material = library[base].clone() as MeshPhysicalMaterial
+    material.color.set(color)
+    material.name = key
+    byKey.set(key, (entry = { material, users: 0 }))
+  }
+  entry.users++
+  return entry.material
+}
+
+function releaseTint(library: MaterialLibrary, material: Material) {
+  const byKey = tinted.get(library)
+  const entry = byKey?.get(material.name)
+  if (!entry || --entry.users > 0) return
+  byKey!.delete(material.name)
+  material.dispose()
+}
+
 /** Variante teñida de un material de la librería (p. ej. lacado con el color corporativo). */
 export function useTintedMaterial(base: MaterialKey, color: string): Material {
   const library = useMaterials()
-  const material = useMemo(() => {
-    const tinted = library[base].clone() as MeshPhysicalMaterial
-    tinted.color.set(color)
-    tinted.name = `${base}:${color}`
-    return tinted
-  }, [library, base, color])
-  useEffect(() => () => material.dispose(), [material])
+  const material = useMemo(() => acquireTint(library, base, color), [library, base, color])
+  useEffect(() => () => releaseTint(library, material), [library, material])
   return material
 }

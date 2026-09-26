@@ -1,7 +1,9 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Matrix4, MeshStandardMaterial, Object3D, Quaternion, Vector3 } from 'three'
 import type { Vec3 } from '../../materials/geometry'
 import { useMaterials } from '../../materials/library'
+import { QUALITY } from '../../render/quality'
+import { useAppStore } from '../../state/store'
 
 export interface SpotlightProps {
   /** Punto de giro del proyector (bajo el carril o el truss). */
@@ -25,6 +27,18 @@ export interface SpotlightProps {
 
 const UP = new Vector3(0, 1, 0)
 
+/** Lente encendida: una por color para toda la feria (se fusionan y no se multiplican). */
+const lenses = new Map<string, MeshStandardMaterial>()
+function lensMaterial(color: string): MeshStandardMaterial {
+  let lens = lenses.get(color)
+  if (!lens) {
+    lens = new MeshStandardMaterial({ color: '#000000', emissive: color, emissiveIntensity: 7 })
+    lens.name = `lente:${color}`
+    lenses.set(color, lens)
+  }
+  return lens
+}
+
 /** Proyector LED de carril orientable, con luz focal real opcional. */
 export function Spotlight({
   position,
@@ -38,6 +52,8 @@ export function Spotlight({
   light = true,
 }: SpotlightProps) {
   const library = useMaterials()
+  // En calidad baja solo queda el aparato encendido: la luz real se apaga.
+  const realLight = useAppStore((s) => QUALITY[s.quality].spotLights) && light
   const [px, py, pz] = position
   const [tx, ty, tz] = target
 
@@ -51,11 +67,7 @@ export function Spotlight({
     return { quaternion: q, targetObject: obj }
   }, [px, py, pz, tx, ty, tz])
 
-  const lens = useMemo(
-    () => new MeshStandardMaterial({ color: '#000000', emissive: color, emissiveIntensity: 7 }),
-    [color],
-  )
-  useEffect(() => () => lens.dispose(), [lens])
+  const lens = lensMaterial(color)
 
   return (
     <group>
@@ -79,7 +91,7 @@ export function Spotlight({
           <circleGeometry args={[0.046, 24]} />
         </mesh>
       </group>
-      {light && (
+      {realLight && (
         <>
           <spotLight
             position={position}

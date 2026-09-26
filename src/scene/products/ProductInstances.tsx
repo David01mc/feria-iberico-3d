@@ -16,6 +16,7 @@ import {
   type Object3D,
 } from 'three'
 import { withKTX2 } from '../../materials/ktx2'
+import { useDetail } from '../../render/optimize'
 import type { Placement } from './arrange'
 import {
   PRODUCTS,
@@ -98,6 +99,7 @@ export interface ProductInstancesProps {
 export function ProductInstances({ product, items, castShadow = true }: ProductInstancesProps) {
   const { geometry, material } = useProductMesh(product)
   const ref = useRef<InstancedMesh>(null)
+  useDetail(ref)
 
   useLayoutEffect(() => {
     const mesh = ref.current

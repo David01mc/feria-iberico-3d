@@ -8,6 +8,7 @@ import { FAIR } from '../config/fair'
 import { Lighting } from '../lighting/Lighting'
 import { HDRI_URL } from '../materials/assets'
 import { MaterialLibraryProvider } from '../materials/library'
+import { DetailCulling } from '../render/optimize'
 import { PostFX } from '../render/PostFX'
 import { QUALITY } from '../render/quality'
 import { useAppStore } from '../state/store'
@@ -93,6 +94,7 @@ export function Experience() {
         <CameraRig home={home} />
       )}
       <PostFX preset={preset} />
+      {!isShowroom && <DetailCulling />}
       {withProbe && <DevProbe />}
       {/* Solo tras la carga (la compilación de shaders hunde los fps un momento y no es real) y con
           render continuo: bajo demanda, los ratos sin fotogramas se leerían como fps bajísimos. */}

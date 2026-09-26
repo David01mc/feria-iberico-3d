@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { QUALITY_ORDER, type QualityLevel } from '../render/quality'
+import { initialQuality, QUALITY_ORDER, type QualityLevel } from '../render/quality'
 
 /** `orbita`: vista aérea libre. `paseo`: primera persona con WASD a la altura de los ojos. */
 export type CameraMode = 'orbita' | 'paseo'
@@ -24,7 +24,7 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>()((set, get) => ({
-  quality: 'alta',
+  quality: initialQuality(),
   autoQuality: true,
   setQuality: (quality) => set({ quality, autoQuality: false }),
   degradeQuality: () => {

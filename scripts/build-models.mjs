@@ -25,8 +25,10 @@ const GROUPS = {
     script: 'build_products.py',
     // Texturas horneadas → KTX2 tras optimizar (ver scripts/ktx2.mjs).
     ktx2: true,
+    // Atlas ≤ 1024 px (a la distancia de un stand no se distingue de 2048 y ocupa 4× menos
+    // memoria de vídeo, que en gráficas integradas sale de la RAM del equipo).
     // Simplificación con tolerancia de ~1,5 mm por metro: el relieve fino ya va en el normal map.
-    optimize: ['--texture-compress', 'webp', '--texture-size', '2048', '--simplify-error', '0.0015'],
+    optimize: ['--texture-compress', 'webp', '--texture-size', '1024', '--simplify-error', '0.0015'],
     meta: join(ROOT, 'src', 'scene', 'products', 'meta.json'),
   },
   // Plantas de Poly Haven en jarrones y mediterráneas por código: texturas como el resto del

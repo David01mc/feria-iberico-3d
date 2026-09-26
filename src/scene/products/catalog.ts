@@ -14,6 +14,8 @@ export interface ProductEntry {
   file: string
   /** El origen es el punto del gancho y la pieza cuelga hacia abajo. */
   hanging?: boolean
+  /** Solo se enseña en el muestrario: la feria no lo usa y no lo precarga. */
+  showroomOnly?: boolean
   finish?: ProductFinish
 }
 
@@ -110,7 +112,7 @@ export const PRODUCTS = {
     finish: { clearcoat: 0.35, clearcoatRoughness: 0.3 },
   },
   /** Decorado horneado como un producto (una malla, un material): triángulo de 3,8 × 2,4 m. */
-  muroMusgo: { label: 'Muro de musgo preservado', file: 'muro_musgo' },
+  muroMusgo: { label: 'Muro de musgo preservado', file: 'muro_musgo', showroomOnly: true },
   /** Lámina de 2,7 × 1,95 m con el origen en el centro del borde inferior: base del jardín vertical. */
   panelMusgo: { label: 'Lámina de musgo preservado', file: 'panel_musgo' },
 

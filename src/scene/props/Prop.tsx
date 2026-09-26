@@ -1,8 +1,9 @@
 import { useGLTF } from '@react-three/drei'
-import { useMemo } from 'react'
-import type { BufferGeometry, Material, Mesh, MeshPhysicalMaterial } from 'three'
+import { useMemo, useRef } from 'react'
+import type { BufferGeometry, Material, Mesh, MeshPhysicalMaterial, Object3D } from 'three'
 import { boxProjectUV, type Vec3 } from '../../materials/geometry'
 import { isMaterialKey, tileOf, useMaterials, useTintedMaterial } from '../../materials/library'
+import { DETAIL, useDetail } from '../../render/optimize'
 import { MODELS, modelUrl, type ModelKey } from './catalog'
 
 /** Geometrías con UV reproyectadas, compartidas entre instancias del mismo modelo. */
@@ -70,6 +71,8 @@ export function Prop({
   const library = useMaterials()
   const brand = useTintedMaterial('lacquerWhite', brandColor)
   const remap = MODELS[model].source === 'blender'
+  const ref = useRef<Object3D>(null)
+  useDetail(ref)
 
   const object = useMemo(() => {
     const root = scene.clone(true)
@@ -90,10 +93,14 @@ export function Prop({
       mesh.castShadow = castShadow && !(mesh.material as Material).userData.noShadow
       mesh.receiveShadow = true
     })
+    // Atrezo: se fusiona aparte y se oculta de lejos (ver StaticMerge y DetailCulling).
+    root.userData[DETAIL] = true
     return root
   }, [scene, library, brand, remap, castShadow])
 
-  return <primitive object={object} position={position} rotation-y={rotationY} scale={scale} />
+  return (
+    <primitive ref={ref} object={object} position={position} rotation-y={rotationY} scale={scale} />
+  )
 }
 
 export const preloadProp = (model: ModelKey) => useGLTF.preload(modelUrl(model))
