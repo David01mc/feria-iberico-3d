@@ -4,6 +4,7 @@ import { CroquetasStand } from './CroquetasStand'
 import { CervezasStand } from './CervezasStand'
 import { EmbutidosStand } from './EmbutidosStand'
 import { JamonStand } from './JamonStand'
+import { PielDeToroStand } from './PielDeToroStand'
 import { QuesosStand } from './QuesosStand'
 import { SidrasStand } from './SidrasStand'
 import { VinosStand } from './VinosStand'
@@ -17,6 +18,7 @@ const STAND_COMPONENTS: Record<StandKind, ComponentType<{ stand: StandConfig }>>
   vinos: VinosStand,
   cervezas: CervezasStand,
   sidras: SidrasStand,
+  tapas: PielDeToroStand,
 }
 
 export function Stands({ stands }: { stands: StandConfig[] }) {

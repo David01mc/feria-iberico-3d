@@ -19,9 +19,10 @@ describe('FAIR (Salón Dehesa 2026)', () => {
     expect(validateFair(FAIR)).toEqual([])
   })
 
-  it('cumple el briefing: ibéricos (1 grande, 2 medianos, 1 pequeño) y maridaje (1 grande, 2 medianos)', () => {
+  it('clasifica los puestos de ibéricos, bebidas, tapas, aceitunas y vermut por superficie', () => {
     const sizes = FAIR.stands.map((s) => s.size).sort()
     expect(sizes).toEqual([
+      'grande',
       'grande',
       'grande',
       'mediano',
@@ -40,6 +41,7 @@ describe('FAIR (Salón Dehesa 2026)', () => {
       'jamon',
       'quesos',
       'sidras',
+      'tapas',
       'vinos',
     ])
   })

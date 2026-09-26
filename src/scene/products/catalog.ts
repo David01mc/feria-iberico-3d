@@ -111,6 +111,31 @@ export const PRODUCTS = {
   },
   /** Decorado horneado como un producto (una malla, un material): triángulo de 3,8 × 2,4 m. */
   muroMusgo: { label: 'Muro de musgo preservado', file: 'muro_musgo' },
+
+  // ── Caseta de Piel de Toro (blender/products_tapas.py) ──
+  paella: {
+    label: 'Paella de marisco en paellera',
+    file: 'paella',
+    finish: { clearcoat: 0.3, clearcoatRoughness: 0.35 },
+  },
+  tortilla: {
+    label: 'Tortilla de patatas empezada',
+    file: 'tortilla',
+    finish: { clearcoat: 0.2, clearcoatRoughness: 0.4 },
+  },
+  jarraRebujito: {
+    label: 'Jarra de rebujito',
+    file: 'jarra_rebujito',
+    finish: { clearcoat: 1, clearcoatRoughness: 0.05 },
+  },
+  /** Mobiliario de caseta horneado (se repite mucho y vive de su textura). */
+  velador: { label: 'Velador con mantón bordado', file: 'velador' },
+  sillaEnea: { label: 'Silla de enea', file: 'silla_enea' },
+  guitarra: {
+    label: 'Guitarra flamenca',
+    file: 'guitarra',
+    finish: { clearcoat: 0.8, clearcoatRoughness: 0.1 },
+  },
 } as const satisfies Record<string, ProductEntry>
 
 export type ProductKey = keyof typeof PRODUCTS

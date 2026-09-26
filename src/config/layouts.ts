@@ -331,6 +331,106 @@ function sidrasColliders(): Rect[] {
   ]
 }
 
+// ── Piel de Toro · isla 9 × 6: caseta de feria (abre a los cuatro lados) ─────
+
+type Segment = readonly [XZ, XZ]
+
+export const PIELDETORO = {
+  /** Tarima de albero. */
+  floor: 0.12,
+  /** Dos módulos de caseta de 3,6 m, cada uno con su lona a dos aguas y su pañoleta. */
+  modules: [
+    [-4.4, -0.8],
+    [-0.8, 2.8],
+  ] as readonly XZ[],
+  /** Fondo de la lona (la cumbrera va de frente a fondo, como en el Real). */
+  lonaZ: [-2.95, 2.95] as XZ,
+  eave: 3.0,
+  ridge: 4.05,
+  /** Pañoleta: banda bajo el alero + frontón hasta la cumbrera, y remate con perilla. */
+  panoleta: { band: 0.45, inset: 0.03 },
+  finialTop: 4.35,
+  postXs: [-4.34, -0.8, 2.74] as readonly number[],
+  postZs: [-2.84, 0, 2.84] as readonly number[],
+  postRadius: 0.045,
+  /** Barandilla verde de caseta: dos tramos al frente (con la entrada) y el costado oeste. */
+  railHeight: 0.95,
+  rails: [
+    [
+      [-4.34, 2.84],
+      [-3.05, 2.84],
+    ],
+    [
+      [-1.95, 2.84],
+      [-0.86, 2.84],
+    ],
+    [
+      [-4.34, -1.45],
+      [-4.34, 2.84],
+    ],
+  ] as readonly Segment[],
+  /** Tablao de madera en la esquina noroeste (guitarra y sillas). */
+  tablao: { x: [-4.28, -2.55] as XZ, z: [-2.8, -1.55] as XZ, height: 0.18 },
+  /** Veladores con mantón y sillas de enea alrededor (radio del corro). */
+  tables: [
+    [-3.55, 1.6],
+    [-1.75, 1.85],
+    [-2.35, 0.15],
+  ] as readonly XZ[],
+  chairRing: 0.56,
+  /** Barra de la caseta: showcooking con paellero, frente de azulejo. */
+  bar: { center: [0.9, -0.55] as XZ, size: [3.0, 0.72] as XZ, height: 1.1 },
+  /** Espina de doble cara: trasbarra hacia la barra y La Despensa hacia el Pasillo Norte. */
+  spine: { center: [0.9, -2.45] as XZ, size: [3.0, 0.5] as XZ, height: 2.3 },
+  /** Barriles de pie para tapear delante de la barra. */
+  standTables: [
+    [0.15, 1.85],
+    [1.75, 1.65],
+  ] as readonly XZ[],
+  barrelRadius: 0.37,
+  /** Trastienda encalada (cocina y almacén) con el cubo del escudo encima. */
+  backroom: { x: [2.98, 4.42] as XZ, z: [-2.9, 0.95] as XZ, height: 2.9 },
+  cube: { center: [3.7, -0.98] as XZ, size: 1.3, bottom: 3.12 },
+  freezer: { center: [3.7, 1.95] as XZ, size: [1.3, 0.68] as XZ },
+  /** Geranios a los lados de la entrada de El Real y limonero junto al costado oeste. */
+  geraniums: [
+    [-3.25, 2.55],
+    [-1.75, 2.55],
+  ] as readonly XZ[],
+  lemonTree: [-3.85, -0.95] as XZ,
+  /** Macetas de patio cordobés colgadas de la trastienda: [x, z, y de la base]. */
+  wallPots: {
+    north: [3.3, 3.75, 4.2] as readonly number[],
+    east: [-2.4, 0.4] as readonly number[],
+    y: 1.55,
+  },
+}
+
+function pieldetoroColliders(): Rect[] {
+  const p = PIELDETORO
+  const r = p.postRadius * 2
+  const rail = ([[x0, z0], [x1, z1]]: Segment) =>
+    rect(
+      Math.min(x0, x1) - 0.03,
+      Math.min(z0, z1) - 0.03,
+      Math.max(x0, x1) + 0.03,
+      Math.max(z0, z1) + 0.03,
+    )
+  return [
+    ...p.postXs.flatMap((x) => p.postZs.map((z) => box(x, z, r, r))),
+    ...p.rails.map(rail),
+    rect(p.tablao.x[0], p.tablao.z[0], p.tablao.x[1], p.tablao.z[1]),
+    ...p.tables.map(([x, z]) => box(x, z, 1.1, 1.1)),
+    box(...p.bar.center, ...p.bar.size),
+    box(...p.spine.center, ...p.spine.size),
+    ...p.standTables.map((t) => box(...t, p.barrelRadius * 2, p.barrelRadius * 2)),
+    rect(p.backroom.x[0], p.backroom.z[0], p.backroom.x[1], p.backroom.z[1]),
+    box(...p.freezer.center, ...p.freezer.size),
+    ...p.geraniums.map((g) => box(...g, 0.34, 0.34)),
+    box(...p.lemonTree, 0.62, 0.62),
+  ]
+}
+
 /** Obstáculos de cada tipo de stand en su marco local. */
 export const STAND_COLLIDERS: Record<StandKind, () => Rect[]> = {
   jamon: jamonColliders,
@@ -340,4 +440,5 @@ export const STAND_COLLIDERS: Record<StandKind, () => Rect[]> = {
   vinos: vinosColliders,
   cervezas: cervezasColliders,
   sidras: sidrasColliders,
+  tapas: pieldetoroColliders,
 }

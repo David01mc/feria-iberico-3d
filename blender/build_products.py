@@ -747,6 +747,11 @@ from products_bebidas import BEBIDAS, DECORADO  # noqa: E402
 PRODUCTS.update(BEBIDAS)
 PRODUCTS.update(DECORADO)
 
+# Caseta de Piel de Toro: tapas, velador con mantón, silla de enea… (blender/products_tapas.py).
+from products_tapas import TAPAS  # noqa: E402
+
+PRODUCTS.update(TAPAS)
+
 
 def main():
     argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []

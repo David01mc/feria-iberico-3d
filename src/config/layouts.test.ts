@@ -2,7 +2,15 @@ import { describe, expect, it } from 'vitest'
 import { buildColliders } from './colliders'
 import { FAIR } from './fair'
 import { contains, localRectToWorld, localToWorld, overlaps, rect, standFrame } from './geometry'
-import { CERVEZAS, CROQUETAS, EMBUTIDOS, SIDRAS, STAND_COLLIDERS, VINOS } from './layouts'
+import {
+  CERVEZAS,
+  CROQUETAS,
+  EMBUTIDOS,
+  PIELDETORO,
+  SIDRAS,
+  STAND_COLLIDERS,
+  VINOS,
+} from './layouts'
 
 const inside = (x: number, z: number, rects: ReturnType<typeof buildColliders>) =>
   rects.some((r) => contains(r, rect(x, z, x, z)))
@@ -98,6 +106,19 @@ describe('layouts de los stands', () => {
       expect(inside(x, z, buildColliders(FAIR))).toBe(false)
     },
   )
+
+  it('la caseta de Piel de Toro respeta la altura y deja libre la entrada de El Real', () => {
+    const stand = FAIR.stands.find((s) => s.kind === 'tapas')!
+    const p = PIELDETORO
+    expect(p.finialTop).toBeLessThanOrEqual(stand.maxHeight)
+    expect(p.cube.bottom + p.cube.size).toBeLessThanOrEqual(stand.maxHeight)
+    expect(p.cube.bottom).toBeGreaterThan(p.backroom.height)
+    // La lona del segundo módulo no se mete en la trastienda.
+    expect(p.modules[1]![1]).toBeLessThan(p.backroom.x[0])
+    const frame = standFrame(stand.plot, stand.front)
+    const [x, z] = localToWorld(frame, [-2.5, frame.depth / 2 - 0.1])
+    expect(inside(x, z, buildColliders(FAIR))).toBe(false)
+  })
 
   it('el paseo choca con la barra del jamón', () => {
     const jamon = FAIR.stands.find((s) => s.kind === 'jamon')!

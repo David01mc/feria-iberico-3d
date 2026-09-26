@@ -3,6 +3,7 @@ import { cervezas } from './stands/cervezas'
 import { croquetas } from './stands/croquetas'
 import { embutidos } from './stands/embutidos'
 import { jamon } from './stands/jamon'
+import { pieldetoro } from './stands/pieldetoro'
 import { quesos } from './stands/quesos'
 import { sidras } from './stands/sidras'
 import { vinos } from './stands/vinos'
@@ -10,13 +11,14 @@ import type { Aisle, FairConfig, NeighborPlot, Rect } from './types'
 
 /*
  * Plano del Pabellón 3 (vista en planta, norte arriba, 1 carácter ≈ 2 m).
- * Al este de la Calle 3, el Espacio Maridaje: vinos, cervezas y sidras.
+ * Al este de la Calle 3, el Espacio Maridaje: vinos, cervezas y sidras. Entre las calles 1 y 2,
+ * la caseta de tapas de Piel de Toro (isla de 54 m², la mayor de la feria).
  *
  *   z=-15 ┌ A ─────┐   ┌ A ─────┐ ┌ A ───┐ ┌ A ─────┐   ┌ A ─────┐
  *         └────────┘   └────────┘ └──────┘ └────────┘   └────────┘
  *   z=-11 ═══════════════════ Pasillo Norte ════════════════════════
- *         ┌ B ─────┐   ┌ B ─────┐ ┌JAMÓN ┐ ┌VINOS┐B┐   ┌ B ─────┐
- *         └ C ─────┘   └ C ─────┘ └ isla ┘ └penín┘C┘   └ C ─────┘
+ *         ┌ B ─────┐   ┌ PIEL DE┐ ┌JAMÓN ┐ ┌VINOS┐B┐   ┌ B ─────┐
+ *         └ C ─────┘   └ TORO  ┘ └ isla ┘ └penín┘C┘   └ C ─────┘
  *   z=-2  ═══════════════════ Avenida Central ══════════════════════
  *         ┌ D ───────┐   ┌D│QUESOS│CRQ│EMBUT┐ ┌SIDRA┐D┐ ┌ D ─────┐
  *         └ E ───────┘   └ E ──────────┴─ E ┘ └CERVE┘E┘ └ E ─────┘
@@ -89,7 +91,6 @@ const ROWS: Row[] = [
     z: [-8, -5],
     blocks: [
       [-28, -19, [3, 6]],
-      [-16, -7, [3, 3, 3]],
       [13, 16, [3]],
       [19, 28, [3, 3, 3]],
     ],
@@ -99,7 +100,6 @@ const ROWS: Row[] = [
     z: [-5, -2],
     blocks: [
       [-28, -19, [3, 3, 3]],
-      [-16, -7, [6, 3]],
       [13, 16, [3]],
       [19, 28, [3, 6]],
     ],
@@ -139,7 +139,16 @@ const ROWS: Row[] = [
 /** Parcelas sueltas que no encajan en una fila regular (trasera del stand de embutidos). */
 const EXTRA_PLOTS: { letter: string; plot: Rect }[] = [{ letter: 'E', plot: rect(-0.5, 6, 4, 8) }]
 
-const STANDS = [jamon, quesos, croquetas, embutidos, vinos, cervezas, sidras]
+const STANDS = [
+  jamon,
+  quesos,
+  croquetas,
+  embutidos,
+  vinos,
+  cervezas,
+  sidras,
+  pieldetoro,
+]
 
 function buildNeighbors(): NeighborPlot[] {
   const counters = new Map<string, number>()

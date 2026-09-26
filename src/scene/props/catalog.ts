@@ -133,6 +133,20 @@ export const MODELS = {
     source: 'blender',
   },
 
+  // ── Caseta de Piel de Toro (blender/models_caseta.py) ──
+  paellero: {
+    label: 'Paellero de gas de sobremesa',
+    file: 'custom/paellero.glb',
+    source: 'blender',
+    surfaces: { quemador: { center: [0, 0.12, 0], size: [0.46, 0.46] } },
+  },
+  arconCongelador: {
+    label: 'Arcón congelador con tapas de cristal',
+    file: 'custom/arcon_congelador.glb',
+    source: 'blender',
+    surfaces: { fondo: { center: [0, 0.5, 0], size: [1.18, 0.56] } },
+  },
+
   // ── Macetas (blender/macetas.py): variedad para no repetir la misma planta en toda la feria ──
   macetaCalathea: {
     label: 'Calathea en jarrón blanco',

@@ -20,7 +20,14 @@ export type StandSize = 'pequeño' | 'mediano' | 'grande'
 export type StandLayout = 'isla' | 'peninsula' | 'esquina' | 'lineal' | 'kiosco'
 
 export type StandKind =
-  'jamon' | 'quesos' | 'embutidos' | 'croquetas' | 'vinos' | 'cervezas' | 'sidras'
+  | 'jamon'
+  | 'quesos'
+  | 'embutidos'
+  | 'croquetas'
+  | 'vinos'
+  | 'cervezas'
+  | 'sidras'
+  | 'tapas'
 
 export interface Palette {
   /** Color corporativo principal. */

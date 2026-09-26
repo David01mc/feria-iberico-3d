@@ -162,6 +162,11 @@ from models_maridaje import MARIDAJE  # noqa: E402
 
 MODELS.update(MARIDAJE)
 
+# Caseta de Piel de Toro: paellero y arcón congelador (blender/models_caseta.py).
+from models_caseta import CASETA  # noqa: E402
+
+MODELS.update(CASETA)
+
 
 def main():
     argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
