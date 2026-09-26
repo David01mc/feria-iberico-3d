@@ -16,12 +16,15 @@ export interface PbrSet {
   /** Metros que cubre una repetición de la textura (ver materials/geometry.ts). */
   tile: number
   kind: 'arm' | 'split'
+  /** `false`: sin mapa de color; solo se aprovecha el relieve y el material se tiñe con `color`. */
+  albedo?: false
 }
 
 export const PBR = {
   hallFloor: { id: 'concrete_floor_02', tile: 3.5, kind: 'arm' },
-  wallConcrete: { id: 'painted_concrete', tile: 3, kind: 'arm' },
-  carpet: { id: 'Carpet012', tile: 1.2, kind: 'split' },
+  // El albedo original trae manchas de pintura verde.
+  wallConcrete: { id: 'painted_concrete', tile: 3, kind: 'arm', albedo: false },
+  carpet: { id: 'Carpet012', tile: 1.2, kind: 'split', albedo: false },
   oak: { id: 'oak_veneer_01', tile: 1.5, kind: 'arm' },
   deck: { id: 'wood_floor_deck', tile: 2, kind: 'arm' },
   roughWood: { id: 'rough_wood', tile: 1.5, kind: 'arm' },
@@ -31,7 +34,8 @@ export const PBR = {
   tiles: { id: 'interior_tiles', tile: 1, kind: 'arm' },
   terracotta: { id: 'terracotta_floor_tiles', tile: 1.5, kind: 'arm' },
   hessian: { id: 'hessian_230', tile: 0.6, kind: 'arm' },
-  linen: { id: 'rough_linen', tile: 0.8, kind: 'arm' },
+  // El albedo original es un lino azul: se tiñe de crudo en la librería.
+  linen: { id: 'rough_linen', tile: 0.8, kind: 'arm', albedo: false },
 } as const satisfies Record<string, PbrSet>
 
 export interface PbrMaps {
@@ -43,7 +47,6 @@ export interface PbrMaps {
 
 function texturePaths(
   set: PbrSet,
-  withColor: boolean,
 ): Record<keyof PbrMaps, string> | Omit<Record<keyof PbrMaps, string>, 'map'> {
   const file = (name: string) => asset(`textures/${set.id}/${name}.jpg`)
   const maps = {
@@ -51,18 +54,18 @@ function texturePaths(
     roughnessMap: file(set.kind === 'arm' ? 'arm' : 'rough'),
     aoMap: file(set.kind === 'arm' ? 'arm' : 'ao'),
   }
-  return withColor ? { map: file('diff'), ...maps } : maps
+  return set.albedo === false ? maps : { map: file('diff'), ...maps }
 }
 
 /**
  * Carga (con caché) los mapas de un conjunto PBR, listos para esparcir en un
- * `meshStandardMaterial`. `color: false` omite el albedo para teñir con `color`.
+ * `meshStandardMaterial`.
  */
-export function usePbr(set: PbrSet, { color = true }: { color?: boolean } = {}): PbrMaps {
+export function usePbr(set: PbrSet): PbrMaps {
   const gl = useThree((s) => s.gl)
   const quality = useAppStore((s) => s.quality)
   const anisotropy = Math.min(gl.capabilities.getMaxAnisotropy(), QUALITY[quality].anisotropy)
-  const paths = useMemo(() => texturePaths(set, color), [set, color])
+  const paths = useMemo(() => texturePaths(set), [set])
   const textures = useTexture(paths) as unknown as PbrMaps
 
   useLayoutEffect(() => {
@@ -76,3 +79,6 @@ export function usePbr(set: PbrSet, { color = true }: { color?: boolean } = {}):
 
   return textures
 }
+
+/** Pide los mapas de un conjunto con la misma clave de caché que `usePbr`. */
+export const preloadPbr = (set: PbrSet) => useTexture.preload(Object.values(texturePaths(set)))

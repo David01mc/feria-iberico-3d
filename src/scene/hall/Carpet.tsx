@@ -6,7 +6,7 @@ import { PBR, usePbr } from '../../materials/pbr'
 
 /** Moqueta ferial de pasillos: relieve de fieltro y color definido por la organización. */
 export function Carpet({ hall }: { hall: HallConfig }) {
-  const maps = usePbr(PBR.carpet, { color: false })
+  const maps = usePbr(PBR.carpet)
   const area = hall.exhibitionArea
   const [cx, cz] = center(area)
   const geometry = useMemo(() => worldPlane(width(area), depth(area), PBR.carpet.tile), [area])

@@ -12,6 +12,10 @@ export function LoadingScreen() {
   const setSceneReady = useAppStore((s) => s.setSceneReady)
   const [hidden, setHidden] = useState(false)
   const done = !active && total > 0 && loaded === total
+  // El total crece al descomprimir cada GLB (sus texturas internas cuentan aparte), así que el
+  // porcentaje bruto puede retroceder: se muestra el máximo alcanzado.
+  const [shown, setShown] = useState(0)
+  if (progress > shown) setShown(progress)
 
   useEffect(() => {
     if (!done) return
@@ -30,9 +34,9 @@ export function LoadingScreen() {
       <p className="loader__eyebrow">{FAIR.brand.subtitle}</p>
       <h2 className="loader__name">{FAIR.brand.name}</h2>
       <div className="loader__bar">
-        <span style={{ transform: `scaleX(${progress / 100})` }} />
+        <span style={{ transform: `scaleX(${shown / 100})` }} />
       </div>
-      <p className="loader__pct">Preparando el pabellón · {Math.round(progress)}%</p>
+      <p className="loader__pct">Preparando el pabellón · {Math.round(shown)}%</p>
     </div>
   )
 }

@@ -160,8 +160,7 @@ export function MaterialLibraryProvider({ children }: { children: ReactNode }) {
   const tiles = usePbr(PBR.tiles)
   const terracotta = usePbr(PBR.terracotta)
   const hessian = usePbr(PBR.hessian)
-  // El albedo original es un lino azul: se usa solo su relieve y se tiñe de crudo.
-  const linen = usePbr(PBR.linen, { color: false })
+  const linen = usePbr(PBR.linen)
 
   const library = useMemo(
     () =>

@@ -18,8 +18,7 @@ export function HallShell({ hall }: { hall: HallConfig }) {
   const [cx, cz] = center(bounds)
 
   const floorMaps = usePbr(PBR.hallFloor)
-  // Sin albedo: la textura original trae manchas de pintura verde; solo aprovechamos su relieve.
-  const concreteMaps = usePbr(PBR.wallConcrete, { color: false })
+  const concreteMaps = usePbr(PBR.wallConcrete)
   const ribs = ribbedPanelBump(4)
 
   const geometries = useMemo(() => {

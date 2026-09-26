@@ -64,8 +64,10 @@ function buildBooths(neighbors: NeighborPlot[]) {
         position: [seg.center[0], PANEL_H / 2, seg.center[1]],
         rotationY: seg.rotationY,
       })
+      // Travesaño superior: 5 mm dentro del límite de la parcela y 1 cm corto en cada extremo,
+      // para no compartir cara con el del stand vecino ni con el perpendicular de la esquina.
       aluminium.push({
-        size: [seg.length, 0.05, 0.06],
+        size: [seg.length - 0.02, 0.05, 0.05],
         position: [seg.center[0], PANEL_H, seg.center[1]],
         rotationY: seg.rotationY,
       })
@@ -74,13 +76,15 @@ function buildBooths(neighbors: NeighborPlot[]) {
       const along: [number, number] = side === 'north' || side === 'south' ? [1, 0] : [0, 1]
       for (let i = 1; i < modules; i++) {
         const offset = -seg.length / 2 + (i * seg.length) / modules
+        // Girado con la pared: su grosor (0,06) abraza el panel (0,04) sin compartir caras.
         aluminium.push({
-          size: [0.04, PANEL_H, 0.06],
+          size: [0.04, PANEL_H, PANEL_T + 0.02],
           position: [
             seg.center[0] + along[0] * offset,
             PANEL_H / 2,
             seg.center[1] + along[1] * offset,
           ],
+          rotationY: seg.rotationY,
         })
       }
     }
@@ -142,7 +146,7 @@ function buildBooths(neighbors: NeighborPlot[]) {
 
 /** Stands modulares de otros expositores: dan escala y contexto sin competir con los protagonistas. */
 export function NeighborBooths({ neighbors }: { neighbors: NeighborPlot[] }) {
-  const carpet = usePbr(PBR.carpet, { color: false })
+  const carpet = usePbr(PBR.carpet)
   const booths = useMemo(() => buildBooths(neighbors), [neighbors])
 
   return (
