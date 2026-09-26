@@ -263,7 +263,7 @@ export function JamonStand({ stand }: { stand: StandConfig }) {
         ))}
       </group>
 
-      {/* Barricas con vino, planta y luz de la barra. */}
+      {/* Barricas con vino, olivo y luz de la barra. */}
       <Prop model="barrica" position={[J.barrels[0]![0], J.floor, J.barrels[0]![1]]} />
       <Prop
         model="botellasVino"
@@ -275,7 +275,7 @@ export function JamonStand({ stand }: { stand: StandConfig }) {
         rotationY={1.2}
       />
       <Prop model="jarra" position={[J.barrels[1]![0], J.floor + 0.872, J.barrels[1]![1]]} />
-      <Prop model="planta" position={[J.plant[0], J.floor, J.plant[1]]} scale={1.3} />
+      <Prop model="olivo" position={[J.plant[0], J.floor, J.plant[1]]} />
       <Spotlight position={[0, SPOT_Y, 0]} target={[0, BAR_TOP, 0]} intensity={30} angle={0.75} />
       {[-2.2, -0.8, 0.8, 2.2].map((x) => (
         <Spotlight

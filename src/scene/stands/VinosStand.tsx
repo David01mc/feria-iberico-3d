@@ -206,6 +206,7 @@ export function VinosStand({ stand }: { stand: StandConfig }) {
           },
         ]}
       />
+      <Prop model="arbolDinero" position={[V.plant[0], V.floor, V.plant[1]]} />
       <Spotlight
         position={[1, 2.93, 0.8]}
         target={[1, V.floor + 1, 1.9]}

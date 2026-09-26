@@ -12,9 +12,11 @@ describe('catálogo de mobiliario 3D', () => {
 
   it('cataloga todos los modelos de Poly Haven que descarga el manifiesto', () => {
     const manifest = JSON.parse(readFileSync(root('scripts/assets.manifest.json'), 'utf8')) as {
-      models: { id: string }[]
+      models: { id: string; raw?: boolean }[]
     }
     const catalogued = MODEL_KEYS.map((key) => MODELS[key].file)
-    for (const { id } of manifest.models) expect(catalogued).toContain(`ph/${id}.glb`)
+    // Los `raw` son materia prima de blender/macetas.py: no se publican por separado.
+    for (const { id } of manifest.models.filter((m) => !m.raw))
+      expect(catalogued).toContain(`ph/${id}.glb`)
   })
 })

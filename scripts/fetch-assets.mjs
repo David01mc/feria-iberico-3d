@@ -73,18 +73,24 @@ async function fetchAmbientcg({ id, res }) {
 const GLTF_TRANSFORM = join(ROOT, 'node_modules', '.bin', 'gltf-transform')
 
 /** Descarga un modelo glTF de Poly Haven (con sus texturas) y lo empaqueta en GLB optimizado. */
-async function fetchModel({ id, res, simplify = 0.002, textureSize = 512 }) {
+/**
+ * Modelo de Poly Haven. Con `raw` solo se guarda el glTF original en .cache/polyhaven: es materia
+ * prima de blender/macetas.py (plantas y jarrones que se componen en macetas), no se publica.
+ */
+async function fetchModel({ id, res, simplify = 0.002, textureSize = 512, raw = false }) {
   const out = join(OUT, 'models', 'ph', `${id}.glb`)
-  if (!existsSync(out)) {
+  const srcDir = join(ROOT, '.cache', 'polyhaven', id)
+  const entry = join(srcDir, `${id}.gltf`)
+  if (!existsSync(raw ? entry : out)) {
     const files = await getJson(`https://api.polyhaven.com/files/${id}`)
     const gltf = files.gltf?.[res]?.gltf
     if (!gltf) throw new Error(`Modelo ${id} sin glTF en ${res}`)
-    const srcDir = join(ROOT, '.cache', 'polyhaven', id)
-    const entry = join(srcDir, `${id}.gltf`)
     await download(gltf.url, entry)
     for (const [relPath, file] of Object.entries(gltf.include ?? {})) {
       await download(file.url, join(srcDir, relPath))
     }
+  }
+  if (!raw && !existsSync(out)) {
     mkdirSync(dirname(out), { recursive: true })
     // Texturas a WebP ≤ 512 px (piezas pequeñas en pantalla: una cuarta parte de VRAM que a 1k)
     // y geometría con meshopt; --palette false conserva los materiales.

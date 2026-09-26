@@ -44,6 +44,14 @@
     { "id": "wooden_bowl_01", "res": "1k", "use": "Cuenco de madera" },
     { "id": "potted_plant_02", "res": "1k", "simplify": 0.008, "use": "Planta en maceta" },
     { "id": "potted_plant_04", "res": "1k", "use": "Planta alta en maceta" },
+    { "id": "potted_plant_01", "res": "1k", "simplify": 0.01, "use": "Planta grande en maceta de barro" },
+    { "id": "calathea_orbifolia_01", "res": "1k", "raw": true, "use": "Calathea (macetas compuestas)" },
+    { "id": "anthurium_botany_01", "res": "1k", "raw": true, "use": "Anthurium (macetas compuestas)" },
+    { "id": "fern_02", "res": "1k", "raw": true, "use": "Helechos (macetas compuestas)" },
+    { "id": "pachira_aquatica_01", "res": "1k", "raw": true, "use": "Árbol del dinero (macetas compuestas)" },
+    { "id": "antique_ceramic_vase_01", "res": "1k", "raw": true, "use": "Jarrón de loza azul (macetas compuestas)" },
+    { "id": "ceramic_vase_01", "res": "1k", "raw": true, "use": "Jarrón blanco acanalado (macetas compuestas)" },
+    { "id": "ceramic_vase_03", "res": "1k", "raw": true, "use": "Jarrón alto rectangular (macetas compuestas)" },
     { "id": "modern_ceiling_lamp_01", "res": "1k", "use": "Lámpara colgante" },
     { "id": "jug_01", "res": "1k", "use": "Jarra de cerámica" }
   ]

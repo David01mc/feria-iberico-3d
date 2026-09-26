@@ -279,7 +279,7 @@ export function SidrasStand({ stand }: { stand: StandConfig }) {
           },
         ]}
       />
-      <Prop model="planta" position={[S.plant[0], S.floor, S.plant[1]]} scale={0.75} />
+      <Prop model="macetaHelecho" position={[S.plant[0], S.floor, S.plant[1]]} scale={0.85} />
       <Spotlight
         position={[-1.05, 2.7, 0.05]}
         target={[-1.05, 1.1, 0.3]}

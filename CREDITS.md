@@ -44,5 +44,13 @@ Generado por `npm run assets`. Todos los assets son CC0 (dominio público) o SIL
 | Modelo 3D | [wooden_bowl_01](https://polyhaven.com/a/wooden_bowl_01) | Poly Haven | CC0 | Cuenco de madera |
 | Modelo 3D | [potted_plant_02](https://polyhaven.com/a/potted_plant_02) | Poly Haven | CC0 | Planta en maceta |
 | Modelo 3D | [potted_plant_04](https://polyhaven.com/a/potted_plant_04) | Poly Haven | CC0 | Planta alta en maceta |
+| Modelo 3D | [potted_plant_01](https://polyhaven.com/a/potted_plant_01) | Poly Haven | CC0 | Planta grande en maceta de barro |
+| Modelo 3D | [calathea_orbifolia_01](https://polyhaven.com/a/calathea_orbifolia_01) | Poly Haven | CC0 | Calathea (macetas compuestas) |
+| Modelo 3D | [anthurium_botany_01](https://polyhaven.com/a/anthurium_botany_01) | Poly Haven | CC0 | Anthurium (macetas compuestas) |
+| Modelo 3D | [fern_02](https://polyhaven.com/a/fern_02) | Poly Haven | CC0 | Helechos (macetas compuestas) |
+| Modelo 3D | [pachira_aquatica_01](https://polyhaven.com/a/pachira_aquatica_01) | Poly Haven | CC0 | Árbol del dinero (macetas compuestas) |
+| Modelo 3D | [antique_ceramic_vase_01](https://polyhaven.com/a/antique_ceramic_vase_01) | Poly Haven | CC0 | Jarrón de loza azul (macetas compuestas) |
+| Modelo 3D | [ceramic_vase_01](https://polyhaven.com/a/ceramic_vase_01) | Poly Haven | CC0 | Jarrón blanco acanalado (macetas compuestas) |
+| Modelo 3D | [ceramic_vase_03](https://polyhaven.com/a/ceramic_vase_03) | Poly Haven | CC0 | Jarrón alto rectangular (macetas compuestas) |
 | Modelo 3D | [modern_ceiling_lamp_01](https://polyhaven.com/a/modern_ceiling_lamp_01) | Poly Haven | CC0 | Lámpara colgante |
 | Modelo 3D | [jug_01](https://polyhaven.com/a/jug_01) | Poly Haven | CC0 | Jarra de cerámica |

@@ -130,10 +130,14 @@ export function CervezasStand({ stand }: { stand: StandConfig }) {
       <Prop model="barrilCerveza" position={[2.3, 0.025, -0.67]} />
 
       {/* Jardineras de cajas y expositor junto al lateral abierto. */}
-      {C.planters.map(([x, z]) => (
+      {C.planters.map(([x, z], i) => (
         <group key={x}>
           <Prop model="cajaMadera" position={[x, 0.025, z]} scale={0.7} />
-          <Prop model="planta" position={[x, 0.27, z]} scale={0.55} />
+          <Prop
+            model={i === 0 ? 'planta' : 'plantaGrande'}
+            position={[x, 0.27, z]}
+            scale={i === 0 ? 0.55 : 0.42}
+          />
         </group>
       ))}
       {[-0.27, 0.27].flatMap((dx) =>

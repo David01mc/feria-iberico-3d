@@ -13,9 +13,10 @@ export interface ModelEntry {
   file: string
   /**
    * `blender`: modelado a medida (blender/build_models.py); sus materiales se sustituyen por la
-   * librería PBR. `polyhaven`: modelo CC0 con sus propias texturas.
+   * librería PBR. `polyhaven`: modelo CC0 con sus propias texturas. `macetas`: plantas
+   * compuestas o modeladas en blender/macetas.py; también conservan sus materiales.
    */
-  source: 'blender' | 'polyhaven'
+  source: 'blender' | 'polyhaven' | 'macetas'
   surfaces?: Record<string, Surface>
   anchors?: Record<string, Vec3>
 }
@@ -77,6 +78,11 @@ export const MODELS = {
   cuenco: { label: 'Cuenco de madera', file: 'ph/wooden_bowl_01.glb', source: 'polyhaven' },
   planta: { label: 'Planta en maceta', file: 'ph/potted_plant_02.glb', source: 'polyhaven' },
   plantaAlta: { label: 'Planta alta', file: 'ph/potted_plant_04.glb', source: 'polyhaven' },
+  plantaGrande: {
+    label: 'Planta grande en maceta de barro',
+    file: 'ph/potted_plant_01.glb',
+    source: 'polyhaven',
+  },
   lamparaColgante: {
     label: 'Lámpara colgante',
     file: 'ph/modern_ceiling_lamp_01.glb',
@@ -126,6 +132,41 @@ export const MODELS = {
     file: 'custom/taburete_tapizado.glb',
     source: 'blender',
   },
+
+  // ── Macetas (blender/macetas.py): variedad para no repetir la misma planta en toda la feria ──
+  macetaCalathea: {
+    label: 'Calathea en jarrón blanco',
+    file: 'macetas/maceta_calathea.glb',
+    source: 'macetas',
+  },
+  macetaAnthurium: {
+    label: 'Anthurium en jarrón de loza azul',
+    file: 'macetas/maceta_anthurium.glb',
+    source: 'macetas',
+  },
+  macetaHelecho: {
+    label: 'Helecho en jarrón alto',
+    file: 'macetas/maceta_helecho.glb',
+    source: 'macetas',
+  },
+  arbolDinero: {
+    label: 'Árbol del dinero en macetero',
+    file: 'macetas/arbol_dinero.glb',
+    source: 'macetas',
+  },
+  macetaGeranios: {
+    label: 'Geranios en maceta de barro',
+    file: 'macetas/maceta_geranios.glb',
+    source: 'macetas',
+  },
+  /** Origen en la pared (z = 0) y la maceta hacia +z. */
+  macetaGeraniosPared: {
+    label: 'Geranios en maceta azul de pared',
+    file: 'macetas/maceta_geranios_pared.glb',
+    source: 'macetas',
+  },
+  olivo: { label: 'Olivo en maceta', file: 'macetas/olivo.glb', source: 'macetas' },
+  limonero: { label: 'Limonero en maceta', file: 'macetas/limonero.glb', source: 'macetas' },
 } as const satisfies Record<string, ModelEntry>
 
 export type ModelKey = keyof typeof MODELS

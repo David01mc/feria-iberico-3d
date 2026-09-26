@@ -195,6 +195,8 @@ export const VINOS = {
   armchairSize: [0.7, 0.7] as XZ,
   counter: { center: [1.0, 1.9] as XZ, size: [2.6, 0.7] as XZ, height: 1.05 },
   giftBoxes: { center: [2.55, 2.4] as XZ, size: [0.6, 0.6] as XZ },
+  /** Árbol del dinero en la esquina abierta del lounge. */
+  plant: [-2.45, 0.85] as XZ,
 }
 
 function vinosColliders(): Rect[] {
@@ -209,6 +211,7 @@ function vinosColliders(): Rect[] {
     ...v.armchairs.map((a) => box(...a, ...v.armchairSize)),
     box(...v.counter.center, ...v.counter.size),
     box(...v.giftBoxes.center, ...v.giftBoxes.size),
+    box(...v.plant, 0.5, 0.5),
   ]
 }
 

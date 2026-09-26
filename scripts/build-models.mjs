@@ -4,6 +4,7 @@
 //   npm run models                       → todo (mobiliario y productos)
 //   npm run models -- products           → solo un grupo
 //   npm run models -- products croqueta  → solo algunas piezas de un grupo
+//   npm run models -- macetas            → macetas (requiere npm run assets antes)
 //   SKIP_BLENDER=1 npm run models        → solo reoptimiza lo ya generado en .cache/blender
 import { execFileSync } from 'node:child_process'
 import { copyFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs'
@@ -27,6 +28,12 @@ const GROUPS = {
     // Simplificación con tolerancia de ~1,5 mm por metro: el relieve fino ya va en el normal map.
     optimize: ['--texture-compress', 'webp', '--texture-size', '2048', '--simplify-error', '0.0015'],
     meta: join(ROOT, 'src', 'scene', 'products', 'meta.json'),
+  },
+  // Plantas de Poly Haven en jarrones y mediterráneas por código: texturas como el resto del
+  // mobiliario de Poly Haven (WebP ≤ 512 px) y simplificación suave de las hojas.
+  macetas: {
+    script: 'macetas.py',
+    optimize: ['--texture-compress', 'webp', '--texture-size', '512', '--simplify-error', '0.004'],
   },
 }
 
