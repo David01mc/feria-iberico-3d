@@ -49,7 +49,11 @@ Coordenadas locales: el frente mira a +z (norte). Los lados cerrados son −z y 
   Asturias».
 - **Jardín vertical enmarcado** (`MossPanel`):
   - Mide 2,7 × 1,95 m y ocupa la mitad derecha del fondo, vista desde el pasillo.
-  - 442 hojas con textura dibujada en canvas, en una sola llamada de dibujo.
+  - Base: lámina de musgo preservado horneada (`panel_musgo` en `blender/products_bebidas.py`),
+    con almohadillas en relieve.
+  - Encima, unas 150 matas de helecho, calathea y anthurium de Poly Haven que brotan de la pared
+    inclinadas hacia fuera (`jardin_vertical` en `blender/macetas.py`). Son 6 mallas instanciadas
+    por GPU.
 
 ## Mobiliario y producto
 

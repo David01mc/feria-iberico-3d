@@ -181,6 +181,12 @@ export const MODELS = {
   },
   olivo: { label: 'Olivo en maceta', file: 'macetas/olivo.glb', source: 'macetas' },
   limonero: { label: 'Limonero en maceta', file: 'macetas/limonero.glb', source: 'macetas' },
+  /** Plantas del jardín vertical (2,7 × 1,95 m): origen en la pared, centro del borde inferior. */
+  jardinVertical: {
+    label: 'Plantas de jardín vertical',
+    file: 'macetas/jardin_vertical.glb',
+    source: 'macetas',
+  },
 } as const satisfies Record<string, ModelEntry>
 
 export type ModelKey = keyof typeof MODELS

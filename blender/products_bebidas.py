@@ -346,6 +346,37 @@ def muro_musgo():
     return obj, {}
 
 
+def panel_musgo():
+    """
+    Lámina rectangular de musgo preservado de 2,7 × 1,95 m: base del jardín vertical del llagar
+    (encima brotan las plantas de blender/macetas.py). Mismo material y relieve que el muro
+    triangular. Origen en el centro del borde inferior, sobre la pared; el relieve sale hacia −Y.
+    """
+    w, h = PANEL_SIZE
+    columns, rows = 84, 60
+    bm = bmesh.new()
+    grid = [[bm.verts.new((-w / 2 + w * i / columns, 0.0, h * j / rows)) for i in range(columns + 1)] for j in range(rows + 1)]
+    for j in range(rows):
+        for i in range(columns):
+            bm.faces.new((grid[j][i], grid[j][i + 1], grid[j + 1][i + 1], grid[j + 1][i]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    obj = link("panel_musgo", bm, m_moss())
+    if obj.data.polygons and obj.data.polygons[0].normal.y > 0:
+        obj.data.flip_normals()
+    displace(obj, -0.08, 0.11, kind="VORONOI")
+    displace(obj, 0.03, 0.05, depth=2)
+    solid = obj.modifiers.new("Grosor", "SOLIDIFY")
+    solid.thickness = 0.035
+    solid.offset = 1
+    apply_modifiers(obj)
+    ground(obj)
+    obj["ao_distance"] = 0.06
+    return obj, {}
+
+
+PANEL_SIZE = (2.7, 1.95)
+
+
 # Nombre → (constructor, resolución del atlas)
 BEBIDAS = {
     "botella_vino": (botella_vino, 1024),
@@ -358,4 +389,5 @@ BEBIDAS = {
 DECORADO = {
     # 1024: a 2048 pesaba 6,3 MB en KTX2 y el ruido del musgo no lo aprovecha a 2 m.
     "muro_musgo": (muro_musgo, 1024),
+    "panel_musgo": (panel_musgo, 1024),
 }

@@ -267,6 +267,63 @@ def limonero():
     )
 
 
+# ── Jardín vertical ───────────────────────────────────────────────────────────
+
+GARDEN_SIZE = (2.7, 1.95)
+# (asset, variante, escala): matas pequeñas y medianas de Poly Haven para cubrir la pared.
+GARDEN_PLANTS = [
+    ("fern_02", "fern_02_a", 0.5),
+    ("fern_02", "fern_02_d", 0.5),
+    ("fern_02", "fern_02_b", 0.32),
+    ("calathea_orbifolia_01", "calathea_orbifolia_01_d", 1.1),
+    ("calathea_orbifolia_01", "calathea_orbifolia_01_e", 1.1),
+    ("anthurium_botany_01", "anthurium_botany_05_e", 1.0),
+]
+
+
+def jardin_vertical():
+    """
+    Plantas del jardín vertical del llagar: matas de helecho, calathea y anthurium que brotan de
+    la pared inclinadas hacia fuera y hacia arriba, repartidas en rejilla con holgura aleatoria.
+    Va sobre la lámina de musgo horneada (panel_musgo). Origen en el centro del borde inferior,
+    sobre la pared (y = 0); las plantas salen hacia −Y. Cada variante es una malla compartida:
+    el GLB la instancia en vez de repetir la geometría.
+    """
+    rng = random.Random(21)
+    templates = []
+    for asset in sorted({a for a, _, _ in GARDEN_PLANTS}):
+        variants = {v for a, v, _ in GARDEN_PLANTS if a == asset}
+        for obj in import_polyhaven(asset, variants):
+            # Mata centrada en su base, para girarla alrededor de su propio pie.
+            lo, hi = bounds([obj])
+            obj.data.transform(Matrix.Translation((-(lo.x + hi.x) / 2, -(lo.y + hi.y) / 2, -lo.z)) @ obj.matrix_world)
+            obj.matrix_world = Matrix.Identity(4)
+            scale = next(sc for _, v, sc in GARDEN_PLANTS if v == obj.name)
+            templates.append((obj, scale))
+    w, h = GARDEN_SIZE
+    cols, rows = 15, 10
+    k = 0
+    for row in range(rows):
+        for col in range(cols):
+            x = -w / 2 + (col + 0.5 + rng.uniform(-0.35, 0.35) + (row % 2) * 0.25) * w / cols
+            z = (row + 0.5 + rng.uniform(-0.3, 0.3)) * h / rows
+            if abs(x) > w / 2 - 0.08 or z > h - 0.1:
+                continue
+            template, scale = templates[(k * 7 + rng.randrange(len(templates))) % len(templates)]
+            k += 1
+            copy = template.copy()
+            bpy.context.scene.collection.objects.link(copy)
+            tilt = math.radians(rng.uniform(62, 78))
+            copy.matrix_world = (
+                Matrix.Translation((x, -0.02, z))
+                @ Matrix.Rotation(tilt, 4, "X")
+                @ Matrix.Rotation(rng.uniform(0, math.tau), 4, "Z")
+                @ Matrix.Scale(scale * rng.uniform(0.85, 1.15), 4)
+            )
+    for template, _ in templates:
+        bpy.data.objects.remove(template, do_unlink=True)
+
+
 MACETAS = {
     "maceta_calathea": maceta_calathea,
     "maceta_anthurium": maceta_anthurium,
@@ -276,6 +333,7 @@ MACETAS = {
     "maceta_geranios_pared": maceta_geranios_pared,
     "olivo": olivo,
     "limonero": limonero,
+    "jardin_vertical": jardin_vertical,
 }
 
 

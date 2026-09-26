@@ -111,6 +111,8 @@ export const PRODUCTS = {
   },
   /** Decorado horneado como un producto (una malla, un material): triángulo de 3,8 × 2,4 m. */
   muroMusgo: { label: 'Muro de musgo preservado', file: 'muro_musgo' },
+  /** Lámina de 2,7 × 1,95 m con el origen en el centro del borde inferior: base del jardín vertical. */
+  panelMusgo: { label: 'Lámina de musgo preservado', file: 'panel_musgo' },
 
   // ── Caseta de Piel de Toro (blender/products_tapas.py) ──
   paella: {
