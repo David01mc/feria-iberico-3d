@@ -21,7 +21,8 @@ const GROUPS = {
   },
   products: {
     script: 'build_products.py',
-    optimize: ['--texture-compress', 'webp', '--texture-size', '2048'],
+    // Simplificación con tolerancia de ~1,5 mm por metro: el relieve fino ya va en el normal map.
+    optimize: ['--texture-compress', 'webp', '--texture-size', '2048', '--simplify-error', '0.0015'],
     meta: join(ROOT, 'src', 'scene', 'products', 'meta.json'),
   },
 }
