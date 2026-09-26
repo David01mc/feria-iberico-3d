@@ -29,6 +29,7 @@ const UP = new Vector3(0, 1, 0)
  */
 export function WalkControls({ colliders }: { colliders: Rect[] }) {
   const camera = useThree((s) => s.camera)
+  const canvas = useThree((s) => s.gl.domElement)
   const setPointerLocked = useAppStore((s) => s.setPointerLocked)
   const keys = useWalkKeys()
 
@@ -90,10 +91,12 @@ export function WalkControls({ colliders }: { colliders: Rect[] }) {
     camera.position.set(x, EYE_HEIGHT + bob, z)
   })
 
+  // Canvas aplica `className` al contenedor, no al elemento <canvas>.
   return (
     <PointerLockControls
       makeDefault
-      selector="canvas.scene"
+      domElement={canvas}
+      selector=".scene canvas"
       onLock={() => setPointerLocked(true)}
       onUnlock={() => setPointerLocked(false)}
     />
