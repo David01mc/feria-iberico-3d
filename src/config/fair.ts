@@ -4,6 +4,7 @@ import { cervezas } from './stands/cervezas'
 import { croquetas } from './stands/croquetas'
 import { embutidos } from './stands/embutidos'
 import { jamon } from './stands/jamon'
+import { mieles } from './stands/mieles'
 import { pieldetoro } from './stands/pieldetoro'
 import { quesos } from './stands/quesos'
 import { sidras } from './stands/sidras'
@@ -23,7 +24,7 @@ import type { Aisle, FairConfig, NeighborPlot, Rect } from './types'
  *         └ C ─────┘   └ TORO  ┘ └ isla ┘ └penín┘C┘   └ C ─────┘
  *   z=-2  ═══════════════════ Avenida Central ══════════════════════
  *         ┌ D ───────┐   ┌D│QUESOS│CRQ│EMBUT┐ ┌SIDRA┐D┐ ┌ACEIT│VERMUT┐
- *         └ E ───────┘   └ E ──────────┴─ E ┘ └CERVE┘E┘ └ E ─────┘
+ *         └ E ───────┘   └ E ──────────┴─ E ┘ └CERVE┘E┘ └MIEL│ E ──┘
  *   z=8   ═══════════════════ Pasillo Sur ══════════════════════════
  *         ┌ F ───────┐   ┌ F ───────────────┐ ┌ F ─────┐ ┌ F ─────┐
  *   z=15  └──────────┘   └──────────────────┘ └────────┘ └────────┘
@@ -122,7 +123,7 @@ const ROWS: Row[] = [
       [-28, -15.5, [3.5, 6, 3]],
       [-12.5, -0.5, [6, 6]],
       [13, 16, [3]],
-      [19, 28, [3, 3, 3]],
+      [22, 28, [3, 3]],
     ],
   },
   {
@@ -151,6 +152,7 @@ const STANDS = [
   pieldetoro,
   aceitunas,
   vermut,
+  mieles,
 ]
 
 function buildNeighbors(): NeighborPlot[] {

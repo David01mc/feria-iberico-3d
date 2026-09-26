@@ -6,6 +6,7 @@ import {
   CERVEZAS,
   CROQUETAS,
   EMBUTIDOS,
+  MIELES,
   PIELDETORO,
   SIDRAS,
   STAND_COLLIDERS,
@@ -78,6 +79,22 @@ describe('layouts de los stands', () => {
     )
 
     expect(vermutWall.x0 - oliveWall.x1).toBeGreaterThanOrEqual(0.1)
+  })
+
+  it('mieles deja separación detrás de aceitunas y respeta la altura de la feria', () => {
+    const aceitunas = FAIR.stands.find((s) => s.kind === 'aceitunas')!
+    const mieles = FAIR.stands.find((s) => s.kind === 'mieles')!
+    const oliveBack = localRectToWorld(
+      standFrame(aceitunas.plot, aceitunas.front),
+      STAND_COLLIDERS.aceitunas()[0]!,
+    )
+    const honeyBack = localRectToWorld(
+      standFrame(mieles.plot, mieles.front),
+      STAND_COLLIDERS.mieles()[0]!,
+    )
+
+    expect(honeyBack.z0 - oliveBack.z1).toBeGreaterThanOrEqual(0.1)
+    expect(MIELES.frameHeight).toBeLessThanOrEqual(mieles.maxHeight)
   })
 
   it('el lateral de cervezas queda separado del módulo vecino', () => {

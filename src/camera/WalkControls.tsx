@@ -31,10 +31,12 @@ export function WalkControls({ colliders }: { colliders: Rect[] }) {
   const camera = useThree((s) => s.camera)
   const canvas = useThree((s) => s.gl.domElement)
   const setPointerLocked = useAppStore((s) => s.setPointerLocked)
+  const setWalkPose = useAppStore((s) => s.setWalkPose)
   const keys = useWalkKeys()
 
   const velocity = useRef(new Vector2())
   const bobPhase = useRef(0)
+  const poseTimer = useRef(0)
   const scratch = useRef({ forward: new Vector3(), right: new Vector3(), wish: new Vector2() })
 
   useEffect(() => {
@@ -51,6 +53,8 @@ export function WalkControls({ colliders }: { colliders: Rect[] }) {
     } else {
       cam.lookAt(WALK_SPAWN.lookAt[0], EYE_HEIGHT - 0.1, WALK_SPAWN.lookAt[1])
     }
+    cam.getWorldDirection(scratch.current.forward)
+    setWalkPose([x, z], [scratch.current.forward.x, scratch.current.forward.z])
     // Solo en desarrollo: pruebas visuales automáticas del paseo.
     if (import.meta.env.DEV) Object.assign(window, { __walkCamera: cam })
 
@@ -59,7 +63,7 @@ export function WalkControls({ colliders }: { colliders: Rect[] }) {
       cam.fov = previousFov
       cam.updateProjectionMatrix()
     }
-  }, [camera])
+  }, [camera, setWalkPose])
 
   useFrame((_, rawDelta) => {
     const dt = Math.min(rawDelta, 0.05)
@@ -89,6 +93,11 @@ export function WalkControls({ colliders }: { colliders: Rect[] }) {
     bobPhase.current += speed * dt * BOB_FREQUENCY * Math.PI
     const bob = Math.sin(bobPhase.current) * BOB_AMPLITUDE * Math.min(1, speed / WALK_SPEED)
     camera.position.set(x, EYE_HEIGHT + bob, z)
+    poseTimer.current += dt
+    if (poseTimer.current >= 0.35) {
+      poseTimer.current = 0
+      setWalkPose([x, z], [forward.x, forward.z])
+    }
   })
 
   // Canvas aplica `className` al contenedor, no al elemento <canvas>.

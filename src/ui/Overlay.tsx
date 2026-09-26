@@ -3,6 +3,7 @@ import { QUALITY, QUALITY_ORDER } from '../render/quality'
 import { useAppStore, type CameraMode } from '../state/store'
 import { APP_VIEW } from '../state/view'
 import { WalkHint } from './WalkHint'
+import { Navigation } from './Navigation'
 
 const MODES: { id: CameraMode; label: string }[] = [
   { id: 'orbita', label: 'Vista aérea' },
@@ -34,6 +35,7 @@ export function Overlay() {
       </header>
 
       {cameraMode === 'paseo' && !isShowroom && <WalkHint />}
+      {!isShowroom && <Navigation />}
 
       <footer className="hud">
         <div className="hud__left">

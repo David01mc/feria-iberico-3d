@@ -15,8 +15,9 @@ export interface ModelEntry {
    * `blender`: modelado a medida (blender/build_models.py); sus materiales se sustituyen por la
    * librería PBR. `polyhaven`: modelo CC0 con sus propias texturas. `macetas`: plantas
    * compuestas o modeladas en blender/macetas.py; también conservan sus materiales.
+   * `cc0`: modelos externos de libre uso que conservan sus materiales originales.
    */
-  source: 'blender' | 'polyhaven' | 'macetas'
+  source: 'blender' | 'polyhaven' | 'macetas' | 'cc0'
   surfaces?: Record<string, Surface>
   /** Solo se enseña en el muestrario: la feria no lo usa y no lo precarga. */
   showroomOnly?: boolean
@@ -197,6 +198,18 @@ export const MODELS = {
     label: 'Plantas de jardín vertical',
     file: 'macetas/jardin_vertical.glb',
     source: 'macetas',
+  },
+
+  // ── Puesto de miel ──
+  tarroMielKenney: {
+    label: 'Tarro de miel de Kenney',
+    file: 'cc0/kenney_honey.glb',
+    source: 'cc0',
+  },
+  tarroMielConPalito: {
+    label: 'Tarro de miel con palito',
+    file: 'cc0/honey_jar_dipper.glb',
+    source: 'cc0',
   },
 } as const satisfies Record<string, ModelEntry>
 

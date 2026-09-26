@@ -1,5 +1,7 @@
 import { create } from 'zustand'
 import { initialQuality, QUALITY_ORDER, type QualityLevel } from '../render/quality'
+import { WALK_SPAWN } from '../config/colliders'
+import type { Vec2 } from '../camera/collision'
 
 /** `orbita`: vista aérea libre. `paseo`: primera persona con WASD a la altura de los ojos. */
 export type CameraMode = 'orbita' | 'paseo'
@@ -21,6 +23,13 @@ interface AppState {
   /** En paseo: el ratón está capturado para mirar alrededor. */
   pointerLocked: boolean
   setPointerLocked: (locked: boolean) => void
+  destinationId: string | null
+  setDestinationId: (id: string | null) => void
+  navigationRoute: Vec2[]
+  setNavigationRoute: (route: Vec2[]) => void
+  walkPosition: Vec2
+  walkForward: Vec2
+  setWalkPose: (position: Vec2, forward: Vec2) => void
 }
 
 export const useAppStore = create<AppState>()((set, get) => ({
@@ -41,4 +50,11 @@ export const useAppStore = create<AppState>()((set, get) => ({
   setCameraMode: (cameraMode) => set({ cameraMode, pointerLocked: false }),
   pointerLocked: false,
   setPointerLocked: (pointerLocked) => set({ pointerLocked }),
+  destinationId: null,
+  setDestinationId: (destinationId) => set({ destinationId }),
+  navigationRoute: [],
+  setNavigationRoute: (navigationRoute) => set({ navigationRoute }),
+  walkPosition: WALK_SPAWN.position,
+  walkForward: [0, -1],
+  setWalkPose: (walkPosition, walkForward) => set({ walkPosition, walkForward }),
 }))

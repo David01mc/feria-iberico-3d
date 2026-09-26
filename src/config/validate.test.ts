@@ -19,7 +19,7 @@ describe('FAIR (Salón Dehesa 2026)', () => {
     expect(validateFair(FAIR)).toEqual([])
   })
 
-  it('clasifica los puestos de ibéricos, bebidas, tapas, aceitunas y vermut por superficie', () => {
+  it('clasifica los puestos de ibéricos, bebidas, tapas, aceitunas, vermut y miel por superficie', () => {
     const sizes = FAIR.stands.map((s) => s.size).sort()
     expect(sizes).toEqual([
       'grande',
@@ -32,6 +32,7 @@ describe('FAIR (Salón Dehesa 2026)', () => {
       'mediano',
       'pequeño',
       'pequeño',
+      'pequeño',
     ])
   })
 
@@ -42,6 +43,7 @@ describe('FAIR (Salón Dehesa 2026)', () => {
       'croquetas',
       'embutidos',
       'jamon',
+      'mieles',
       'quesos',
       'sidras',
       'tapas',

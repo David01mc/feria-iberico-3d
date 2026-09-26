@@ -159,11 +159,16 @@ body {
   border: 0;
   border-radius: var(--radius);
   padding: 7px 14px;
-  font: 600 13px/1 'Inter', system-ui, sans-serif;
+  font:
+    600 13px/1 'Inter',
+    system-ui,
+    sans-serif;
   color: var(--ink);
   background: transparent;
   cursor: pointer;
-  transition: background 160ms ease, color 160ms ease;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
 }
 
 .segmented__option:hover {
@@ -252,9 +257,335 @@ body {
   pointer-events: none;
 }
 
+/* ── Plano interactivo y guía del paseo ──────────────────────────── */
+
+.navigation {
+  position: absolute;
+  top: clamp(16px, 3vw, 32px);
+  right: clamp(16px, 3vw, 32px);
+  width: min(430px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.navigation button,
+.guide button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.navigation__toggle,
+.navigation__panel,
+.guide {
+  background: rgba(21, 29, 25, 0.91);
+  border: 1px solid rgba(200, 164, 90, 0.48);
+  color: var(--ink);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+}
+
+.navigation__toggle {
+  pointer-events: auto;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+}
+
+.navigation__toggle span {
+  color: var(--gold);
+  font-size: 17px;
+  vertical-align: -1px;
+}
+
+.navigation__toggle kbd {
+  margin-left: 5px;
+  padding: 1px 5px;
+  border: 1px solid var(--glass-border);
+  border-radius: 5px;
+  font:
+    600 11px 'Inter',
+    sans-serif;
+  color: var(--ink-soft);
+}
+
+.navigation__panel {
+  pointer-events: auto;
+  width: 100%;
+  max-height: min(720px, calc(100vh - 92px));
+  overflow: auto;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.navigation__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.navigation__eyebrow {
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.navigation__heading h2 {
+  margin: 3px 0 13px;
+  font:
+    600 21px/1.15 'Fraunces',
+    Georgia,
+    serif;
+}
+
+.navigation__close,
+.guide button {
+  color: var(--ink-soft);
+  border: 0;
+  background: transparent;
+  font-size: 24px !important;
+  line-height: 1;
+}
+
+.fair-map {
+  display: block;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: #19221f;
+}
+
+.fair-map__hall {
+  fill: #26332d;
+}
+.fair-map__aisle {
+  fill: #435048;
+}
+.fair-map__neighbor {
+  fill: #657168;
+  stroke: #26332d;
+  stroke-width: 0.12;
+}
+.fair-map__stand {
+  cursor: pointer;
+  outline: none;
+}
+.fair-map__stand rect {
+  fill: #b98e53;
+  stroke: #f0dbac;
+  stroke-width: 0.16;
+}
+.fair-map__stand:hover rect,
+.fair-map__stand:focus-visible rect,
+.fair-map__stand--selected rect {
+  fill: #e5b95f;
+  stroke: #fff9db;
+  stroke-width: 0.38;
+}
+.fair-map__stand text {
+  fill: #1e261f;
+  font:
+    700 1.3px 'Inter',
+    sans-serif;
+  pointer-events: none;
+}
+.fair-map__route {
+  fill: none;
+  stroke: #ffdb7d;
+  stroke-width: 0.46;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 0.9 0.48;
+  pointer-events: none;
+}
+.fair-map__goal {
+  fill: #f9d26a;
+  stroke: #1c2923;
+  stroke-width: 0.2;
+  pointer-events: none;
+}
+.fair-map__you {
+  fill: #74d7d5;
+  stroke: #f1ffff;
+  stroke-width: 0.24;
+  pointer-events: none;
+}
+.fair-map__you-label {
+  fill: #ecffff;
+  font:
+    700 1.35px 'Inter',
+    sans-serif;
+  paint-order: stroke;
+  stroke: #15231f;
+  stroke-width: 0.5;
+  pointer-events: none;
+}
+
+.navigation__legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 9px 0 12px;
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.navigation__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #74d7d5;
+}
+.navigation__line {
+  width: 18px;
+  height: 0;
+  margin-left: 12px;
+  border-top: 2px dashed #ffdb7d;
+}
+
+.navigation__list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.navigation__list button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 9px;
+  color: var(--ink);
+  text-align: left;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.navigation__list button:hover,
+.navigation__list button[aria-pressed='true'] {
+  border-color: var(--gold);
+  background: rgba(200, 164, 90, 0.16);
+}
+.navigation__list button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.navigation__list small {
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.navigation__action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.navigation__action p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.navigation__action strong {
+  color: var(--ink);
+}
+.navigation__action button {
+  flex-shrink: 0;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--gold);
+  color: #1a1a17;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.guide {
+  position: absolute;
+  top: clamp(16px, 3vw, 32px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 215px;
+  max-width: min(330px, calc(100vw - 32px));
+  padding: 9px 10px;
+  border-radius: 14px;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.guide__arrow {
+  display: grid;
+  place-items: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  color: #242315;
+  background: var(--gold);
+  border-radius: 50%;
+  font-size: 26px;
+  font-weight: 600;
+  transition: transform 220ms ease;
+}
+
+.guide__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.guide__text strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.guide__text small {
+  color: var(--ink-soft);
+  font-size: 10px;
+}
+
+.navigation button:focus-visible,
+.guide button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
 @media (max-width: 640px) {
   .hud__hint {
     display: none;
+  }
+
+  .guide {
+    top: auto;
+    bottom: clamp(130px, 20vh, 170px);
+  }
+
+  .navigation__panel {
+    max-height: calc(100vh - 78px);
+  }
+
+  .navigation__list {
+    grid-template-columns: 1fr;
   }
 }
 

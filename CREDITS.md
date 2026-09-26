@@ -54,3 +54,5 @@ Generado por `npm run assets`. Todos los assets son CC0 (dominio público) o SIL
 | Modelo 3D | [ceramic_vase_03](https://polyhaven.com/a/ceramic_vase_03) | Poly Haven | CC0 | Jarrón alto rectangular (macetas compuestas) |
 | Modelo 3D | [modern_ceiling_lamp_01](https://polyhaven.com/a/modern_ceiling_lamp_01) | Poly Haven | CC0 | Lámpara colgante |
 | Modelo 3D | [jug_01](https://polyhaven.com/a/jug_01) | Poly Haven | CC0 | Jarra de cerámica |
+| Modelo 3D | [Honey (Food Kit)](https://kenney.nl/assets/food-kit) | Kenney | CC0 | Tarros del puesto de miel; textura integrada en el GLB |
+| Modelo 3D | [Honey Jar And Dipper](https://3dassets.dev/assets/alpine-snow-village-honey-jar-and-dipper-aef91e74) | 3DAssets.dev | CC0 | Tarro con palito del mostrador de miel |

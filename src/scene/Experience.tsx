@@ -14,6 +14,7 @@ import { QUALITY } from '../render/quality'
 import { useAppStore } from '../state/store'
 import { APP_VIEW } from '../state/view'
 import { Hall } from './hall/Hall'
+import { FloorRoute } from './hall/FloorRoute'
 import { SHOWROOM_VIEW, Showroom } from './showroom/Showroom'
 import { Stands } from './stands/Stands'
 
@@ -83,6 +84,7 @@ export function Experience() {
             <>
               <Hall fair={FAIR} />
               <Stands stands={FAIR.stands} />
+              <FloorRoute />
             </>
           )}
         </MaterialLibraryProvider>

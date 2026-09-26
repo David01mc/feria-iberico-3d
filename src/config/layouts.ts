@@ -386,6 +386,32 @@ function vermutColliders(): Rect[] {
   ]
 }
 
+// ── Miel de la Dehesa · puesto de esquina 3 × 3 ────────────────────────────
+
+export const MIELES = {
+  floor: 0.07,
+  floorInset: 0.05,
+  wallInset: 0.08,
+  wallThickness: 0.1,
+  wallHeight: 2.72,
+  frameHeight: 3.22,
+  /** Mostrador abierto al Pasillo Sur. */
+  counter: { center: [0, 0.73] as XZ, size: [2.48, 0.66] as XZ, height: 0.94 },
+  /** Celdas de madera sobre la trasera, detrás del mostrador. */
+  honeycomb: { z: -1.245, rows: [1.33, 1.83, 2.33], columns: [-0.8, -0.27, 0.27, 0.8] },
+} as const
+
+function mielesColliders(): Rect[] {
+  const m = MIELES
+  const t = m.wallThickness
+  const i = m.wallInset
+  return [
+    rect(-1.5 + i, -1.5 + i, 1.5 - i, -1.5 + i + t),
+    rect(1.5 - i - t, -1.5 + i, 1.5 - i, 1.5 - i),
+    box(...m.counter.center, ...m.counter.size),
+  ]
+}
+
 // ── Piel de Toro · isla 9 × 6: caseta de feria (abre a los cuatro lados) ─────
 
 type Segment = readonly [XZ, XZ]
@@ -498,4 +524,5 @@ export const STAND_COLLIDERS: Record<StandKind, () => Rect[]> = {
   tapas: pieldetoroColliders,
   aceitunas: aceitunasColliders,
   vermut: vermutColliders,
+  mieles: mielesColliders,
 }
