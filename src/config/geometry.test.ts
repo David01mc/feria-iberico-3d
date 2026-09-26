@@ -6,9 +6,37 @@ import {
   contains,
   overlaps,
   rect,
+  localRectToWorld,
+  localToWorld,
   sideSegment,
+  standFrame,
   subdivide,
 } from './geometry'
+
+describe('standFrame', () => {
+  it('un stand que abre al norte se diseña con su frente en +z local', () => {
+    const frame = standFrame(rect(-9.5, 2, -3.5, 5), 'north')
+    expect(frame.width).toBe(6)
+    expect(frame.depth).toBe(3)
+    const [x, z] = localToWorld(frame, [0, frame.depth / 2])
+    expect(x).toBeCloseTo(-6.5)
+    expect(z).toBeCloseTo(2)
+  })
+
+  it('un frente al este intercambia ancho y fondo', () => {
+    const frame = standFrame(rect(0, 0, 4, 6), 'east')
+    expect(frame.width).toBe(6)
+    expect(frame.depth).toBe(4)
+    const [x] = localToWorld(frame, [0, frame.depth / 2])
+    expect(x).toBeCloseTo(4)
+  })
+
+  it('transforma rectángulos locales a la parcela', () => {
+    const frame = standFrame(rect(-4, -8, 4, -2), 'south')
+    const world = localRectToWorld(frame, rect(-1, -0.5, 1, 0.5))
+    expect(world).toEqual(rect(-1, -5.5, 1, -4.5))
+  })
+})
 
 describe('sideSegment', () => {
   it('coloca una pieza paralela al lado este, hacia dentro', () => {

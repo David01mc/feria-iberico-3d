@@ -10,6 +10,7 @@ export const croquetas: StandConfig = {
   layout: 'kiosco',
   plot: rect(-3.5, 2, -0.5, 5),
   openSides: ['north'],
+  front: 'north',
   maxHeight: 3.5,
   company: {
     name: 'Doña Brava Croquetería',

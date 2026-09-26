@@ -55,6 +55,8 @@ export interface StandConfig {
   plot: Rect
   /** Lados abiertos a pasillo (se valida contra el plano). */
   openSides: Side[]
+  /** Frente principal: hacia donde mira la arquitectura del stand (uno de los lados abiertos). */
+  front: Side
   /** Altura máxima de construcción permitida por la organización. */
   maxHeight: number
 }

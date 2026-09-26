@@ -7,6 +7,7 @@ export type IssueCode =
   | 'size-mismatch'
   | 'open-sides'
   | 'layout-mismatch'
+  | 'front-closed'
   | 'duplicate-code'
   | 'hall-bounds'
 
@@ -101,6 +102,14 @@ export function validateFair(fair: FairConfig): ValidationIssue[] {
         code: 'open-sides',
         subject: stand.id,
         message: `${stand.id}: declara [${stand.openSides}] pero el plano abre [${actual}]`,
+      })
+    }
+
+    if (!stand.openSides.includes(stand.front)) {
+      issues.push({
+        code: 'front-closed',
+        subject: stand.id,
+        message: `${stand.id}: el frente ${stand.front} no da a pasillo`,
       })
     }
 

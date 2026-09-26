@@ -10,6 +10,7 @@ export const embutidos: StandConfig = {
   layout: 'esquina',
   plot: rect(-0.5, 2, 4, 6),
   openSides: ['north', 'east'],
+  front: 'north',
   maxHeight: 3.5,
   company: {
     name: 'Embutidos Sierra Candela',

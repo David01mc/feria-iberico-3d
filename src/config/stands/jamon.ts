@@ -10,6 +10,7 @@ export const jamon: StandConfig = {
   layout: 'isla',
   plot: rect(-4, -8, 4, -2),
   openSides: ['north', 'south', 'east', 'west'],
+  front: 'south',
   maxHeight: 4.5,
   company: {
     name: 'Casa Bellotar',

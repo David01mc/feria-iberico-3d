@@ -1,5 +1,6 @@
 import { BOOTH, closedSides, counterFootprint } from './booths'
-import { innerStrip, rect } from './geometry'
+import { innerStrip, localRectToWorld, rect, standFrame } from './geometry'
+import { STAND_COLLIDERS } from './layouts'
 import type { FairConfig, Rect } from './types'
 
 /** Punto de partida del paseo: Avenida Central, mirando hacia los cuatro stands. */
@@ -9,8 +10,8 @@ export const WALK_SPAWN = {
 }
 
 /**
- * Obstáculos en planta para el paseo en primera persona: muros del pabellón y paneles y
- * mostradores de los stands modulares. Los stands protagonistas añadirán los suyos (Fase 5).
+ * Obstáculos en planta para el paseo en primera persona: muros del pabellón, paneles y
+ * mostradores de los stands modulares y el mobiliario de los cuatro stands protagonistas.
  */
 export function buildColliders(fair: FairConfig): Rect[] {
   const { bounds } = fair.hall
@@ -27,6 +28,11 @@ export function buildColliders(fair: FairConfig): Rect[] {
     }
     const counter = counterFootprint(neighbor)
     if (counter) colliders.push(counter)
+  }
+
+  for (const stand of fair.stands) {
+    const frame = standFrame(stand.plot, stand.front)
+    colliders.push(...STAND_COLLIDERS[stand.kind]().map((local) => localRectToWorld(frame, local)))
   }
 
   return colliders

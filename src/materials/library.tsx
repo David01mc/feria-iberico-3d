@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, type ReactNode } from 'react'
 import { MeshPhysicalMaterial, type Material, type MeshPhysicalMaterialParameters } from 'three'
-import { useAppStore } from '../state/store'
 import { PBR, usePbr, type PbrMaps, type PbrSet } from './pbr'
 
 /*
@@ -72,7 +71,7 @@ function physical(
   return material
 }
 
-function buildLibrary(maps: Record<TexturedKey, PbrMaps>, cheapGlass: boolean): MaterialLibrary {
+function buildLibrary(maps: Record<TexturedKey, PbrMaps>): MaterialLibrary {
   const textured = (key: TexturedKey, set: PbrSet, params: MeshPhysicalMaterialParameters = {}) =>
     physical(key, { ...maps[key], roughness: 1, ...params }, { tile: set.tile })
   // Vidrio, LED y aceite no proyectan sombra (se verían como sólidos opacos).
@@ -96,23 +95,20 @@ function buildLibrary(maps: Record<TexturedKey, PbrMaps>, cheapGlass: boolean): 
     steelBlack: physical('steelBlack', { color: '#1e1f21', metalness: 0.85, roughness: 0.42 }),
     chrome: physical('chrome', { color: '#eceef0', metalness: 1, roughness: 0.06 }),
     aluminium: physical('aluminium', { color: '#d2d6da', metalness: 0.95, roughness: 0.25 }),
-    glass: cheapGlass
-      ? physical(
-          'glass',
-          {
-            color: '#e4ecea',
-            roughness: 0.04,
-            transparent: true,
-            opacity: 0.16,
-            depthWrite: false,
-          },
-          noShadow,
-        )
-      : physical(
-          'glass',
-          { color: '#ffffff', roughness: 0.02, transmission: 1, thickness: 0.008, ior: 1.52 },
-          noShadow,
-        ),
+    // Vidrio reflectante translúcido. Sin transmisión real: un solo objeto transmisivo obliga a
+    // renderizar la escena entera otra vez en cada fotograma (−8 ms medidos en el portátil).
+    glass: physical(
+      'glass',
+      {
+        color: '#e4ecea',
+        roughness: 0.03,
+        transparent: true,
+        opacity: 0.14,
+        depthWrite: false,
+        envMapIntensity: 1.6,
+      },
+      noShadow,
+    ),
     lacquerWhite: physical('lacquerWhite', {
       color: '#efece6',
       roughness: 0.35,
@@ -153,9 +149,8 @@ function buildLibrary(maps: Record<TexturedKey, PbrMaps>, cheapGlass: boolean): 
 
 const LibraryContext = createContext<MaterialLibrary | null>(null)
 
-/** Crea la librería una vez (se recrea solo si cambia la calidad: el vidrio barato en "Baja"). */
+/** Crea la librería una sola vez para toda la escena. */
 export function MaterialLibraryProvider({ children }: { children: ReactNode }) {
-  const cheapGlass = useAppStore((s) => s.quality === 'baja')
   const oak = usePbr(PBR.oak)
   const darkWood = usePbr(PBR.darkWood)
   const roughWood = usePbr(PBR.roughWood)
@@ -170,11 +165,19 @@ export function MaterialLibraryProvider({ children }: { children: ReactNode }) {
 
   const library = useMemo(
     () =>
-      buildLibrary(
-        { oak, darkWood, roughWood, deck, plaster, brick, tiles, terracotta, hessian, linen },
-        cheapGlass,
-      ),
-    [oak, darkWood, roughWood, deck, plaster, brick, tiles, terracotta, hessian, linen, cheapGlass],
+      buildLibrary({
+        oak,
+        darkWood,
+        roughWood,
+        deck,
+        plaster,
+        brick,
+        tiles,
+        terracotta,
+        hessian,
+        linen,
+      }),
+    [oak, darkWood, roughWood, deck, plaster, brick, tiles, terracotta, hessian, linen],
   )
 
   useEffect(() => () => Object.values(library).forEach((material) => material.dispose()), [library])

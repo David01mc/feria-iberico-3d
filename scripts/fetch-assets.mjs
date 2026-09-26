@@ -87,7 +87,12 @@ async function fetchModel({ id, res }) {
     // Texturas a WebP ≤ 1024 px y geometría con meshopt; --palette false conserva los materiales.
     execFileSync(
       GLTF_TRANSFORM,
-      ['optimize', entry, out, '--compress', 'meshopt', '--texture-compress', 'webp', '--texture-size', '1024', '--palette', 'false'],
+      [
+        'optimize', entry, out, '--compress', 'meshopt', '--texture-compress', 'webp', '--texture-size', '1024',
+        '--palette', 'false',
+        // Los modelos de Poly Haven son de estudio (hasta 20k triángulos); en feria sobra detalle.
+        '--simplify-error', '0.002',
+      ],
       { stdio: ['ignore', 'ignore', 'inherit'] },
     )
   }

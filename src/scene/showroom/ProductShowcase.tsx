@@ -2,15 +2,8 @@ import { Text } from '@react-three/drei'
 import { useMemo } from 'react'
 import { FONT } from '../../materials/assets'
 import type { Vec3 } from '../../materials/geometry'
-import {
-  alignTwoPoints,
-  alongLine,
-  gridOnSurface,
-  wheelStack,
-  withTints,
-  type Placement,
-} from '../products/arrange'
-import { productMeta } from '../products/catalog'
+import { alongLine, gridOnSurface, TINTS, wheelStack, withTints } from '../products/arrange'
+import { HamOnStand } from '../products/HamOnStand'
 import { ProductInstances } from '../products/ProductInstances'
 import { BoxTruss } from '../props/BoxTruss'
 import { MODELS, type Surface } from '../props/catalog'
@@ -21,10 +14,6 @@ import { Shelving } from '../props/Shelving'
 const COUNTER_H = 1.05
 /** Los ganchos cuelgan de la cara inferior del truss de 29 cm. */
 const HOOK_Y = -0.145
-/** Variación de dorado entre frituras. */
-const FRYING_TINTS = ['#ffffff', '#f3e6d2', '#e6d2b4', '#fff4e4']
-/** Variación de curación entre piezas colgadas. */
-const CURING_TINTS = ['#ffffff', '#f0e6de', '#e2d4ca']
 const add = (a: Vec3, b: readonly number[]): Vec3 => [a[0] + b[0]!, a[1] + b[1]!, a[2] + b[2]!]
 
 function Label({ x, children }: { x: number; children: string }) {
@@ -42,21 +31,6 @@ function Label({ x, children }: { x: number; children: string }) {
     >
       {children}
     </Text>
-  )
-}
-
-/** Jamón empezado sobre el jamonero: apoyado en la cuna y con la pezuña en la mordaza. */
-function HamOnStand({ at }: { at: Vec3 }) {
-  const placement = useMemo<Placement>(() => {
-    const { anchors } = productMeta('jamonCortado')
-    const { cuna, mordaza } = MODELS.jamonero.anchors
-    return alignTwoPoints(anchors.apoyo!, anchors.pezuna!, add(at, cuna), add(at, mordaza))
-  }, [at])
-  return (
-    <>
-      <Prop model="jamonero" position={at} />
-      <ProductInstances product="jamonCortado" items={[placement]} />
-    </>
   )
 }
 
@@ -81,7 +55,7 @@ function HangingRow({
           rotationJitter: 0.6,
           seed,
         }),
-        CURING_TINTS,
+        TINTS.curing,
         seed,
       ),
     [from, to, count, seed],
@@ -107,7 +81,7 @@ export function ProductShowcase() {
         { center: add(at, surface.center), size: surface.size },
         { spacing: [0.068, 0.036], margin: 0.02, jitter: 0.003, rotationJitter: 0.12, seed },
       )
-    return withTints([...tray(inferior, 3), ...tray(superior, 4)], FRYING_TINTS, 8)
+    return withTints([...tray(inferior, 3), ...tray(superior, 4)], TINTS.frying, 8)
   }, [])
 
   const cheeseShelf = (level: number, index: number) => {

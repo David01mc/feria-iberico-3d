@@ -1,6 +1,6 @@
 import { useGLTF } from '@react-three/drei'
 import { useMemo } from 'react'
-import type { BufferGeometry, Material, Mesh } from 'three'
+import type { BufferGeometry, Material, Mesh, MeshPhysicalMaterial } from 'three'
 import { boxProjectUV, type Vec3 } from '../../materials/geometry'
 import { isMaterialKey, tileOf, useMaterials, useTintedMaterial } from '../../materials/library'
 import { MODELS, modelUrl, type ModelKey } from './catalog'
@@ -13,6 +13,34 @@ function projected(geometry: BufferGeometry, tile: number): BufferGeometry {
   if (!byTile) projectedCache.set(geometry, (byTile = new Map()))
   let result = byTile.get(tile)
   if (!result) byTile.set(tile, (result = boxProjectUV(geometry.clone(), tile)))
+  return result
+}
+
+/**
+ * Materiales con transmisión (vidrio, líquidos de los modelos de Poly Haven) convertidos a su
+ * equivalente barato: la transmisión real re-renderiza la escena entera en cada fotograma.
+ */
+const realtimeCache = new WeakMap<Material, Material>()
+
+function realtimeMaterial(material: Material): Material {
+  const physical = material as MeshPhysicalMaterial
+  if (!physical.transmission) return material
+  let result = realtimeCache.get(material)
+  if (!result) {
+    const copy = physical.clone()
+    copy.transmission = 0
+    if (/glass/i.test(material.name)) {
+      copy.transparent = true
+      copy.opacity = 0.45
+      copy.depthWrite = false
+      copy.userData.noShadow = true
+    } else {
+      // El vino dentro de la botella: opaco y brillante.
+      copy.transparent = false
+      copy.roughness = Math.min(copy.roughness, 0.15)
+    }
+    realtimeCache.set(material, (result = copy))
+  }
   return result
 }
 
@@ -56,6 +84,8 @@ export function Prop({
           if (replacement.userData.tile)
             mesh.geometry = projected(mesh.geometry, tileOf(replacement))
         }
+      } else {
+        mesh.material = realtimeMaterial(mesh.material as Material)
       }
       mesh.castShadow = castShadow && !(mesh.material as Material).userData.noShadow
       mesh.receiveShadow = true

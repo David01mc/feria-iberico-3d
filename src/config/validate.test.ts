@@ -71,6 +71,15 @@ describe('validateFair', () => {
     expect(codes(withStand({ openSides: ['north'] }))).toContain('open-sides')
   })
 
+  it('detecta un frente principal que da a un lado cerrado', () => {
+    const quesos = FAIR.stands.findIndex((s) => s.kind === 'quesos')
+    const broken: FairConfig = {
+      ...FAIR,
+      stands: FAIR.stands.map((s, i) => (i === quesos ? { ...s, front: 'south' } : s)),
+    }
+    expect(codes(broken)).toContain('front-closed')
+  })
+
   it('detecta parcelas fuera de la zona de exposición', () => {
     expect(codes(withStand({ plot: rect(40, 0, 48, 6) }))).toContain('out-of-area')
   })

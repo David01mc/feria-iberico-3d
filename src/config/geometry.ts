@@ -124,6 +124,42 @@ export function sideSegment(r: Rect, side: Side, inset = 0) {
   }
 }
 
+/**
+ * Marco local de un stand: origen en el centro de la parcela, frente principal hacia +z,
+ * `width` a lo largo de x local y `depth` a lo largo de z local.
+ */
+export interface StandFrame {
+  center: [number, number]
+  rotationY: number
+  width: number
+  depth: number
+}
+
+export function standFrame(plot: Rect, front: Side): StandFrame {
+  const alongX = front === 'north' || front === 'south'
+  return {
+    center: center(plot),
+    rotationY: sideRotation(front),
+    width: alongX ? width(plot) : depth(plot),
+    depth: alongX ? depth(plot) : width(plot),
+  }
+}
+
+/** Punto local [x, z] del stand → planta del pabellón (giro sobre +y, como three.js). */
+export function localToWorld(frame: StandFrame, [lx, lz]: [number, number]): [number, number] {
+  const c = Math.cos(frame.rotationY)
+  const s = Math.sin(frame.rotationY)
+  const round = (v: number) => Math.round(v * 1e9) / 1e9
+  return [round(frame.center[0] + lx * c + lz * s), round(frame.center[1] - lx * s + lz * c)]
+}
+
+/** Rectángulo local → planta (los giros son múltiplos de 90°, así que sigue alineado). */
+export function localRectToWorld(frame: StandFrame, r: Rect): Rect {
+  const [ax, az] = localToWorld(frame, [r.x0, r.z0])
+  const [bx, bz] = localToWorld(frame, [r.x1, r.z1])
+  return rect(ax, az, bx, bz)
+}
+
 /** Ángulo (rad, sobre +y) que orienta el frente local (+z) de un objeto hacia ese lado. */
 export function sideRotation(side: Side): number {
   switch (side) {

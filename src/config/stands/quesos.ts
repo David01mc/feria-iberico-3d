@@ -10,6 +10,7 @@ export const quesos: StandConfig = {
   layout: 'lineal',
   plot: rect(-9.5, 2, -3.5, 5),
   openSides: ['north'],
+  front: 'north',
   maxHeight: 3.5,
   company: {
     name: 'Quesería Cerro Albar',

@@ -136,6 +136,14 @@ export function wheelStack(
   return items
 }
 
+/** Paletas de tinte multiplicativo para `withTints`. */
+export const TINTS = {
+  /** Variación de dorado entre frituras. */
+  frying: ['#ffffff', '#f3e6d2', '#e6d2b4', '#fff4e4'],
+  /** Variación de curación entre piezas colgadas. */
+  curing: ['#ffffff', '#f0e6de', '#e2d4ca'],
+}
+
 /** Variación de tono entre piezas (ninguna croqueta sale igual de la freidora). */
 export function withTints(items: Placement[], tints: string[], seed = 1): Placement[] {
   const random = seeded(seed)

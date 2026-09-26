@@ -1,6 +1,6 @@
 import { BakeShadows, Environment, PerformanceMonitor } from '@react-three/drei'
-import { Canvas } from '@react-three/fiber'
-import { Suspense, useMemo } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
+import { Suspense, useEffect, useMemo } from 'react'
 import { CameraRig, HOME_VIEW } from '../camera/CameraRig'
 import { WalkControls } from '../camera/WalkControls'
 import { buildColliders } from '../config/colliders'
@@ -17,6 +17,15 @@ import { SHOWROOM_VIEW, Showroom } from './showroom/Showroom'
 import { Stands } from './stands/Stands'
 
 const isShowroom = APP_VIEW === 'muestrario'
+
+/** Solo en desarrollo: expone renderer y escena para medir rendimiento desde la consola. */
+function DevProbe() {
+  const state = useThree()
+  useEffect(() => {
+    Object.assign(window, { __r3f: state })
+  }, [state])
+  return null
+}
 
 /**
  * Lienzo 3D. `flat` desactiva el tone mapping del renderer porque lo aplica el postproceso (AgX).
@@ -63,6 +72,7 @@ export function Experience() {
         <CameraRig home={home} />
       )}
       <PostFX preset={preset} />
+      {import.meta.env.DEV && <DevProbe />}
       {/* Solo tras la carga: la compilación de shaders hunde los fps un momento y no es real. */}
       {sceneReady && <PerformanceMonitor onDecline={degradeQuality} flipflops={3} />}
     </Canvas>
