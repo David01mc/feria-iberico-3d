@@ -9,6 +9,7 @@ import { PielDeToroStand } from './PielDeToroStand'
 import { QuesosStand } from './QuesosStand'
 import { SidrasStand } from './SidrasStand'
 import { VinosStand } from './VinosStand'
+import { VermutStand } from './VermutStand'
 
 /** Arquitectura de cada tipo de stand (cada expositor decora su espacio a su manera). */
 const STAND_COMPONENTS: Record<StandKind, ComponentType<{ stand: StandConfig }>> = {
@@ -21,6 +22,7 @@ const STAND_COMPONENTS: Record<StandKind, ComponentType<{ stand: StandConfig }>>
   sidras: SidrasStand,
   tapas: PielDeToroStand,
   aceitunas: AceitunasStand,
+  vermut: VermutStand,
 }
 
 export function Stands({ stands }: { stands: StandConfig[] }) {

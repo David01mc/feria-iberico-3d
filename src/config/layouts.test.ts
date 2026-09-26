@@ -65,6 +65,21 @@ describe('layouts de los stands', () => {
     expect(embutidosWest.x0 - croquetasEast.x1).toBeGreaterThanOrEqual(0.1)
   })
 
+  it('aceitunas y vermut separan sus muros en la parcela compartida', () => {
+    const aceitunas = FAIR.stands.find((s) => s.kind === 'aceitunas')!
+    const vermut = FAIR.stands.find((s) => s.kind === 'vermut')!
+    const oliveWall = localRectToWorld(
+      standFrame(aceitunas.plot, aceitunas.front),
+      STAND_COLLIDERS.aceitunas()[1]!,
+    )
+    const vermutWall = localRectToWorld(
+      standFrame(vermut.plot, vermut.front),
+      STAND_COLLIDERS.vermut()[2]!,
+    )
+
+    expect(vermutWall.x0 - oliveWall.x1).toBeGreaterThanOrEqual(0.1)
+  })
+
   it('el lateral de cervezas queda separado del módulo vecino', () => {
     const beer = FAIR.stands.find((s) => s.kind === 'cervezas')!
     const neighbor = FAIR.neighbors.find(

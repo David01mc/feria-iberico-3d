@@ -358,6 +358,34 @@ function aceitunasColliders(): Rect[] {
   ]
 }
 
+// ── La Hora del Vermut · barra lineal 3 × 3 ──────────────────────────────────
+
+export const VERMUT = {
+  floor: 0.06,
+  floorInset: 0.04,
+  wallInset: 0.06,
+  wallThickness: 0.1,
+  wallHeight: 2.72,
+  frameHeight: 3.18,
+  frameX: [-1.28, 1.28] as XZ,
+  frameZ: [-1.28, 1.28] as XZ,
+  /** Barra de venta al frente, con espacio de trabajo detrás. */
+  counter: { center: [0, 0.82] as XZ, size: [2.55, 0.66] as XZ, height: 1.0 },
+  shelf: { z: -1.08, width: 2.42, depth: 0.27, levels: [1.43, 1.95] },
+} as const
+
+function vermutColliders(): Rect[] {
+  const v = VERMUT
+  const t = v.wallThickness
+  const i = v.wallInset
+  return [
+    rect(-1.5 + i + t, -1.5 + i, 1.5 - i - t, -1.5 + i + t),
+    rect(-1.5 + i, -1.5 + i, -1.5 + i + t, 1.5 - i),
+    rect(1.5 - i - t, -1.5 + i, 1.5 - i, 1.5 - i),
+    box(...v.counter.center, ...v.counter.size),
+  ]
+}
+
 // ── Piel de Toro · isla 9 × 6: caseta de feria (abre a los cuatro lados) ─────
 
 type Segment = readonly [XZ, XZ]
@@ -469,4 +497,5 @@ export const STAND_COLLIDERS: Record<StandKind, () => Rect[]> = {
   sidras: sidrasColliders,
   tapas: pieldetoroColliders,
   aceitunas: aceitunasColliders,
+  vermut: vermutColliders,
 }

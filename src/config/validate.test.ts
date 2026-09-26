@@ -31,6 +31,7 @@ describe('FAIR (Salón Dehesa 2026)', () => {
       'mediano',
       'mediano',
       'pequeño',
+      'pequeño',
     ])
   })
 
@@ -44,6 +45,7 @@ describe('FAIR (Salón Dehesa 2026)', () => {
       'quesos',
       'sidras',
       'tapas',
+      'vermut',
       'vinos',
     ])
   })
