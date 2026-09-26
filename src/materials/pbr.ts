@@ -1,13 +1,13 @@
-import { useTexture } from '@react-three/drei'
-import { useThree } from '@react-three/fiber'
+import { useLoader, useThree } from '@react-three/fiber'
 import { useLayoutEffect, useMemo } from 'react'
 import { NoColorSpace, RepeatWrapping, SRGBColorSpace, type Texture } from 'three'
 import { QUALITY } from '../render/quality'
 import { useAppStore } from '../state/store'
 import { asset } from './assets'
+import { ktx2Loader } from './ktx2'
 
 /**
- * Conjunto de texturas PBR descargado (ver scripts/assets.manifest.json).
+ * Conjunto de texturas PBR descargado (ver scripts/assets.manifest.json), publicado en KTX2.
  * - `arm`: Poly Haven, un único mapa empaquetado (R = AO, G = rugosidad, B = metal).
  * - `split`: ambientCG, mapas de rugosidad y AO por separado.
  */
@@ -48,7 +48,7 @@ export interface PbrMaps {
 function texturePaths(
   set: PbrSet,
 ): Record<keyof PbrMaps, string> | Omit<Record<keyof PbrMaps, string>, 'map'> {
-  const file = (name: string) => asset(`textures/${set.id}/${name}.jpg`)
+  const file = (name: string) => asset(`textures/${set.id}/${name}.ktx2`)
   const maps = {
     normalMap: file('nor'),
     roughnessMap: file(set.kind === 'arm' ? 'arm' : 'rough'),
@@ -56,6 +56,9 @@ function texturePaths(
   }
   return set.albedo === false ? maps : { map: file('diff'), ...maps }
 }
+
+/** Ficheros distintos de un conjunto: el ARM hace de rugosidad y de AO y se carga una sola vez. */
+const uniqueFiles = (set: PbrSet) => [...new Set(Object.values(texturePaths(set)))]
 
 /**
  * Carga (con caché) los mapas de un conjunto PBR, listos para esparcir en un
@@ -65,8 +68,14 @@ export function usePbr(set: PbrSet): PbrMaps {
   const gl = useThree((s) => s.gl)
   const quality = useAppStore((s) => s.quality)
   const anisotropy = Math.min(gl.capabilities.getMaxAnisotropy(), QUALITY[quality].anisotropy)
-  const paths = useMemo(() => texturePaths(set), [set])
-  const textures = useTexture(paths) as unknown as PbrMaps
+  const files = useMemo(() => uniqueFiles(set), [set])
+  const loaded = useLoader(ktx2Loader, files)
+  const textures = useMemo(() => {
+    const byFile = new Map(files.map((file, i) => [file, loaded[i]]))
+    return Object.fromEntries(
+      Object.entries(texturePaths(set)).map(([key, file]) => [key, byFile.get(file)]),
+    ) as unknown as PbrMaps
+  }, [set, files, loaded])
 
   useLayoutEffect(() => {
     for (const [key, texture] of Object.entries(textures) as [keyof PbrMaps, Texture][]) {
@@ -81,4 +90,4 @@ export function usePbr(set: PbrSet): PbrMaps {
 }
 
 /** Pide los mapas de un conjunto con la misma clave de caché que `usePbr`. */
-export const preloadPbr = (set: PbrSet) => useTexture.preload(Object.values(texturePaths(set)))
+export const preloadPbr = (set: PbrSet) => useLoader.preload(ktx2Loader, uniqueFiles(set))

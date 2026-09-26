@@ -1,5 +1,5 @@
 {
-  "hdris": [{ "id": "rostock_laage_airport", "res": "2k" }],
+  "hdris": [{ "id": "rostock_laage_airport", "res": "1k" }],
   "polyhaven": [
     { "id": "concrete_floor_02", "res": "2k", "use": "Suelo del pabellón" },
     { "id": "painted_concrete", "res": "1k", "use": "Zócalo de los muros del pabellón" },
@@ -27,17 +27,17 @@
     { "slug": "pacifico", "weight": 400 }
   ],
   "models": [
-    { "id": "bar_chair_round_01", "res": "1k", "use": "Taburete alto de barra (degustación)" },
+    { "id": "bar_chair_round_01", "res": "1k", "simplify": 0.01, "use": "Taburete alto de barra (degustación)" },
     { "id": "metal_stool_02", "res": "1k", "use": "Taburete industrial (croquetería)" },
     { "id": "standing_chalkboard_01", "res": "1k", "use": "Pizarra de caballete" },
-    { "id": "wicker_basket_01", "res": "1k", "use": "Cesta de mimbre" },
+    { "id": "wicker_basket_01", "res": "1k", "simplify": 0.008, "use": "Cesta de mimbre" },
     { "id": "wine_bottles_01", "res": "1k", "use": "Botellas de vino" },
     { "id": "wine_barrel_01", "res": "1k", "use": "Barrica de roble (mesa alta)" },
     { "id": "CheeseBox_01", "res": "1k", "use": "Caja de madera para queso" },
     { "id": "wooden_crate_01", "res": "1k", "use": "Caja de madera" },
     { "id": "carved_wooden_plate", "res": "1k", "use": "Tabla de madera para servir" },
     { "id": "wooden_bowl_01", "res": "1k", "use": "Cuenco de madera" },
-    { "id": "potted_plant_02", "res": "1k", "use": "Planta en maceta" },
+    { "id": "potted_plant_02", "res": "1k", "simplify": 0.008, "use": "Planta en maceta" },
     { "id": "potted_plant_04", "res": "1k", "use": "Planta alta en maceta" },
     { "id": "modern_ceiling_lamp_01", "res": "1k", "use": "Lámpara colgante" },
     { "id": "jug_01", "res": "1k", "use": "Jarra de cerámica" }

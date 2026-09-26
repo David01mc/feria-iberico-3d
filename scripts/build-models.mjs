@@ -9,6 +9,7 @@ import { execFileSync } from 'node:child_process'
 import { copyFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { glbJob, runJobs } from './ktx2.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const GLTF_TRANSFORM = join(ROOT, 'node_modules', '.bin', 'gltf-transform')
@@ -21,6 +22,8 @@ const GROUPS = {
   },
   products: {
     script: 'build_products.py',
+    // Texturas horneadas → KTX2 tras optimizar (ver scripts/ktx2.mjs).
+    ktx2: true,
     // Simplificación con tolerancia de ~1,5 mm por metro: el relieve fino ya va en el normal map.
     optimize: ['--texture-compress', 'webp', '--texture-size', '2048', '--simplify-error', '0.0015'],
     meta: join(ROOT, 'src', 'scene', 'products', 'meta.json'),
@@ -54,6 +57,7 @@ for (const name of groups) {
     }
   }
 
+  const built = []
   for (const file of readdirSync(raw).filter((f) => f.endsWith('.glb'))) {
     if (names.length && !names.includes(file.replace(/\.glb$/, ''))) continue
     const target = join(out, file)
@@ -63,7 +67,9 @@ for (const name of groups) {
       { stdio: ['ignore', 'ignore', 'inherit'] },
     )
     console.log(`✓ ${file} → public/assets/models/${name} (${(statSync(target).size / 1024).toFixed(0)} KB)`)
+    built.push(target)
   }
+  if (group.ktx2) await runJobs(built.map(glbJob))
 
   if (group.meta && existsSync(join(raw, 'meta.json'))) {
     copyFileSync(join(raw, 'meta.json'), group.meta)

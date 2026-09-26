@@ -1,7 +1,7 @@
 /** Rutas públicas de los assets descargados por `npm run assets`. */
 export const asset = (path: string) => `${import.meta.env.BASE_URL}assets/${path}`
 
-export const HDRI_URL = asset('hdri/rostock_laage_airport_2k.hdr')
+export const HDRI_URL = asset('hdri/rostock_laage_airport_1k.hdr')
 
 export const fontUrl = (id: string) => asset(`fonts/${id}.woff`)
 

@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 // Descarga los assets CC0/OFL declarados en assets.manifest.json y genera CREDITS.md.
 // Idempotente: los ficheros que ya existen no se vuelven a descargar.
+// Las texturas originales se guardan en .cache/textures y se publican como KTX2 (ver ktx2.mjs).
 import { execFileSync } from 'node:child_process'
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync, copyFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { TEXTURE_CACHE, pendingJobs, runJobs } from './ktx2.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT = join(ROOT, 'public', 'assets')
@@ -44,13 +46,13 @@ async function fetchPolyhaven({ id, res }) {
   for (const [key, name] of Object.entries(POLYHAVEN_MAPS)) {
     const url = files[key]?.[res]?.jpg?.url
     if (!url) throw new Error(`Textura ${id} sin mapa ${key} en ${res}`)
-    await download(url, join(OUT, 'textures', id, `${name}.jpg`))
+    await download(url, join(TEXTURE_CACHE, id, `${name}.jpg`))
   }
   return { name: id, url: `https://polyhaven.com/a/${id}`, license: 'CC0', source: 'Poly Haven' }
 }
 
 async function fetchAmbientcg({ id, res }) {
-  const dir = join(OUT, 'textures', id)
+  const dir = join(TEXTURE_CACHE, id)
   const wanted = Object.values(AMBIENTCG_MAPS).map((n) => join(dir, `${n}.jpg`))
   if (!wanted.every(existsSync)) {
     const zip = join(tmpdir(), `${id}_${res}.zip`)
@@ -71,7 +73,7 @@ async function fetchAmbientcg({ id, res }) {
 const GLTF_TRANSFORM = join(ROOT, 'node_modules', '.bin', 'gltf-transform')
 
 /** Descarga un modelo glTF de Poly Haven (con sus texturas) y lo empaqueta en GLB optimizado. */
-async function fetchModel({ id, res }) {
+async function fetchModel({ id, res, simplify = 0.002, textureSize = 512 }) {
   const out = join(OUT, 'models', 'ph', `${id}.glb`)
   if (!existsSync(out)) {
     const files = await getJson(`https://api.polyhaven.com/files/${id}`)
@@ -84,14 +86,16 @@ async function fetchModel({ id, res }) {
       await download(file.url, join(srcDir, relPath))
     }
     mkdirSync(dirname(out), { recursive: true })
-    // Texturas a WebP ≤ 1024 px y geometría con meshopt; --palette false conserva los materiales.
+    // Texturas a WebP ≤ 512 px (piezas pequeñas en pantalla: una cuarta parte de VRAM que a 1k)
+    // y geometría con meshopt; --palette false conserva los materiales.
     execFileSync(
       GLTF_TRANSFORM,
       [
-        'optimize', entry, out, '--compress', 'meshopt', '--texture-compress', 'webp', '--texture-size', '1024',
+        'optimize', entry, out, '--compress', 'meshopt', '--texture-compress', 'webp', '--texture-size', String(textureSize),
         '--palette', 'false',
         // Los modelos de Poly Haven son de estudio (hasta 20k triángulos); en feria sobra detalle.
-        '--simplify-error', '0.002',
+        // Los más densos (tejidos, hojas) llevan una tolerancia mayor en el manifiesto.
+        '--simplify-error', String(simplify),
       ],
       { stdio: ['ignore', 'ignore', 'inherit'] },
     )
@@ -121,6 +125,9 @@ async function main() {
     credits.push({ kind, ...credit, use: asset.use ?? '' })
     process.stdout.write('ok\n')
   }
+
+  // Texturas y GLB → KTX2 (solo lo que aún no esté convertido).
+  await runJobs(pendingJobs())
 
   const rows = credits
     .map((c) => `| ${c.kind} | [${c.name}](${c.url}) | ${c.source} | ${c.license} | ${c.use} |`)

@@ -1,6 +1,6 @@
 import { BakeShadows, Environment, PerformanceMonitor } from '@react-three/drei'
 import { Canvas, useThree } from '@react-three/fiber'
-import { Suspense, useEffect, useMemo } from 'react'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import { CameraRig, HOME_VIEW } from '../camera/CameraRig'
 import { WalkControls } from '../camera/WalkControls'
 import { buildColliders } from '../config/colliders'
@@ -18,7 +18,19 @@ import { Stands } from './stands/Stands'
 
 const isShowroom = APP_VIEW === 'muestrario'
 
-/** Solo en desarrollo: expone renderer y escena para medir rendimiento desde la consola. */
+/**
+ * Render continuo tras la carga mientras el monitor de rendimiento ajusta la calidad (≈3 muestras
+ * de 2,5 s). Después, la vista aérea pasa a renderizar bajo demanda: con la cámara quieta no se
+ * redibuja nada (CameraControls y Text de drei piden fotograma cuando cambian) y la GPU descansa.
+ */
+const CALIBRATION_MS = 8000
+
+const withProbe = import.meta.env.DEV || new URLSearchParams(location.search).has('probe')
+
+/**
+ * Expone renderer y escena para medir rendimiento desde la consola: siempre en desarrollo y, en
+ * producción, solo con `?probe` en la URL (para medir el build desplegado).
+ */
 function DevProbe() {
   const state = useThree()
   useEffect(() => {
@@ -39,11 +51,20 @@ export function Experience() {
   const preset = QUALITY[quality]
   const colliders = useMemo(() => buildColliders(FAIR), [])
   const home = isShowroom ? SHOWROOM_VIEW : HOME_VIEW
+  const [calibrated, setCalibrated] = useState(false)
+  useEffect(() => {
+    if (!sceneReady) return
+    const timer = setTimeout(() => setCalibrated(true), CALIBRATION_MS)
+    return () => clearTimeout(timer)
+  }, [sceneReady])
+  // El paseo anima la cámara en cada fotograma; la vista aérea solo cuando se mueve.
+  const continuous = cameraMode === 'paseo' || !calibrated
 
   return (
     <Canvas
       className="scene"
       flat
+      frameloop={continuous ? 'always' : 'demand'}
       shadows="percentage"
       dpr={preset.dpr}
       camera={{ fov: 38, near: 0.1, far: 220, position: home.position }}
@@ -72,9 +93,10 @@ export function Experience() {
         <CameraRig home={home} />
       )}
       <PostFX preset={preset} />
-      {import.meta.env.DEV && <DevProbe />}
-      {/* Solo tras la carga: la compilación de shaders hunde los fps un momento y no es real. */}
-      {sceneReady && <PerformanceMonitor onDecline={degradeQuality} flipflops={3} />}
+      {withProbe && <DevProbe />}
+      {/* Solo tras la carga (la compilación de shaders hunde los fps un momento y no es real) y con
+          render continuo: bajo demanda, los ratos sin fotogramas se leerían como fps bajísimos. */}
+      {sceneReady && continuous && <PerformanceMonitor onDecline={degradeQuality} flipflops={3} />}
     </Canvas>
   )
 }

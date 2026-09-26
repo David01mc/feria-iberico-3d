@@ -14,6 +14,7 @@ import {
   type MeshStandardMaterial,
   type Object3D,
 } from 'three'
+import { withKTX2 } from '../../materials/ktx2'
 import type { Placement } from './arrange'
 import {
   PRODUCTS,
@@ -50,7 +51,7 @@ function withFinish(source: MeshStandardMaterial, finish: ProductFinish): MeshPh
 
 /** Extrae la única malla del GLB de un producto (con su transformación aplicada). */
 export function useProductMesh(key: ProductKey): ProductMesh {
-  const { scene } = useGLTF(productUrl(key))
+  const { scene } = useGLTF(productUrl(key), true, true, withKTX2)
   let entry = meshes.get(scene)
   if (!entry) {
     scene.updateMatrixWorld(true)
@@ -116,4 +117,6 @@ export function ProductInstances({ product, items, castShadow = true }: ProductI
   )
 }
 
-export const preloadProduct = (key: ProductKey) => useGLTF.preload(productUrl(key))
+/** Los productos llevan sus texturas horneadas en KTX2 (ver scripts/ktx2.mjs). */
+export const preloadProduct = (key: ProductKey) =>
+  useGLTF.preload(productUrl(key), true, true, withKTX2)
