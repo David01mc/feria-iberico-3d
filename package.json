@@ -18,7 +18,8 @@
     "format": "prettier --write .",
     "assets": "node scripts/fetch-assets.mjs",
     "models": "node scripts/build-models.mjs",
-    "textures": "node scripts/ktx2.mjs"
+    "textures": "node scripts/ktx2.mjs",
+    "deploy": "node scripts/deploy.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
