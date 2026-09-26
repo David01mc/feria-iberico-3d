@@ -163,10 +163,126 @@ function croquetasColliders(): Rect[] {
   ]
 }
 
+// ── Bodegas La Escribana · península 6 × 6 (abre a +z, −z y +x; cerrada en −x) ─
+
+export const VINOS = {
+  /** Tarima de madera envejecida elevada. */
+  floor: 0.15,
+  /** Muro caligráfico al fondo (−z) con tres cajas de luz mirando al frente. */
+  wall: { x: [-0.8, 3] as XZ, z: -3, depth: 0.5, height: 3.4 },
+  windows: { x: [-0.05, 1.1, 2.25], width: 0.95, bottom: 1.0, height: 1.3 },
+  /** Bandeja blanca volada sobre el muro y el mostrador (sin salirse de la parcela). */
+  canopy: { x: [-0.8, 3] as XZ, z: [-3, 1.6] as XZ, bottom: 3.0, height: 0.7 },
+  /** Caja negra del lounge contra el lado cerrado (−x), con techo de downlights. */
+  lounge: { x: [-3, -0.8] as XZ, z: [-3, 1.4] as XZ, ceiling: 3.0, height: 3.6, wall: 0.2 },
+  sofa: { center: [-2.35, -1.1] as XZ, size: [0.8, 2.0] as XZ },
+  table: { center: [-1.55, -1.1] as XZ, size: [0.55, 0.9] as XZ },
+  armchairs: [
+    [-1.1, -2.1],
+    [-1.1, -0.1],
+  ] as readonly XZ[],
+  armchairSize: [0.7, 0.7] as XZ,
+  counter: { center: [1.0, 1.9] as XZ, size: [2.6, 0.7] as XZ, height: 1.05 },
+  giftBoxes: { center: [2.55, 2.4] as XZ, size: [0.6, 0.6] as XZ },
+}
+
+function vinosColliders(): Rect[] {
+  const v = VINOS
+  const l = v.lounge
+  return [
+    rect(v.wall.x[0], v.wall.z, v.wall.x[1], v.wall.z + v.wall.depth),
+    rect(l.x[0], l.z[0], l.x[1], l.z[0] + l.wall),
+    rect(l.x[0], -3, l.x[0] + l.wall, 3),
+    box(...v.sofa.center, ...v.sofa.size),
+    box(...v.table.center, ...v.table.size),
+    ...v.armchairs.map((a) => box(...a, ...v.armchairSize)),
+    box(...v.counter.center, ...v.counter.size),
+    box(...v.giftBoxes.center, ...v.giftBoxes.size),
+  ]
+}
+
+// ── Cervezas Montanera · esquina 6 × 3 (abre a +z y a −x) ───────────────────
+
+export const CERVEZAS = {
+  /** Módulo de feria: perfilería de aluminio y panel blanco en los lados cerrados (−z, +x). */
+  panelHeight: 2.5,
+  panelThickness: 0.04,
+  /** Muro de 3 × 3 palés europeos de pie (1,2 × 0,8) delante del panel del fondo. */
+  palletWall: { z: -1.36, cols: 3, rows: 3, pallet: [1.2, 0.8] as XZ, thickness: 0.14 },
+  /** Mostradores de cajón de pino con panel granate, en línea con el frente. */
+  counters: [1.95, 0.8, -0.35] as readonly number[],
+  counterZ: 0.72,
+  counterSize: [1.1, 0.6] as XZ,
+  counterHeight: 1.0,
+  /** Cajas de madera apiladas como jardineras. */
+  planters: [
+    [2.6, 1.05],
+    [-2.55, 1.1],
+  ] as readonly XZ[],
+  planterSize: [0.6, 0.45] as XZ,
+  /** Expositor metálico de botellas junto al lado abierto. */
+  rack: { center: [-2.55, -0.75] as XZ, size: [0.6, 0.45] as XZ, height: 1.9 },
+}
+
+function cervezasColliders(): Rect[] {
+  const c = CERVEZAS
+  const w = c.palletWall
+  const wallW = w.cols * w.pallet[0]
+  return [
+    rect(-3, -1.5, 3, -1.5 + c.panelThickness),
+    rect(3 - c.panelThickness, -1.5, 3, 1.5),
+    rect(-wallW / 2, w.z - w.thickness / 2, wallW / 2, w.z + w.thickness / 2),
+    ...c.counters.map((x) => box(x, c.counterZ, ...c.counterSize)),
+    ...c.planters.map((p) => box(...p, ...c.planterSize)),
+    box(...c.rack.center, ...c.rack.size),
+  ]
+}
+
+// ── Llagar Pumarín · esquina 6 × 3 (abre a +z y a +x) ───────────────────────
+
+export const SIDRAS = {
+  floor: 0.03,
+  wallHeight: 3.0,
+  wallThickness: 0.12,
+  /** Visera de madera sobre la mitad trasera del stand. */
+  ceiling: { z: [-1.5, 0.35] as XZ, y: 2.9, thickness: 0.12 },
+  /** Triángulo de musgo en la pared del fondo: de la esquina inferior derecha a la superior izquierda. */
+  moss: { x: [-0.9, 2.9] as XZ, y: [0.35, 2.75] as XZ, depth: 0.08 },
+  /** Balda corrida bajo el musgo, con dos taburetes. */
+  ledge: { x: [0.7, 2.8] as XZ, depth: 0.32, height: 1.05 },
+  stools: [
+    [2.25, -0.95],
+    [1.35, -0.95],
+  ] as readonly XZ[],
+  stoolSize: 0.42,
+  /** Barra facetada de madera con tapa negra. */
+  bar: { center: [-1.05, 0.3] as XZ, size: [1.9, 0.75] as XZ, height: 1.1 },
+  rug: { center: [1.35, 0.55] as XZ, radius: 0.8 },
+  /** Fotomural del chigre en el lado cerrado (−x) y estantería cúbica bajo él. */
+  mural: { z: [-1.3, 0.95] as XZ, y: [1.0, 2.75] as XZ },
+  shelf: { center: [-2.66, -0.2] as XZ, size: [0.44, 1.8] as XZ, height: 0.95 },
+}
+
+function sidrasColliders(): Rect[] {
+  const s = SIDRAS
+  const t = s.wallThickness
+  return [
+    rect(-3, -1.5, 3, -1.5 + t),
+    rect(-3, -1.5, -3 + t, 1.5),
+    rect(s.ledge.x[0], -1.5 + t, s.ledge.x[1], -1.5 + t + s.ledge.depth),
+    ...s.stools.map((p) => box(...p, s.stoolSize, s.stoolSize)),
+    box(...s.bar.center, ...s.bar.size),
+    box(...s.shelf.center, ...s.shelf.size),
+  ]
+}
+
 /** Obstáculos de cada tipo de stand en su marco local. */
 export const STAND_COLLIDERS: Record<StandKind, () => Rect[]> = {
   jamon: jamonColliders,
   quesos: quesosColliders,
   embutidos: embutidosColliders,
   croquetas: croquetasColliders,
+  vinos: vinosColliders,
+  cervezas: cervezasColliders,
+  sidras: sidrasColliders,
 }

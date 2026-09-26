@@ -24,7 +24,11 @@
     { "slug": "playfair-display", "weight": 700 },
     { "slug": "cormorant-garamond", "weight": 600 },
     { "slug": "alfa-slab-one", "weight": 400 },
-    { "slug": "pacifico", "weight": 400 }
+    { "slug": "pacifico", "weight": 400 },
+    { "slug": "cinzel", "weight": 600 },
+    { "slug": "pinyon-script", "weight": 400 },
+    { "slug": "bebas-neue", "weight": 400 },
+    { "slug": "josefin-sans", "weight": 700 }
   ],
   "models": [
     { "id": "bar_chair_round_01", "res": "1k", "simplify": 0.01, "use": "Taburete alto de barra (degustación)" },

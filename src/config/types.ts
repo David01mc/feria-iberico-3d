@@ -17,9 +17,10 @@ export type Side = 'north' | 'south' | 'east' | 'west'
 export type StandSize = 'pequeño' | 'mediano' | 'grande'
 
 /** Cuántos lados del espacio dan a pasillo. */
-export type StandLayout = 'isla' | 'esquina' | 'lineal' | 'kiosco'
+export type StandLayout = 'isla' | 'peninsula' | 'esquina' | 'lineal' | 'kiosco'
 
-export type StandKind = 'jamon' | 'quesos' | 'embutidos' | 'croquetas'
+export type StandKind =
+  'jamon' | 'quesos' | 'embutidos' | 'croquetas' | 'vinos' | 'cervezas' | 'sidras'
 
 export interface Palette {
   /** Color corporativo principal. */

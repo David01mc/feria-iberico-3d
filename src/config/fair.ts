@@ -1,21 +1,25 @@
 import { computeOpenSides, rect, subdivide } from './geometry'
+import { cervezas } from './stands/cervezas'
 import { croquetas } from './stands/croquetas'
 import { embutidos } from './stands/embutidos'
 import { jamon } from './stands/jamon'
 import { quesos } from './stands/quesos'
+import { sidras } from './stands/sidras'
+import { vinos } from './stands/vinos'
 import type { Aisle, FairConfig, NeighborPlot, Rect } from './types'
 
 /*
- * Plano del Pabellón 3 (vista en planta, norte arriba, 1 carácter ≈ 2 m):
+ * Plano del Pabellón 3 (vista en planta, norte arriba, 1 carácter ≈ 2 m).
+ * Al este de la Calle 3, el Espacio Maridaje: vinos, cervezas y sidras.
  *
  *   z=-15 ┌ A ─────┐   ┌ A ─────┐ ┌ A ───┐ ┌ A ─────┐   ┌ A ─────┐
  *         └────────┘   └────────┘ └──────┘ └────────┘   └────────┘
  *   z=-11 ═══════════════════ Pasillo Norte ════════════════════════
- *         ┌ B ─────┐   ┌ B ─────┐ ┌JAMÓN ┐ ┌ B ─────┐   ┌ B ─────┐
- *         └ C ─────┘   └ C ─────┘ └ isla ┘ └ C ─────┘   └ C ─────┘
+ *         ┌ B ─────┐   ┌ B ─────┐ ┌JAMÓN ┐ ┌VINOS┐B┐   ┌ B ─────┐
+ *         └ C ─────┘   └ C ─────┘ └ isla ┘ └penín┘C┘   └ C ─────┘
  *   z=-2  ═══════════════════ Avenida Central ══════════════════════
- *         ┌ D ───────┐   ┌D│QUESOS│CRQ│EMBUT┐ ┌ D ─────┐ ┌ D ─────┐
- *         └ E ───────┘   └ E ──────────┴─ E ┘ └ E ─────┘ └ E ─────┘
+ *         ┌ D ───────┐   ┌D│QUESOS│CRQ│EMBUT┐ ┌SIDRA┐D┐ ┌ D ─────┐
+ *         └ E ───────┘   └ E ──────────┴─ E ┘ └CERVE┘E┘ └ E ─────┘
  *   z=8   ═══════════════════ Pasillo Sur ══════════════════════════
  *         ┌ F ───────┐   ┌ F ───────────────┐ ┌ F ─────┐ ┌ F ─────┐
  *   z=15  └──────────┘   └──────────────────┘ └────────┘ └────────┘
@@ -86,7 +90,7 @@ const ROWS: Row[] = [
     blocks: [
       [-28, -19, [3, 6]],
       [-16, -7, [3, 3, 3]],
-      [7, 16, [6, 3]],
+      [13, 16, [3]],
       [19, 28, [3, 3, 3]],
     ],
   },
@@ -96,7 +100,7 @@ const ROWS: Row[] = [
     blocks: [
       [-28, -19, [3, 3, 3]],
       [-16, -7, [6, 3]],
-      [7, 16, [3, 3, 3]],
+      [13, 16, [3]],
       [19, 28, [3, 6]],
     ],
   },
@@ -106,7 +110,7 @@ const ROWS: Row[] = [
     blocks: [
       [-28, -15.5, [3.5, 3, 3, 3]],
       [-12.5, -9.5, [3]],
-      [7, 16, [3, 3, 3]],
+      [13, 16, [3]],
       [19, 28, [6, 3]],
     ],
   },
@@ -116,7 +120,7 @@ const ROWS: Row[] = [
     blocks: [
       [-28, -15.5, [3.5, 6, 3]],
       [-12.5, -0.5, [6, 6]],
-      [7, 16, [3, 6]],
+      [13, 16, [3]],
       [19, 28, [3, 3, 3]],
     ],
   },
@@ -135,7 +139,7 @@ const ROWS: Row[] = [
 /** Parcelas sueltas que no encajan en una fila regular (trasera del stand de embutidos). */
 const EXTRA_PLOTS: { letter: string; plot: Rect }[] = [{ letter: 'E', plot: rect(-0.5, 6, 4, 8) }]
 
-const STANDS = [jamon, quesos, croquetas, embutidos]
+const STANDS = [jamon, quesos, croquetas, embutidos, vinos, cervezas, sidras]
 
 function buildNeighbors(): NeighborPlot[] {
   const counters = new Map<string, number>()

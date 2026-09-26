@@ -19,18 +19,35 @@ describe('FAIR (Salón Dehesa 2026)', () => {
     expect(validateFair(FAIR)).toEqual([])
   })
 
-  it('cumple el briefing: 1 grande, 2 medianos y 1 pequeño', () => {
+  it('cumple el briefing: ibéricos (1 grande, 2 medianos, 1 pequeño) y maridaje (1 grande, 2 medianos)', () => {
     const sizes = FAIR.stands.map((s) => s.size).sort()
-    expect(sizes).toEqual(['grande', 'mediano', 'mediano', 'pequeño'])
+    expect(sizes).toEqual([
+      'grande',
+      'grande',
+      'mediano',
+      'mediano',
+      'mediano',
+      'mediano',
+      'pequeño',
+    ])
   })
 
   it('tiene un stand de cada producto', () => {
     expect(FAIR.stands.map((s) => s.kind).sort()).toEqual([
+      'cervezas',
       'croquetas',
       'embutidos',
       'jamon',
       'quesos',
+      'sidras',
+      'vinos',
     ])
+  })
+
+  it('el stand de vinos es una península: tres lados a pasillo', () => {
+    const vinos = FAIR.stands.find((s) => s.kind === 'vinos')!
+    expect(vinos.layout).toBe('peninsula')
+    expect(vinos.openSides).toHaveLength(3)
   })
 
   it('rodea la parcela de cada expositor con vecinos para dar contexto', () => {
@@ -78,6 +95,17 @@ describe('validateFair', () => {
       stands: FAIR.stands.map((s, i) => (i === quesos ? { ...s, front: 'south' } : s)),
     }
     expect(codes(broken)).toContain('front-closed')
+  })
+
+  it('detecta un tipo de planta que no encaja con sus lados abiertos', () => {
+    const vinos = FAIR.stands.findIndex((s) => s.kind === 'vinos')
+    const as = (layout: FairConfig['stands'][number]['layout']): FairConfig => ({
+      ...FAIR,
+      stands: FAIR.stands.map((s, i) => (i === vinos ? { ...s, layout } : s)),
+    })
+    expect(codes(as('peninsula'))).not.toContain('layout-mismatch')
+    expect(codes(as('isla'))).toContain('layout-mismatch')
+    expect(codes(as('esquina'))).toContain('layout-mismatch')
   })
 
   it('detecta parcelas fuera de la zona de exposición', () => {

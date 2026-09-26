@@ -26,6 +26,7 @@ export function sizeCategory(m2: number): StandSize {
 
 const OPEN_SIDES_BY_LAYOUT: Record<StandLayout, number> = {
   isla: 4,
+  peninsula: 3,
   esquina: 2,
   lineal: 1,
   kiosco: 1,

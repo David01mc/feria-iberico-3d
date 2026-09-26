@@ -4,9 +4,10 @@ import { Box3, Vector3 } from 'three'
 import type { Vec3 } from '../materials/geometry'
 
 /**
- * Vista general inicial: tres cuartos desde el noreste, por encima de los módulos vecinos.
- * Ve la isla del jamón de costado y los frentes de quesos, croquetas y embutidos al otro lado
- * de la avenida (todos abren al norte; embutidos también al este).
+ * Vista general inicial: tres cuartos desde el noreste, por encima de los módulos vecinos y bajo
+ * las cerchas. En primer plano, las fachadas norte del Espacio Maridaje (vinos y sidras); detrás,
+ * la isla del jamón asomando por el norte de la bodega y los frentes de quesos, croquetas y
+ * embutidos al otro lado de la avenida. Encuadre calculado para 16:10 y 16:9.
  */
 export interface CameraView {
   position: Vec3
@@ -14,8 +15,8 @@ export interface CameraView {
 }
 
 export const HOME_VIEW: CameraView = {
-  position: [15, 7.5, -4.5],
-  target: [-3, 0.5, 1],
+  position: [23.5, 9, -15],
+  target: [8, 1, -2.5],
 }
 
 /** Límites del punto de mira: dentro del pabellón y por debajo de las cerchas. */
